@@ -5,9 +5,9 @@ window.onload = function(){setInterval(viewkinectscList,1000);}
 function viewkinectscList()
 {
   $.ajax({
-    //url: 'http://127.0.0.1/php/rom_web_php/get_jointdirection_list.php',
+    url: 'http://127.0.0.1/php/rom_server_php/kinectsclist.php',
     //url: '../php/rom_server_php/patientlist.php',
-    url: 'http://igrus.mireene.com/php/rom_server_php/kinectsclist.php',
+    //url: 'http://igrus.mireene.com/php/rom_server_php/kinectsclist.php',
     type: 'GET',
     dataType: 'json',
     success: function(data){
@@ -53,9 +53,9 @@ function viewkinectscList()
 
 function getPatientName(){
     $.ajax({
-      //url: 'http://127.0.0.1/php/rom_web_php/get_jointdirection_list.php',
+      url: 'http://127.0.0.1/php/rom_server_php/patientlist.php',
       //url: '../php/rom_server_php/patientlist.php',
-      url: 'http://igrus.mireene.com/php/rom_server_php/patientlist.php',
+      //url: 'http://igrus.mireene.com/php/rom_server_php/patientlist.php',
       type: 'GET',
       dataType: 'json',
       success: function(data){
@@ -83,9 +83,9 @@ function getPatientName(){
 
 function getSearchName(){
   $.ajax({
-    //url: 'http://127.0.0.1/php/rom_web_php/get_jointdirection_list.php',
+    url: 'http://127.0.0.1/php/rom_server_php/patientlist.php',
     //url: '../php/rom_server_php/patientlist.php',
-    url: 'http://igrus.mireene.com/php/rom_server_php/patientlist.php',
+    //url: 'http://igrus.mireene.com/php/rom_server_php/patientlist.php',
     type: 'GET',
     dataType: 'json',
     success: function(data){
@@ -163,7 +163,7 @@ function getCheckDate(clickid) {
   var data = {patientid : clickid};
   selectedId = clickid;
     $.ajax({
-      url: 'http://igrus.mireene.com/php/rom_server_php/checkdatelist.php',
+      url: 'http://127.0.0.1/php/rom_server_php/checkdatelist.php',
       type: 'POST',
       data: data,
       dataType: 'json',
