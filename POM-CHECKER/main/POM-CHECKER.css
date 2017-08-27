@@ -31,13 +31,13 @@
 {
 	background-color: white;
 	padding: 5px 15px;
-	border-bottom: 0px;
+	border-bottom: 1px solid #ccc;
 }
 
 .panel-min
 {
-	min-height: 650px;
-	max-height: 650px;
+	min-height: 776px;
+	max-height: 776px;
 }
 
 .style-2::-webkit-scrollbar-track
