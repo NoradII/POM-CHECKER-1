@@ -22,8 +22,8 @@ function viewBeforeMeasurementList()
         jointdirection = setNamingforJointdirection(jointdirection);
         var new_kinectscList = document.createElement("div");
         new_kinectscList.setAttribute("id",patientid);
-        new_kinectscList.style["border"] = "1px solid #ccc";
-        new_kinectscList.style["border-radius"] = "5px";
+        new_kinectscList.style['border'] = '1px solid #ccc';
+        new_kinectscList.style['border-radius'] = "5px";
         new_kinectscList.style["margin-top"] = "3px";
         new_kinectscList.style["margin-bottom"] = "3px";
         new_kinectscList.style["padding"] = "5px";

@@ -91,7 +91,7 @@
 
         <!-- page content -->
         <div class="modal fade" id="RegisterModal" role="dialog">
-          <div class="modal-dialog modal-sm">
+          <div class="modal-dialog modal-mid">
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -106,66 +106,67 @@
                   <label class="control-label" for="inputPatientNumber">병록번호(식별번호)</label>
                   <input type="text" class="form-control" id="inputPatientNumber" placeholder="없을 경우 공백으로 남겨두세요.">
                 </div>
-                <div class="form-group">
-                   <label class="control-label" for="inputPatientGender">성별</label>
-                  <div class="text-center">
-                    <label class="radio-inline">
-                      <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> 남자
-                    </label>
-                    <label class="radio-inline">
-                      <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> 여자
-                    </label>
-                  </div>
+                <label class="control-label" for="inputPatientNumber">성별</label>
+                <div class="text-center">
+                    <input type="radio" name="radio-group" id="test1">
+                    <label for="test1"> 남자 </label>
+                    &nbsp&nbsp&nbsp&nbsp
+                    <input type="radio" name="radio-group" id="test2">
+                    <label for="test2"> 여자 </label>
                 </div>
                 <div class="form-group">
                   <label class="control-label" for="inputPatientBirth">생년월일</label>
                   <input type="text" class="form-control" id="inputPatientBirth" placeholder="ex) 19900101">
                 </div>
               </div>
-              <div class="modal-footer" style="text-align: center">
+              <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-dismiss="modal">초진환자 등록 및 검진</button>
               </div>
+
             </div>
           </div>
         </div>
         <div class="modal fade" id="CheckupModal" role="dialog">
-          <div class="modal-dialog modal-sm">
+          <div class="modal-dialog modal-mid">
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title" id="Modaltitle"></h4>
+                <h4 class="modal-title">검진등록</h4>
               </div>
-              <div class="modal-body text-center"><h5 id="ModalName"></h5>
+              <div class="modal-body"><h5></h5>
                 <div>
+                  <label class="control-label" for="inputPatientGender">측정 부위</label>
                   <select class="form-control">
-                    <option id="10">Shoulder-flexion</option>
-                    <option id="20">Shoulder-abduction</option>
-                    <option id="30">Shoulder-rotation</option>
-                    <option id="40">Elbow-flexion</option>
-                    <option id="50">Elbow-pronation</option>
-                    <option id="70">Hip-flexion</option>
-                    <option id="90">Neck-rotation</option>
-                    <option id="100">Neck-flexion</option>
-                    <option id="110">Neck-abduction</option>
+                    <option >측정부위를 선택해주세요</option>
+                    <option id="10">Shoulder-Flexion</option>
+                    <option id="20">Shoulder-Abduction</option>
+                    <option id="30">Shoulder-Rotation</option>
+                    <option id="40">Elbow-Flexion</option>
+                    <option id="50">Elbow-Pronation</option>
+                    <option id="70">Hip-Flexion</option>
+                    <option id="90">Neck-Rotation</option>
+                    <option id="100">Neck-Flexion</option>
+                    <option id="110">Neck-Abduction</option>
                     <option id="201">Posture</option>
-                    <option id="60" style="color: red" disabled>Knee-flexion</option>
-                    <option id="80" style="color: red" disabled>Hip-rotation</option>
-                    <option id="210" style="color: red" disabled>Hip-posture</option>
+                    <option class="wating" id="60" disabled>Knee-Flexion</option>
+                    <option class="wating" id="80" disabled>Hip-Rotation</option>
+                    <option class="wating" id="210" disabled>Hip-Posture</option>
                   </select>
                 </div>
                 <br>
                 <div class="form-group">
-                 <label class="control-label" for="inputPatientGender">측정 부위</label>
-                  <div class="options2">
-                    <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="inlineRadio1" />
-                    <label for="inlineRadio1">Left</label>
-                    <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="inlineRadio2" />
-                    <label for="inlineRadio2">Right</label>
-                  </div>
+                   <label class="control-label" for="inputPatientGender">측정 방향</label>
+                   <div class="text-center">
+                       <input type="radio" name="radio-group" id="test3">
+                       <label for="test3"> Left </label>
+                       &nbsp&nbsp&nbsp&nbsp
+                       <input type="radio" name="radio-group" id="test4">
+                       <label for="test4"> Right </label>
+                   </div>
                 </div>
               </div>
               <div class="modal-footer" style="height: 55px">
-                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">검진 시작하기</button>
               </div>
             </div>
           </div>
@@ -191,7 +192,7 @@
         			<div class="panel-heading panel-background">
         				<ul class="nav nav-pills" style="margin-top: 2px;">
         					<li class="pull-left"><h4 style="color:#73879C">History</h4></li>
-        				</ul>        	
+        				</ul>
         			</div>
 		  			<div class="panel-body panel-min style-2 nav-pills" id="cdatelist" style="overflow-y: scroll;">
 		    		</div>
@@ -223,7 +224,9 @@
         <!-- footer content -->
         <footer>
           <div class="text-center">
-          <p>&copy; 2017 <a href="http://teamelysium.kr">Team Elysium Inc.</a>All Rights Reserved. </p>
+            <p>&copy; 2017 <a href="http://teamelysium.kr" target="_blank"><b>Team Elysium Inc.</b></a>
+               All Rights Reserved.
+            </p>
           </div>
           <div class="clearfix"></div>
         </footer>
