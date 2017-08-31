@@ -29,7 +29,7 @@ function viewBeforeMeasurementList()
         new_kinectscList.style["border-radius"] = "5px";
         new_kinectscList.style["margin-top"] = "3px";
         new_kinectscList.style["margin-bottom"] = "3px";
-        new_kinectscList.style["padding"] = "5px";
+        new_kinectscList.style['padding'] = "5px";
         var row_div = document.createElement("div");
         row_div.setAttribute("class", "row");
 
@@ -387,6 +387,9 @@ function registerFirstMeasurement() {
   });
 }
 
+var left = document.getElementById('test3');
+var right = document.getElementById('test4');
+
 function registerMeasurement(){
   var name = $("#"+selectedId+" > div:first-child > div:first-child").text();
   var patient_number = $("#"+selectedId+" > div:first-child > div:eq(1)").text();
@@ -395,7 +398,6 @@ function registerMeasurement(){
   var select_jointdirection = document.getElementById('drop1');
   var selected_jointdirection = select_jointdirection.options[select_jointdirection.selectedIndex].value;
   console.log("selected_jointdirection : " + selected_jointdirection);
-
 
   if(name.length === 0){
     document.getElementById("Modaltitle").innerHTML = "등록 실패";
@@ -409,15 +411,25 @@ function registerMeasurement(){
     document.getElementById("ModalPatientName").setAttribute('style', 'font-size: 15px; font-weight: bold');
     document.getElementById("ModalFooter").innerHTML = "검진 시작하기";
     $('#modal-body').show();
-  }
 
+    if(selected_jointdirection === "201"){ // Posture인 경우
+      document.getElementById('modal-direction').style.visibility = 'hidden';
+      left = document.getElementById('test3');
+      right = document.getElementById('test4');
+
+      // TODO : Must resolve Posture condition..
+
+    }else{
+      document.getElementById('modal-direction').style.visibility = 'visible';
+    }
+
+  }
 }
 
 function startMeasurement(){
   var select_jointdirection = document.getElementById('drop1');
   var selected_jointdirection = select_jointdirection.options[select_jointdirection.selectedIndex].value;
-  var left = document.getElementById('test3');
-  var right = document.getElementById('test4');
+
   console.log("selectedId : " + selectedId);
 
   if(typeof selectedId === 'undefined') { // 환자를 선택하지 않았을 경우
@@ -432,17 +444,16 @@ function startMeasurement(){
     }
 
     // 측정 방향에 대한 예외처리
-    if(left.checked === true){
+    if((left.checked === false) && (right.checked === false)){
+      alert("측정방향을 선택해주세요.");
+      return;
+    }else if(left.checked === true){
       selected_jointdirection = parseInt(selected_jointdirection) + parseInt(left.value);
     }else if(right.checked === true){
       selected_jointdirection = parseInt(selected_jointdirection) + parseInt(right.value);
     }
-    if((left.checked === false) && (right.checked === false)){
-      alert("측정방향을 선택해주세요.");
-      return;
-    }
 
-    alert("modified_selected_jointdirection : " + selected_jointdirection);
+
 
     var data = {patientid : selectedId, jointdirection : selected_jointdirection, forcecode : 0};
 
