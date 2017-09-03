@@ -1,8 +1,16 @@
 var selectedId;
 var i = 1;
 window.onload = function(){
+  document.getElementById("nav-user-name").innerHTML = localStorage.getItem("name");
   getPatientName();
   setInterval(viewBeforeMeasurementList, 1000);
+
+  if(localStorage.getItem("uid") != 'undefined'){
+    return;
+  }else if(localStorage.getItem("uid") === 'undefined'){
+    alert("로그아웃 되었습니다. 다시 로그인 해주세요.");
+    location.href = "./login.html";
+  }
 };
 
 function viewBeforeMeasurementList()
@@ -583,4 +591,11 @@ function deletePatientAfterMeasurement(){
       console.log(request, status, error);
     },
   });
+}
+
+function logOut(){
+  localStorage.removeItem("name");
+  localStorage.removeItem("uid");
+  sessionStorage.removeItem("uid");
+  location.href = "./POM-CHECKER.html";
 }

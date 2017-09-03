@@ -131,6 +131,16 @@
     transform: scale(1);
 }
 
-.margin-span{
+.margin-span {
 	white-space: normal;
+}
+
+footer {
+	background-color:white;
+	border: 0.3px solid #ccc;
+	margin: 0.3px;
+}
+
+#footer-info{
+	font-size: 15px;
 }
