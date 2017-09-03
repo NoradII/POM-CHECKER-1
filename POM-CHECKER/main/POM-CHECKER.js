@@ -3,7 +3,7 @@ var i = 1;
 window.onload = function(){
   getPatientName();
   // TODO : getPatientName으로 인한 setInterval을 또 사용하는 것 보단 getPatientName에 viewBeforeMeasurementList를 call하는게 좋을 것 같음.
-  setInterval(getPatientName, 1000);
+  getPatientName();
   setInterval(viewBeforeMeasurementList, 1000);
 
 };
@@ -380,6 +380,7 @@ function registerFirstMeasurement() {
     success: function(data){
       console.log("DATA " + data);
       $('#registerModal').modal('hide');
+      getPatientName();
     },
     error: function(request, status, error){
       console.log(request, status, error);
