@@ -2,10 +2,7 @@ var selectedId;
 var i = 1;
 window.onload = function(){
   getPatientName();
-  // TODO : getPatientName으로 인한 setInterval을 또 사용하는 것 보단 getPatientName에 viewBeforeMeasurementList를 call하는게 좋을 것 같음.
   setInterval(getPatientName, 1000);
-  setInterval(viewBeforeMeasurementList, 1000);
-
 };
 
 function viewBeforeMeasurementList()
@@ -152,6 +149,7 @@ function viewMeasuring()
 }
 
 function getPatientName(){
+    viewBeforeMeasurementList();
     $.ajax({
       url: 'http://127.0.0.1/php/rom_server_php/patientlist.php',
       type: 'GET',
@@ -414,15 +412,13 @@ function registerMeasurement(){
 
     if(selected_jointdirection === "201"){ // Posture인 경우
       document.getElementById('modal-direction').style.visibility = 'hidden';
-      left = document.getElementById('test3');
-      right = document.getElementById('test4');
-
-      // TODO : Must resolve Posture condition..
-
+      left = 0;
+      right = 0;
     }else{
       document.getElementById('modal-direction').style.visibility = 'visible';
+      left = 1;
+      right = 2;
     }
-
   }
 }
 
