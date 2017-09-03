@@ -2,14 +2,7 @@ var selectedId;
 var i = 1;
 window.onload = function(){
   getPatientName();
-<<<<<<< HEAD
-  setInterval(getPatientName, 1000);
-=======
-  // TODO : getPatientName으로 인한 setInterval을 또 사용하는 것 보단 getPatientName에 viewBeforeMeasurementList를 call하는게 좋을 것 같음.
-  getPatientName();
   setInterval(viewBeforeMeasurementList, 1000);
-
->>>>>>> d4a7442fd277c0e96745ee44d67564c430d76c85
 };
 
 function viewBeforeMeasurementList()
@@ -77,7 +70,10 @@ function viewAfterMeasurementList()
         var jointdirection = data[i].jointdirection;
         jointdirection = setNamingforJointdirection(jointdirection);
         var new_kinectscList = document.createElement("div");
-        new_kinectscList.setAttribute("id",patientid);
+        new_kinectscList.setAttribute("class","btn btn-default btn-group-justified");
+        new_kinectscList.setAttribute("onclick","deletePatientid(this.id)")
+        new_kinectscList.setAttribute("id",patientid+"/");
+        new_kinectscList.setAttribute("type", "button");
         new_kinectscList.style["border"] = "1px solid #ccc";
         new_kinectscList.style["border-radius"] = "5px";
         new_kinectscList.style["margin-top"] = "3px";
@@ -259,8 +255,16 @@ function createButton(name, birth, number, sex, patientid)
 
   document.getElementById("patientlist").appendChild(new_patientinfo);
 }
-
+var prevclickid = 0;
 function getCheckDate(clickid) {
+  document.getElementById(clickid).style = "background-color: #e6e6e6; text-align: left;";
+  if(clickid == prevclickid){
+    document.getElementById(clickid).style = "background-color: #e6e6e6; text-align: left;";
+  }
+  else if(prevclickid > 0){
+    document.getElementById(clickid).style = "background-color: #e6e6e6; text-align: left;";
+    document.getElementById(prevclickid).style = "background-color: white; text-align: left;";
+  }
   var data = {patientid : clickid};
   selectedId = clickid;
   console.log("selectedId : " + selectedId);
@@ -326,6 +330,7 @@ function getCheckDate(clickid) {
         console.log(request, status, error);
     },
   });
+  prevclickid = clickid;
 }
 
 function registerFirstMeasurement() {
@@ -552,4 +557,30 @@ function setNamingforJointdirection(jointdirection) {
     default:
   }
   return jointdirection;
+}
+
+function checkGraph(){
+  location.href = "../rom_web/rom_chart_maximum.html";
+}
+
+var clickdeleteid;
+function deletePatientid(deleteid){
+  clickdeleteid = deleteid.substr(0,deleteid.length-1);
+  console.log(clickdeleteid);
+}
+
+function deletePatientAfterMeasurement(){
+  patientid = {patientid : clickdeleteid};
+  $.ajax({
+    url: 'http://127.0.0.1/php/rom_server_php/kinect2delete.php',
+    type: 'POST',
+    data: patientid,
+    dataType: 'html',
+    success: function(data){
+      console.log("Success");
+    },
+    error: function(request, status, error){
+      console.log(request, status, error);
+    },
+  });
 }
