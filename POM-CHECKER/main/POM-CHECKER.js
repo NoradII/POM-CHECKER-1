@@ -1,15 +1,16 @@
 var selectedId;
 var i = 1;
 window.onload = function(){
-  document.getElementById("nav-user-name").innerHTML = localStorage.getItem("name");
+
   getPatientName();
   setInterval(viewBeforeMeasurementList, 1000);
+  var uid = localStorage.getItem("uid");
 
-  if(localStorage.getItem("uid") != 'undefined'){
-    return;
-  }else if(localStorage.getItem("uid") === 'undefined'){
+  if(typeof uid === 'undefined' || uid === null){
     alert("로그아웃 되었습니다. 다시 로그인 해주세요.");
     location.href = "./login.html";
+  }else if(uid != 'undefined'){
+    document.getElementById("nav-user-name").innerHTML = localStorage.getItem("name");
   }
 };
 
@@ -263,6 +264,7 @@ function createButton(name, birth, number, sex, patientid)
 
   document.getElementById("patientlist").appendChild(new_patientinfo);
 }
+
 var prevclickid = 0;
 function getCheckDate(clickid) {
   document.getElementById(clickid).style = "background-color: #e6e6e6; text-align: left;";
@@ -433,12 +435,12 @@ function registerMeasurement(){
 
     if(selected_jointdirection === "201"){ // Posture인 경우
       document.getElementById('modal-direction').style.visibility = 'hidden';
-      left = 0;
-      right = 0;
+      left.value = 0;
+      right.value = 0;
     }else{
       document.getElementById('modal-direction').style.visibility = 'visible';
-      left = 1;
-      right = 2;
+      left.value = 1;
+      right.value = 2;
     }
   }
 }
@@ -596,6 +598,5 @@ function deletePatientAfterMeasurement(){
 function logOut(){
   localStorage.removeItem("name");
   localStorage.removeItem("uid");
-  sessionStorage.removeItem("uid");
   location.href = "./POM-CHECKER.html";
 }
