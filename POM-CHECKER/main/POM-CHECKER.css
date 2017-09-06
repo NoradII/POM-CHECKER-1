@@ -135,6 +135,23 @@
 	white-space: normal;
 }
 
+img {
+	width: 130px;
+	height: 50px;
+}
+
+#ipButton{
+	width: 65px;
+	height: 65px;
+	z-index: 12;
+ 	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+ 	position: fixed;
+ 	bottom: 15px;
+ 	right: 15px;
+ 	border-radius: 50% !important;
+
+}
+
 footer {
 	background-color:white;
 	border: 0.3px solid #ccc;

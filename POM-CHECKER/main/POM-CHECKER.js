@@ -1,5 +1,7 @@
 var selectedId;
 var i = 1;
+var ip = localStorage.getItem("IP");
+
 window.onload = function(){
 
   getPatientName();
@@ -14,156 +16,10 @@ window.onload = function(){
   }
 };
 
-function viewBeforeMeasurementList()
-{
-  $.ajax({
-    url: 'http://127.0.0.1/php/rom_server_php/kinectsclist.php',
-    type: 'GET',
-    dataType: 'json',
-    success: function(data){
-      $("#BeforeMeasurement").empty();
-
-      for(var i = 1; i < data.length; i++){
-        //console.log("Patient List DATA : "+data[i]);
-        var patientid = data[i].patientid;
-        var name = data[i].name;
-        var jointdirection = data[i].jointdirection;
-        jointdirection = setNamingforJointdirection(jointdirection);
-        var new_kinectscList = document.createElement("div");
-        new_kinectscList.setAttribute("id",patientid);
-        new_kinectscList.style["border"] = "1px solid #ccc";
-        new_kinectscList.style["border-radius"] = "5px";
-        new_kinectscList.style["margin-top"] = "3px";
-        new_kinectscList.style["margin-bottom"] = "3px";
-        new_kinectscList.style['padding'] = "5px";
-        var row_div = document.createElement("div");
-        row_div.setAttribute("class", "row");
-
-        var patient_id = document.createElement("div");
-        patient_id.setAttribute("class", "col-md-12 col-sm-6 col-xs-6 baseinfo");
-        patient_id.innerHTML = "<b>이름 : </b>"+ name;
-
-        var patientjointdirection = document.createElement("div");
-        patientjointdirection.setAttribute("class", "col-md-12 col-sm-6 col-xs-6 baseinfo");
-        patientjointdirection.innerHTML = "<b>부위 : </b>" + jointdirection;
-
-        row_div.appendChild(patient_id);
-        row_div.appendChild(patientjointdirection);
-
-        new_kinectscList.appendChild(row_div);
-
-        new_kinectscList.style.textAlign = "left";
-        document.getElementById("BeforeMeasurement").appendChild(new_kinectscList);
-      }
-    },
-    error: function(request, status, error){
-      console.log(request, status, error);
-    },
-  });
-  viewAfterMeasurementList();
-  viewMeasuring();
-}
-
-function viewAfterMeasurementList()
-{
-  $.ajax({
-    url: 'http://127.0.0.1/php/rom_server_php/kinectsc2list.php',
-    type: 'GET',
-    dataType: 'json',
-    success: function(data){
-      $("#AfterMeasurement").empty();
-      console.log("AfterMeasurement List DATA :"+data);
-      for(var i = 0; i < data.length; i++){
-        var patientid = data[i].patientid;
-        var name = data[i].name;
-        var jointdirection = data[i].jointdirection;
-        jointdirection = setNamingforJointdirection(jointdirection);
-        var new_kinectscList = document.createElement("div");
-        new_kinectscList.setAttribute("class","btn btn-default btn-group-justified");
-        new_kinectscList.setAttribute("onclick","deletePatientid(this.id)")
-        new_kinectscList.setAttribute("id",patientid+"/");
-        new_kinectscList.setAttribute("type", "button");
-        new_kinectscList.style["border"] = "1px solid #ccc";
-        new_kinectscList.style["border-radius"] = "5px";
-        new_kinectscList.style["margin-top"] = "3px";
-        new_kinectscList.style["margin-bottom"] = "3px";
-        new_kinectscList.style["padding"] = "5px";
-        var row_div = document.createElement("div");
-        row_div.setAttribute("class", "row");
-
-        var patient_id = document.createElement("div");
-        patient_id.setAttribute("class", "col-md-12 col-sm-6 col-xs-6 baseinfo");
-        patient_id.innerHTML = "<b>이름 : </b>"+ name;
-
-        var patientjointdirection = document.createElement("div");
-        patientjointdirection.setAttribute("class", "col-md-12 col-sm-6 col-xs-6 baseinfo");
-        patientjointdirection.innerHTML = "<b>부위 : </b>" + jointdirection;
-
-        row_div.appendChild(patient_id);
-        row_div.appendChild(patientjointdirection);
-
-        new_kinectscList.appendChild(row_div);
-
-        new_kinectscList.style.textAlign = "left";
-        document.getElementById("AfterMeasurement").appendChild(new_kinectscList);
-      }
-    },
-    error: function(request, status, error){
-      console.log(request, status, error);
-    },
-  });
-}
-
-function viewMeasuring()
-{
-  $.ajax({
-    url: 'http://127.0.0.1/php/rom_server_php/kinectsclist.php',
-    type: 'GET',
-    dataType: 'json',
-    success: function(data){
-      $("#Measuring").empty();
-      console.log("Measuring DATA :"+data);
-
-      var patientid = data[0].patientid;
-      var name = data[0].name;
-      var jointdirection = data[0].jointdirection;
-      jointdirection = setNamingforJointdirection(jointdirection);
-      var new_kinectscList = document.createElement("div");
-      new_kinectscList.setAttribute("id",patientid);
-      new_kinectscList.style["border"] = "1px solid #ccc";
-      new_kinectscList.style["border-radius"] = "5px";
-      new_kinectscList.style["margin-top"] = "3px";
-      new_kinectscList.style["margin-bottom"] = "3px";
-      new_kinectscList.style["padding"] = "5px";
-      var row_div = document.createElement("div");
-      row_div.setAttribute("class", "row");
-
-      var patient_id = document.createElement("div");
-      patient_id.setAttribute("class", "col-md-12 col-sm-6 col-xs-6 baseinfo");
-      patient_id.innerHTML = "<b>이름 : </b>"+ name;
-
-      var patientjointdirection = document.createElement("div");
-      patientjointdirection.setAttribute("class", "col-md-12 col-sm-6 col-xs-6 baseinfo");
-      patientjointdirection.innerHTML = "<b>부위 : </b>" + jointdirection;
-
-      row_div.appendChild(patient_id);
-      row_div.appendChild(patientjointdirection);
-
-      new_kinectscList.appendChild(row_div);
-
-      new_kinectscList.style.textAlign = "left";
-      document.getElementById("Measuring").appendChild(new_kinectscList);
-    },
-    error: function(request, status, error){
-      console.log(request, status, error);
-    },
-  });
-}
-
 function getPatientName(){
     viewBeforeMeasurementList();
     $.ajax({
-      url: 'http://127.0.0.1/php/rom_server_php/patientlist.php',
+      url: "http://" + ip + "/php/rom_server_php/patientlist.php",
       type: 'GET',
       dataType: 'json',
       success: function(data){
@@ -189,97 +45,21 @@ function getPatientName(){
     });
 }
 
-function getSearchName(){
-  $.ajax({
-    url: 'http://127.0.0.1/php/rom_server_php/patientlist.php',
-    type: 'GET',
-    dataType: 'json',
-    success: function(data){
-      $("#patientlist").empty();
-
-      console.log("NAME : " + data);
-      for(var i = 0; i < data.length; i++){
-        var name = data[i].name;
-        var birth = data[i].birth;
-        var number = data[i].number;
-        var patientid = data[i].patientid;
-        var sex;
-        if(data[i].sex == 1)
-          sex = "남";
-        else
-          sex = "여";
-        var sname = document.getElementById("searchName").value;
-        var namecount = name.search(sname);
-        if(namecount >= 0)
-        {
-          createButton(name,birth,number,sex, patientid);
-        }
-      }
-    },
-    error: function(request, status, error){
-      console.log(request, status, error);
-    },
-  });
-}
-
-function createButton(name, birth, number, sex, patientid)
-{
-  var new_patientinfo = document.createElement("div");
-  new_patientinfo.setAttribute("class","btn btn-default btn-group-justified");
-  new_patientinfo.setAttribute("onclick","getCheckDate(this.id)")
-  new_patientinfo.setAttribute("id",patientid);
-  new_patientinfo.setAttribute("type", "button");
-  var row_div = document.createElement("div");
-  row_div.setAttribute("class", "row");
-
-  var patientname = document.createElement("div");
-  patientname.setAttribute("class", "col-md-6 col-sm-6 col-xs-6 baseinfo");
-  patientname.innerHTML = "<b>이름 : </b>"+ name;
-
-  var patientnumber = document.createElement("div");
-  patientnumber.setAttribute("class", "col-md-6 col-sm-6 col-xs-6 baseinfo");
-  patientnumber.innerHTML = "<b>병록번호 : </b>" + number;
-
-  var row_div2 = document.createElement("div");
-  row_div2.setAttribute("class", "row");
-
-  var patientsex = document.createElement("div");
-  patientsex.setAttribute("class", "col-md-6 col-sm-6 col-xs-6 baseinfo");
-  patientsex.innerHTML = "<b>성별 : </b>"+ sex;
-
-  var patientbirth = document.createElement("div");
-  patientbirth.setAttribute("class", "col-md-6 col-sm-6 col-xs-6 baseinfo");
-  patientbirth.innerHTML = "<b>생년월일 : </b>" + birth;
-
-
-  row_div.appendChild(patientname);
-  row_div.appendChild(patientnumber);
-  row_div2.appendChild(patientsex);
-  row_div2.appendChild(patientbirth);
-
-  new_patientinfo.appendChild(row_div);
-  new_patientinfo.appendChild(row_div2);
-
-  new_patientinfo.style.textAlign = "left";
-
-  document.getElementById("patientlist").appendChild(new_patientinfo);
-}
-
-var prevclickid = 0;
-function getCheckDate(clickid) {
-  document.getElementById(clickid).style = "background-color: #e6e6e6; text-align: left;";
-  if(clickid == prevclickid){
-    document.getElementById(clickid).style = "background-color: #e6e6e6; text-align: left;";
+var prevClickId = 0;
+function getCheckDate(clickId) {
+  document.getElementById(clickId).style = "background-color: #e6e6e6; text-align: left;";
+  if(clickId == prevClickId){
+    document.getElementById(clickId).style = "background-color: #e6e6e6; text-align: left;";
   }
   else if(prevclickid > 0){
-    document.getElementById(clickid).style = "background-color: #e6e6e6; text-align: left;";
-    document.getElementById(prevclickid).style = "background-color: white; text-align: left;";
+    document.getElementById(clickId).style = "background-color: #e6e6e6; text-align: left;";
+    document.getElementById(prevClickId).style = "background-color: white; text-align: left;";
   }
-  var data = {patientid : clickid};
-  selectedId = clickid;
-  console.log("selectedId : " + selectedId);
+
+  var data = {patientid : clickId};
+  selectedId = clickId;
     $.ajax({
-      url: 'http://127.0.0.1/php/rom_server_php/checkdatelist.php',
+      url: "http://" + ip + "/php/rom_server_php/checkdatelist.php",
       type: 'POST',
       data: data,
       dataType: 'json',
@@ -290,8 +70,6 @@ function getCheckDate(clickid) {
         });
 
         $("#cdatelist").empty();
-
-        console.log("getCheckDate : " + data);
 
         for(var i = 0; i < data.length; i++){
           var checkdateid = data[i].checkdateid;
@@ -340,7 +118,7 @@ function getCheckDate(clickid) {
         console.log(request, status, error);
     },
   });
-  prevclickid = clickid;
+  prevclickid = clickId;
 }
 
 function registerFirstMeasurement() {
@@ -393,7 +171,7 @@ function registerFirstMeasurement() {
   var data = {name : name, sex : gender, birth : birth, number : number};
 
   $.ajax({
-    url: 'http://127.0.0.1/php/rom_server_php/patientadd.php',
+    url: "http://" + ip + "/php/rom_server_php/patientadd.php",
     type: 'POST',
     data: data,
     dataType: 'html',
@@ -472,12 +250,10 @@ function startMeasurement(){
       selected_jointdirection = parseInt(selected_jointdirection) + parseInt(right.value);
     }
 
-
-
     var data = {patientid : selectedId, jointdirection : selected_jointdirection, forcecode : 0};
 
     $.ajax({
-      url: 'http://127.0.0.1/php/rom_server_php/fronttokinect.php',
+      url: "http://" + ip + "/php/rom_server_php/fronttokinect.php",
       type: 'POST',
       data: data,
       dataType: 'html',
@@ -490,7 +266,271 @@ function startMeasurement(){
       },
     });
 
-    }
+  }
+}
+
+// 측정 전 환자
+function viewBeforeMeasurementList()
+{
+  $.ajax({
+    url: "http://" + ip + "/php/rom_server_php/kinectsclist.php",
+    type: 'GET',
+    dataType: 'json',
+    success: function(data){
+      $("#BeforeMeasurement").empty();
+
+      for(var i = 1; i < data.length; i++){
+        //console.log("Patient List DATA : "+data[i]);
+        var patientid = data[i].patientid;
+        var name = data[i].name;
+        var jointdirection = data[i].jointdirection;
+        jointdirection = setNamingforJointdirection(jointdirection);
+        var new_kinectscList = document.createElement("div");
+        new_kinectscList.setAttribute("id",patientid);
+        new_kinectscList.style["border"] = "1px solid #ccc";
+        new_kinectscList.style["border-radius"] = "5px";
+        new_kinectscList.style["margin-top"] = "3px";
+        new_kinectscList.style["margin-bottom"] = "3px";
+        new_kinectscList.style['padding'] = "5px";
+        var row_div = document.createElement("div");
+        row_div.setAttribute("class", "row");
+
+        var patient_id = document.createElement("div");
+        patient_id.setAttribute("class", "col-md-12 col-sm-6 col-xs-6 baseinfo");
+        patient_id.innerHTML = "<b>이름 : </b>"+ name;
+
+        var patientjointdirection = document.createElement("div");
+        patientjointdirection.setAttribute("class", "col-md-12 col-sm-6 col-xs-6 baseinfo");
+        patientjointdirection.innerHTML = "<b>부위 : </b>" + jointdirection;
+
+        row_div.appendChild(patient_id);
+        row_div.appendChild(patientjointdirection);
+
+        new_kinectscList.appendChild(row_div);
+
+        new_kinectscList.style.textAlign = "left";
+        document.getElementById("BeforeMeasurement").appendChild(new_kinectscList);
+      }
+    },
+    error: function(request, status, error){
+      console.log(request, status, error);
+    },
+  });
+  viewAfterMeasurementList();
+  viewMeasuring();
+}
+
+// 측정 중
+function viewMeasuring()
+{
+  $.ajax({
+    url: "http://" + ip + "/php/rom_server_php/kinectsclist.php",
+    type: 'GET',
+    dataType: 'json',
+    success: function(data){
+      $("#Measuring").empty();
+      console.log("Measuring DATA :"+data);
+
+      var patientid = data[0].patientid;
+      var name = data[0].name;
+      var jointdirection = data[0].jointdirection;
+      jointdirection = setNamingforJointdirection(jointdirection);
+      var new_kinectscList = document.createElement("div");
+      new_kinectscList.setAttribute("id",patientid);
+      new_kinectscList.style["border"] = "1px solid #ccc";
+      new_kinectscList.style["border-radius"] = "5px";
+      new_kinectscList.style["margin-top"] = "3px";
+      new_kinectscList.style["margin-bottom"] = "3px";
+      new_kinectscList.style["padding"] = "5px";
+      var row_div = document.createElement("div");
+      row_div.setAttribute("class", "row");
+
+      var patient_id = document.createElement("div");
+      patient_id.setAttribute("class", "col-md-12 col-sm-6 col-xs-6 baseinfo");
+      patient_id.innerHTML = "<b>이름 : </b>"+ name;
+
+      var patientjointdirection = document.createElement("div");
+      patientjointdirection.setAttribute("class", "col-md-12 col-sm-6 col-xs-6 baseinfo");
+      patientjointdirection.innerHTML = "<b>부위 : </b>" + jointdirection;
+
+      row_div.appendChild(patient_id);
+      row_div.appendChild(patientjointdirection);
+
+      new_kinectscList.appendChild(row_div);
+
+      new_kinectscList.style.textAlign = "left";
+      document.getElementById("Measuring").appendChild(new_kinectscList);
+    },
+    error: function(request, status, error){
+      console.log(request, status, error);
+    },
+  });
+}
+
+function checkGraph(){
+  location.href = "../rom_web/rom_chart_maximum.html";
+}
+
+// 측정 후 환자
+function viewAfterMeasurementList()
+{
+  $.ajax({
+    url: "http://" + ip + "/php/rom_server_php/kinectsc2list.php",
+    type: 'GET',
+    dataType: 'json',
+    success: function(data){
+      $("#AfterMeasurement").empty();
+      console.log("AfterMeasurement List DATA :" + data);
+      for(var i = 0; i < data.length; i++){
+        var patientid = data[i].patientid;
+        var name = data[i].name;
+        var jointdirection = data[i].jointdirection;
+        jointdirection = setNamingforJointdirection(jointdirection);
+        var new_kinectscList = document.createElement("div");
+        new_kinectscList.setAttribute("class","btn btn-default btn-group-justified");
+        new_kinectscList.setAttribute("onclick","deletePatientid(this.id)")
+        new_kinectscList.setAttribute("id",patientid+"/");
+        new_kinectscList.setAttribute("type", "button");
+        new_kinectscList.style["border"] = "1px solid #ccc";
+        new_kinectscList.style["border-radius"] = "5px";
+        new_kinectscList.style["margin-top"] = "3px";
+        new_kinectscList.style["margin-bottom"] = "3px";
+        new_kinectscList.style["padding"] = "5px";
+        var row_div = document.createElement("div");
+        row_div.setAttribute("class", "row");
+
+        var patient_id = document.createElement("div");
+        patient_id.setAttribute("class", "col-md-12 col-sm-6 col-xs-6");
+        patient_id.style.color =  "#73879C";
+        patient_id.style.fontSize = "13px";
+        patient_id.innerHTML = "<b>이름 : </b>"+ name;
+
+        var patientjointdirection = document.createElement("div");
+        patientjointdirection.setAttribute("class", "col-md-12 col-sm-6 col-xs-6");
+        patientjointdirection.style.color =  "#73879C";
+        patientjointdirection.style.fontSize = "13px";
+        patientjointdirection.innerHTML = "<b>부위 : </b>" + jointdirection;
+
+        row_div.appendChild(patient_id);
+        row_div.appendChild(patientjointdirection);
+
+        new_kinectscList.appendChild(row_div);
+
+        new_kinectscList.style.textAlign = "left";
+        document.getElementById("AfterMeasurement").appendChild(new_kinectscList);
+      }
+    },
+    error: function(request, status, error){
+      console.log(request, status, error);
+    },
+  });
+}
+
+var clickdeleteid = 0;
+function deletePatientid(deleteid){
+  document.getElementById(deleteid).style = "background-color: #e6e6e6; text-align: left;";
+  if(deleteid == clickdeleteid){
+    document.getElementById(deleteid).style = "background-color: #e6e6e6; text-align: left;";
+  }
+  else if(clickdeleteid > 0){
+    document.getElementById(deleteid).style = "background-color: #e6e6e6; text-align: left;";
+    document.getElementById(clickdeleteid).style = "background-color: white; text-align: left;";
+  }
+
+  clickdeleteid = deleteid.substr(0,deleteid.length-1);
+  console.log(clickdeleteid);
+  clickdeleteid = deleteid;
+}
+
+function deletePatientAfterMeasurement(){
+  patientid = {patientid : clickdeleteid};
+  $.ajax({
+    url: "http://" + ip +"/php/rom_server_php/kinect2delete.php",
+    type: 'POST',
+    data: patientid,
+    dataType: 'html',
+    success: function(data){
+      console.log("Success");
+    },
+    error: function(request, status, error){
+      console.log(request, status, error);
+    },
+  });
+}
+
+function getSearchName(){
+  $.ajax({
+    url: "http://" + ip + "/php/rom_server_php/patientlist.php",
+    type: 'GET',
+    dataType: 'json',
+    success: function(data){
+      $("#patientlist").empty();
+
+      console.log("getSearchName : " + data);
+      for(var i = 0; i < data.length; i++){
+        var name = data[i].name;
+        var birth = data[i].birth;
+        var number = data[i].number;
+        var patientid = data[i].patientid;
+        var sex;
+        if(data[i].sex == 1)
+          sex = "남";
+        else
+          sex = "여";
+        var sname = document.getElementById("searchName").value;
+        var namecount = name.search(sname);
+        if(namecount >= 0)
+        {
+          createButton(name,birth,number,sex, patientid);
+        }
+      }
+    },
+    error: function(request, status, error){
+      console.log(request, status, error);
+    },
+  });
+}
+
+function createButton(name, birth, number, sex, patientid)
+{
+  var new_patientinfo = document.createElement("div");
+  new_patientinfo.setAttribute("class","btn btn-default btn-group-justified");
+  new_patientinfo.setAttribute("onclick","getCheckDate(this.id)")
+  new_patientinfo.setAttribute("id",patientid);
+  new_patientinfo.setAttribute("type", "button");
+  var row_div = document.createElement("div");
+  row_div.setAttribute("class", "row");
+
+  var patientname = document.createElement("div");
+  patientname.setAttribute("class", "col-md-6 col-sm-6 col-xs-6 baseinfo");
+  patientname.innerHTML = "<b>이름 : </b>"+ name;
+
+  var patientnumber = document.createElement("div");
+  patientnumber.setAttribute("class", "col-md-6 col-sm-6 col-xs-6 baseinfo");
+  patientnumber.innerHTML = "<b>병록번호 : </b>" + number;
+
+  var row_div2 = document.createElement("div");
+  row_div2.setAttribute("class", "row");
+
+  var patientsex = document.createElement("div");
+  patientsex.setAttribute("class", "col-md-6 col-sm-6 col-xs-6 baseinfo");
+  patientsex.innerHTML = "<b>성별 : </b>"+ sex;
+
+  var patientbirth = document.createElement("div");
+  patientbirth.setAttribute("class", "col-md-6 col-sm-6 col-xs-6 baseinfo");
+  patientbirth.innerHTML = "<b>생년월일 : </b>" + birth;
+
+  row_div.appendChild(patientname);
+  row_div.appendChild(patientnumber);
+  row_div2.appendChild(patientsex);
+  row_div2.appendChild(patientbirth);
+
+  new_patientinfo.appendChild(row_div);
+  new_patientinfo.appendChild(row_div2);
+
+  new_patientinfo.style.textAlign = "left";
+
+  document.getElementById("patientlist").appendChild(new_patientinfo);
 }
 
 function setNamingforJointdirection(jointdirection) {
@@ -567,32 +607,6 @@ function setNamingforJointdirection(jointdirection) {
     default:
   }
   return jointdirection;
-}
-
-function checkGraph(){
-  location.href = "../rom_web/rom_chart_maximum.html";
-}
-
-var clickdeleteid;
-function deletePatientid(deleteid){
-  clickdeleteid = deleteid.substr(0,deleteid.length-1);
-  console.log(clickdeleteid);
-}
-
-function deletePatientAfterMeasurement(){
-  patientid = {patientid : clickdeleteid};
-  $.ajax({
-    url: 'http://127.0.0.1/php/rom_server_php/kinect2delete.php',
-    type: 'POST',
-    data: patientid,
-    dataType: 'html',
-    success: function(data){
-      console.log("Success");
-    },
-    error: function(request, status, error){
-      console.log(request, status, error);
-    },
-  });
 }
 
 function logOut(){

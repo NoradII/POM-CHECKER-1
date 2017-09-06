@@ -1,10 +1,12 @@
-let uid;
+let uid, name, ip;
 window.onload = function(){
   // Check browser support
-  if (typeof(Storage) !== "undefined") {
-      // Store
-      localStorage.setItem("uid", uid);
-      sessionStorage.setItem("uid", uid);
+  if (typeof(Storage) != "undefined") {
+    $('#registerIPModal').modal('show');
+    // Store
+    document.getElementById('inputLocalIP').value = localStorage.getItem("IP");
+    localStorage.setItem("uid", uid);
+    localStorage.setItem("name", name);
   } else {
     alert("Sorry, your browser does not support Web Storage...");
   }
@@ -70,7 +72,7 @@ function registerForAdmin(){
   var data = {name:name, userid:userid, password:password, grade:grade, email:email};
 
   $.ajax({
-    url: 'http://127.0.0.1/php/rom_server_php/register.php',
+    url: "http:/" + ip + "/php/rom_server_php/register.php",
     type: 'POST',
     data: data,
     dataType: 'html',
@@ -109,7 +111,7 @@ function loginForAdmin(){
   var data = {userid:userid, password:password};
 
   $.ajax({
-    url: 'http://127.0.0.1/php/rom_server_php/login.php',
+    url: "http://" + ip + "/php/rom_server_php/login.php",
     type: 'POST',
     data: data,
     dataType: 'html',
@@ -133,4 +135,11 @@ function loginForAdmin(){
     },
   });
 
+}
+
+function registerForIP(){
+  ip = document.getElementById('inputLocalIP').value;
+  localStorage.setItem("IP", ip);
+  var http = document.getElementById('inputLocalHttp').value;
+  $('#registerIPModal').modal('hide');
 }
