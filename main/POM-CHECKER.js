@@ -1,17 +1,17 @@
 var selectedId;
 var i = 1;
 var ip = localStorage.getItem("IP");
+var initializeId = "0/";
 
 window.onload = function(){
-
   getPatientName();
   setInterval(viewBeforeMeasurementList, 1000);
   var uid = localStorage.getItem("uid");
 
-  if(typeof uid === 'undefined' || uid === null){
-    alert("로그아웃 되었습니다. 다시 로그인 해주세요.");
+  if(uid === "undefined" || uid === null){
+    //alert("로그아웃 되었습니다. 다시 로그인 해주세요.");
     location.href = "./login.html";
-  }else if(uid != 'undefined'){
+  }else if(uid !== 'undefined'){
     document.getElementById("nav-user-name").innerHTML = localStorage.getItem("name");
   }
 };
@@ -47,14 +47,11 @@ function getPatientName(){
 
 var prevClickId = 0;
 function getCheckDate(clickId) {
-  document.getElementById(clickId).style = "background-color: #e6e6e6; text-align: left;";
-  if(clickId == prevClickId){
-    document.getElementById(clickId).style = "background-color: #e6e6e6; text-align: left;";
-  }
-  else if(prevclickid > 0){
-    document.getElementById(clickId).style = "background-color: #e6e6e6; text-align: left;";
+
+  if(prevClickId > 0){
     document.getElementById(prevClickId).style = "background-color: white; text-align: left;";
   }
+  document.getElementById(clickId).style = "background-color: #e6e6e6; text-align: left;";
 
   var data = {patientid : clickId};
   selectedId = clickId;
@@ -79,7 +76,9 @@ function getCheckDate(clickId) {
           var maxangle = data[i].maxangle;
           jointdirection = setNamingforJointdirection(jointdirection);
           var new_checkdatelist = document.createElement("div");
-          new_checkdatelist.setAttribute("id",patientid);
+          new_checkdatelist.setAttribute("class","btn btn-default btn-group-justified");
+          new_checkdatelist.setAttribute("onclick","showRestoreModel(this.id)");
+          new_checkdatelist.setAttribute("id",checkdateid);
           new_checkdatelist.style["border"] = "1px solid #ccc";
           new_checkdatelist.style["border-radius"] = "5px";
           new_checkdatelist.style["margin-top"] = "3px";
@@ -118,7 +117,11 @@ function getCheckDate(clickId) {
         console.log(request, status, error);
     },
   });
-  prevclickid = clickId;
+  prevClickId = clickId;
+}
+
+function showRestoreModel(id){
+    alert(id);
 }
 
 function registerFirstMeasurement() {
@@ -418,6 +421,11 @@ function viewAfterMeasurementList()
 
         new_kinectscList.style.textAlign = "left";
         document.getElementById("AfterMeasurement").appendChild(new_kinectscList);
+
+        if(initializeId === patientid+"/"){
+          document.getElementById(initializeId).style = "background-color: #e6e6e6; text-align: left;";
+        }
+
       }
     },
     error: function(request, status, error){
@@ -426,24 +434,23 @@ function viewAfterMeasurementList()
   });
 }
 
-var clickdeleteid = 0;
-function deletePatientid(deleteid){
-  document.getElementById(deleteid).style = "background-color: #e6e6e6; text-align: left;";
-  if(deleteid == clickdeleteid){
-    document.getElementById(deleteid).style = "background-color: #e6e6e6; text-align: left;";
+var clickDeleteId = 0;
+function deletePatientid(deleteId){
+  initializeId = deleteId;
+  if(clickDeleteId > 0){
+    document.getElementById(clickDeleteId).style = "background-color: white; text-align: left;";
   }
-  else if(clickdeleteid > 0){
-    document.getElementById(deleteid).style = "background-color: #e6e6e6; text-align: left;";
-    document.getElementById(clickdeleteid).style = "background-color: white; text-align: left;";
+  else if(deleteId != "0/"){
+    document.getElementById(deleteId).style = "background-color: #e6e6e6; text-align: left;";
   }
 
-  clickdeleteid = deleteid.substr(0,deleteid.length-1);
-  console.log(clickdeleteid);
-  clickdeleteid = deleteid;
+  clickDeleteId = deleteId.substr(0,deleteId.length-1);
+  console.log(clickDeleteId);
+  clickDeleteId = deleteId;
 }
 
 function deletePatientAfterMeasurement(){
-  patientid = {patientid : clickdeleteid};
+  patientid = {patientid : clickDeleteId};
   $.ajax({
     url: "http://" + ip +"/php/rom_server_php/kinect2delete.php",
     type: 'POST',
@@ -495,7 +502,7 @@ function createButton(name, birth, number, sex, patientid)
 {
   var new_patientinfo = document.createElement("div");
   new_patientinfo.setAttribute("class","btn btn-default btn-group-justified");
-  new_patientinfo.setAttribute("onclick","getCheckDate(this.id)")
+  new_patientinfo.setAttribute("onclick","getCheckDate(this.id)");
   new_patientinfo.setAttribute("id",patientid);
   new_patientinfo.setAttribute("type", "button");
   var row_div = document.createElement("div");
@@ -612,5 +619,6 @@ function setNamingforJointdirection(jointdirection) {
 function logOut(){
   localStorage.removeItem("name");
   localStorage.removeItem("uid");
+  alert("로그아웃 되었습니다. 다시 로그인 해주세요.");
   location.href = "./POM-CHECKER.html";
 }

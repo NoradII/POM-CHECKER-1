@@ -1,3 +1,4 @@
+"use strict";
 let uid, name, ip;
 window.onload = function(){
   // Check browser support
@@ -10,7 +11,15 @@ window.onload = function(){
   } else {
     alert("Sorry, your browser does not support Web Storage...");
   }
+
 };
+
+// made  by Sungho...
+$('#adminPassword').keyup(function(event) {
+  if(event.keyCode === 13){
+    loginForAdmin();
+  }
+});
 
 function registerForAdmin(){
   var name = document.getElementById('inputAdminName');
@@ -126,6 +135,7 @@ function loginForAdmin(){
         sessionStorage.setItem("uid", parsedData.uid);
         localStorage.setItem("uid", parsedData.uid);
         localStorage.setItem("name", parsedData.name);
+
         location.href = "./POM-CHECKER.html";
       }
 
