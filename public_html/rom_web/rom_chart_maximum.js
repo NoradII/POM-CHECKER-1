@@ -197,6 +197,7 @@ function addData(chart, label, data, data2){
   chart.data.datasets[0].data.push(data); // 환자
   chart.data.datasets[1].data.push(data2); // 정상범위
   chart.update();
+
 }
 
 function removeData(chart) {
@@ -265,6 +266,7 @@ function getPatientInfo(post_data){
       for(var i = 0; i < data.length; i++){
         document.getElementById('patient_name').innerHTML = data[i].name;
         document.getElementById('patient_number').innerHTML = "No." + data[i].number;
+         document.getElementById('patient_id').innerHTML = data[i].patientid;
         console.log("gender: "+ data[i].sex);
         if(data[i].sex === "1"){
           document.getElementById('patient_gender').innerHTML = "남자";
@@ -462,6 +464,8 @@ function setJointDirection(){
       }
       cnt++;
       data_count = data.length;
+
+      getImage();
     },
     error: function(request, status, error){
       console.log(request, status, error);
@@ -471,31 +475,123 @@ function setJointDirection(){
 }
 
 function getImage() {
-  // images
-  var image_container = document.getElementById('image_container');
-  var div_container = document.createElement("div");
-  var img_tag = document.createElement("img");
-  var div_tag = document.createElement("div");
-  var div_tag_sub = document.createElement("div");
+  //
+  var patient_id = $('#patient_id').text();
+  var patient_jointdirection = setNumberingforJointdirection($("#drop2").val());
+  console.log(patient_jointdirection);
+  var data = {patient_id : patient_id, patient_jointdirection : patient_jointdirection};
 
-  img_tag.setAttribute("class", "img-responsive col-md-12 col-sm-12 col-xs-12");
-  img_tag.setAttribute("width", "100%");
-  img_tag.setAttribute("onclick", "paintOnImage(this.id)");
-  //img_tag.setAttribute("src", "../image/" + data[i].image);
-  img_tag.setAttribute("alt", "There is no image");
-  img_tag.setAttribute("id", "img_" + (i+1));
+  $.ajax({
+    url: "http://" + ip + "/php/rom_web_php/get_image.php",
+    type: 'GET',
+    data: data,
+    dataType: 'json',
+    success: function(data) {
+    for(var i in data){
+        // images
+        var image_container = document.getElementById('image_container');
+        var div_container = document.createElement("div");
+        var img_tag = document.createElement("img");   
+     
+        img_tag.setAttribute("class", "img-responsive col-md-12 col-sm-12 col-xs-12");
+        img_tag.setAttribute("width", "100%");
+        img_tag.setAttribute("onclick", "paintOnImage(this.id)");
+        img_tag.setAttribute("src", "http://" + ip + "/image/"+patient_id+"/"+ data[i]);
+        img_tag.setAttribute("alt", "There is no image");
+        img_tag.setAttribute("id", "img_" + (i+1));
 
-  div_container.setAttribute("class", "div_container col-md-3 col-sm-4 col-xs-3");
+        div_container.setAttribute("class", "div_container col-md-3 col-sm-4 col-xs-3");
 
-  div_tag.setAttribute("class", "overlay");
-  div_tag_sub.setAttribute("class", "text");
-  div_tag_sub.innerHTML = data[i].maxangle + " °";
+        image_container.appendChild(div_container);
+        div_container.appendChild(img_tag);
 
-  image_container.appendChild(div_container);
-  div_container.appendChild(img_tag);
-  div_container.appendChild(div_tag);
-  div_tag.appendChild(div_tag_sub);
+ 
+    }
+  
+    },
+    error: function(request, status, error) {
+      console.log(request, status, error);
+    },
+  });
 }
+
+function setNumberingforJointdirection(jointdirection) {
+  switch (jointdirection) {
+    case "Left Shoulder Flexion / Extension":
+      jointdirection = '11';
+      break;
+    case "Right Shoulder Flexion / Extension":
+      jointdirection = '12';
+      break;
+    case "Left Shoulder Abduction / Adduction":
+      jointdirection = '21';
+      break;
+    case "Right Shoulder Abduction / Adduction":
+      jointdirection = '22';
+      break;
+    case "Left Shoulder Rotation":
+      jointdirection = '31';
+      break;
+    case "Right Shoulder Rotation":
+      jointdirection = '32';
+      break;
+    case "Left Elbow Flexion / Extension":
+      jointdirection = '41';
+      break;
+    case "Right Elbow Flexion / Extension":
+      jointdirection = '42';
+      break;
+    case "Right Elbow Flexion / Extension":
+      jointdirection = '51';
+      break;
+    case "Right Elbow Supination / Pronation":
+      jointdirection = '52';
+      break;
+    case "Left Knee Flexion / Extension":
+      jointdirection = '61';
+      break;
+    case "Right Knee Flexion / Extension":
+      jointdirection = '62';
+      break;
+    case "Left Hip Flexion / Extension":
+      jointdirection = '71';
+      break;
+    case "Right Hip Flexion / Extension":
+      jointdirection = '72';
+      break;
+    case "Left Hip Rotation":
+      jointdirection = '81';
+      break;
+    case "Right Hip Rotation":
+      jointdirection = '82';
+      break;
+    case "Left Neck Rotation":
+      jointdirection = '91';
+      break;
+    case "Right Neck Rotation":
+      jointdirection = '92';
+      break;
+    case "Neck Extension":
+      jointdirection = '101';
+      break;
+    case "Neck Flexion":
+      jointdirection = '102';
+      break;
+    case "Left Neck Lateral Flexion":
+      jointdirection = '111';
+      break;
+    case "Right Neck Lateral Flexion":
+      jointdirection = '112';
+      break;
+    case "Posture":
+      jointdirection = '201';
+      break;
+    default:
+  }
+  return jointdirection;
+}
+
+
 
 function getMovie(movie){
   var movie_name = movie + ".mp4";
