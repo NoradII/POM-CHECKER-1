@@ -475,6 +475,7 @@ function setJointDirection(){
 }
 
 function getImage() {
+  //
   var patient_id = $('#patient_id').text();
   var patient_jointdirection = setNumberingforJointdirection($("#drop2").val());
   console.log(patient_jointdirection);
