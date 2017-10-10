@@ -18,12 +18,13 @@ $return_arr = Array();
 if(isset($_POST['name']))
 {
 	$name = $_POST['name'];
-	$result = mysqli_query($connection,"SELECT name, sex, birth, number FROM rom_patient WHERE name = '".$name."' ORDER BY patientid");
+	$result = mysqli_query($connection,"SELECT name, sex, birth, number, patientid FROM rom_patient WHERE name = '".$name."' ORDER BY patientid");
 	while ($row = mysqli_fetch_array($result)) {
 		$row_array['name'] = $row['name'];
 		$row_array['sex'] = $row['sex'];
 		$row_array['birth'] = $row['birth'];
 		$row_array['number'] = $row['number'];
+		$row_array['patientid'] = $row['patientid'];
 		array_push($return_arr,$row_array);
 	}
 	echo json_encode($return_arr,JSON_UNESCAPED_UNICODE);
