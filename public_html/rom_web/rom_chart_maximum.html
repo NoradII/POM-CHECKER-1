@@ -1,0 +1,529 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Expires" content="Mon, 06 Jan 1990 00:00:01 GMT">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+
+    <title>Team Elysium</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" rel="stylesheet" />
+    <link href="../vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- Datatables -->
+    <link href="../vendor/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
+    <link href="../vendor/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
+    <link href="../vendor/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
+
+    <!-- html2Canvas -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
+    <script src="http://www.nihilogic.dk/labs/canvas2image/canvas2image.js"></script>
+
+    <!-- Title image -->
+
+    <!-- Custom Theme Style -->
+    <link href="./build/css/custom.min.css" rel="stylesheet">
+    <link href="./rom_chart_maximum.css" rel="stylesheet">
+  </head>
+  <script type="text/paperscript" canvas="imageCanvas">
+    var values = {
+      fixLength: false,
+      fixAngle: false,
+      showCircle: false,
+      showAngleLength: true,
+      showCoordinates: false
+    };
+
+    var vectorStart, vector, vectorPrevious;
+    var vectorItem, items, dashedItems;
+
+    function processVector(event, drag) {
+      vector = event.point - vectorStart;
+      if (vectorPrevious) {
+        if (values.fixLength && values.fixAngle) {
+          vector = vectorPrevious;
+        } else if (values.fixLength) {
+          vector.length = vectorPrevious.length;
+        } else if (values.fixAngle) {
+          vector = vector.project(vectorPrevious);
+        }
+      }
+      drawVector(drag);
+    }
+
+    function drawVector(drag) {
+      if (items) {
+        for (var i = 0, l = items.length; i < l; i++) {
+          items[i].remove();
+        }
+      }
+      if (vectorItem)
+        vectorItem.remove();
+      items = [];
+      var arrowVector = vector.normalize(10);
+      var end = vectorStart + vector;
+      vectorItem = new Group([
+        new Path([vectorStart, end]),
+        new Path([
+          end + arrowVector.rotate(135),
+          end,
+          end + arrowVector.rotate(-135)
+        ])
+      ]);
+      vectorItem.strokeWidth = 0.75;
+      vectorItem.strokeColor = '#e4141b';
+      // Display:
+      dashedItems = [];
+      // Draw Circle
+      if (values.showCircle) {
+        dashedItems.push(new Path.Circle({
+          center: vectorStart,
+          radius: vector.length
+        }));
+      }
+      // Draw Labels
+      if (values.showAngleLength) {
+        drawAngle(vectorStart, vector, !drag);
+        if (!drag)
+          drawLength(vectorStart, end, vector.angle < 0 ? -1 : 1, true);
+      }
+      var quadrant = vector.quadrant;
+      if (values.showCoordinates && !drag) {
+        drawLength(vectorStart, vectorStart + [vector.x, 0],
+            [1, 3].indexOf(quadrant) != -1 ? -1 : 1, true, vector.x, 'x: ');
+        drawLength(vectorStart, vectorStart + [0, vector.y],
+            [1, 3].indexOf(quadrant) != -1 ? 1 : -1, true, vector.y, 'y: ');
+      }
+      for (var i = 0, l = dashedItems.length; i < l; i++) {
+        var item = dashedItems[i];
+        item.strokeColor = 'black';
+        item.dashArray = [1, 2];
+        items.push(item);
+      }
+      // Update palette
+      values.x = vector.x;
+      values.y = vector.y;
+      values.length = vector.length;
+      values.angle = vector.angle;
+    }
+
+    function drawAngle(center, vector, label) {
+      var radius = 25, threshold = 10;
+      if (vector.length < radius + threshold || Math.abs(vector.angle) < 15)
+        return;
+      var from = new Point(radius, 0);
+      var through = from.rotate(vector.angle / 2);
+      var to = from.rotate(vector.angle);
+      var end = center + to;
+      dashedItems.push(new Path.Line(center,
+          center + new Point(radius + threshold, 0)));
+      dashedItems.push(new Path.Arc(center + from, center + through, end));
+      var arrowVector = to.normalize(7.5).rotate(vector.angle < 0 ? -90 : 90);
+      dashedItems.push(new Path([
+          end + arrowVector.rotate(135),
+          end,
+          end + arrowVector.rotate(-135)
+      ]));
+      if (label) {
+        // Angle Label
+        var text = new PointText(center
+            + through.normalize(radius + 10) + new Point(0, 3));
+        text.content = Math.floor(vector.angle * 100) / 100 + '°';
+        text.fillColor = 'black';
+        items.push(text);
+      }
+    }
+
+    function drawLength(from, to, sign, label, value, prefix) {
+      var lengthSize = 5;
+      if ((to - from).length < lengthSize * 4)
+        return;
+      var vector = to - from;
+      var awayVector = vector.normalize(lengthSize).rotate(90 * sign);
+      var upVector = vector.normalize(lengthSize).rotate(45 * sign);
+      var downVector = upVector.rotate(-90 * sign);
+      var lengthVector = vector.normalize(
+          vector.length / 2 - lengthSize * Math.sqrt(2));
+      var line = new Path();
+      line.add(from + awayVector);
+      line.lineBy(upVector);
+      line.lineBy(lengthVector);
+      line.lineBy(upVector);
+      var middle = line.lastSegment.point;
+      line.lineBy(downVector);
+      line.lineBy(lengthVector);
+      line.lineBy(downVector);
+      dashedItems.push(line);
+      if (label) {
+        // Length Label
+        var textAngle = Math.abs(vector.angle) > 90
+            ? textAngle = 180 + vector.angle : vector.angle;
+        // Label needs to move away by different amounts based on the
+        // vector's quadrant:
+        var away = (sign >= 0 ? [1, 4] : [2, 3]).indexOf(vector.quadrant) != -1
+            ? 8 : 0;
+        value = value || vector.length;
+        var text = new PointText({
+          point: middle + awayVector.normalize(away + lengthSize),
+          content: (prefix || '') + Math.floor(value * 1000) / 1000,
+          fillColor: 'black',
+          justification: 'center'
+        });
+        text.rotate(textAngle);
+        items.push(text);
+      }
+    }
+
+    var dashItem;
+
+    function onMouseDown(event) {
+      var end = vectorStart + vector;
+      var create = false;
+      if (event.modifiers.shift && vectorItem) {
+        vectorStart = end;
+        create = true;
+      } else if (vector && (event.modifiers.option
+          || end && end.getDistance(event.point) < 10)) {
+        create = false;
+      } else {
+        vectorStart = event.point;
+      }
+      if (create) {
+        dashItem = vectorItem;
+        vectorItem = null;
+      }
+      processVector(event, true);
+    //	document.redraw();
+    }
+
+    function onMouseDrag(event) {
+      if (!event.modifiers.shift && values.fixLength && values.fixAngle)
+        vectorStart = event.point;
+      processVector(event, event.modifiers.shift);
+    }
+
+    function onMouseUp(event) {
+      processVector(event, false);
+      if (dashItem) {
+        dashItem.dashArray = [1, 2];
+        dashItem = null;
+      }
+      vectorPrevious = vector;
+    }
+
+  </script>
+
+
+  <body class="html-body" >
+    <div class="container-fluid" style='page-break-before:always'>
+      <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12" style="margin-top: 15px;">
+            <div class="x_panel">
+              <div class="x_title">
+                <div class="row">
+                  <div class="col-md-2 col-sm-2 col-xs-2">
+                    <h2>
+                      <a><img src="../image/theme/logo.png" width="150px" alt="Team Elysium logo"/></a>
+                    </h2>
+                  </div>
+                  <div class="col-md-8 col-sm-8 col-xs-8 text-center">
+                    <h1>POM-CHECKER</h1>
+                  </div>
+                  <div class="col-md-2 col-sm-2 col-xs-2">
+                    <div class="bs-example-popovers pull-right hidden-print">
+                      <button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="left" title="뒤로가기" onclick="goMainPage()">뒤로가기</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="clearfix"></div>
+
+              </div>
+              <div class="x_content">
+                <div class="row">
+                  <div class="col-md-12 col-sm-12 col-xs-12 profile_details">
+                    <h2 class="brief" style="background-color: #2A3F54; color: #fff; padding: 10px">환자 정보</h2>
+                    <div class="well profile_view info_container" style="padding: 20px;">
+                      <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="row">
+                          <div class="col-md-4 col-sm-4 col-xs-5">
+                            <div class="row">
+                              <div class="col-md-6 col-sm-6 col-xs-6" style="border-right: 2px solid #73879c">
+                                <p><strong>이름 : </strong><strong id="patient_name"> -- </strong></p>
+                                <p><strong>병록번호 : </strong><strong  id="patient_number">No. </strong></p>
+                              </div>
+                              <div class="col-md-6 col-sm-6 col-xs-6" style="border-right: 2px solid #73879c">
+                                <p><strong>성별 : </strong> <strong id="patient_gender"> -- </strong> </p>
+                                <p><strong>생년월일 : </strong> <strong id="patient_birth"> -- </strong>  </p>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="col-md-6 col-sm-6 col-xs-7" id="select_container">
+                            <p style="font-size: 12px"><strong>환자와 측정 부위를 선택해주세요.</strong></p>
+                            <ul class="nav nav-pills" role="tablist">
+                              <li role="presentation" class="dropdown" id="drop1-wrapper">
+                                <select id="drop1" href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="true" onchange="getPatientName()">
+                                  <option id="patientid" value='' selected> -- Patient -- </option>
+                                </select>
+                              </li>
+
+                              <li role="presentation" class="dropdown" id="drop2-wrapper">
+                                <select id="drop2" href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="true" onchange="setJointDirection()">
+                                  <option id="jointdirection" value='' selected> -- Joint Direction -- </option>
+                                </select>
+                              </li>
+                            </ul>
+                          </div>
+                          <div class="col-md-2 col-sm-2 col-xs-2 hidden-print" id="print_container">
+                            <div class="bs-example-popovers center">
+                              <!--<button type="button" class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Take ScreenShot!" onclick="takeScreenShot()">Capture</button>
+                              -->
+                              <button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Go printing!" onclick="romPrint()">Print</button>
+
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container-fluid">
+        <div class="row">
+          <!-- Chart.js -->
+          <div class="col-md-6 col-sm-12 col-xs-12" id="rom-data-chart">
+            <div class="x_panel" id="rom-data-chart-panel" style="">
+              <div class="x_title" style="background-color: #2A3F54; color: #fff; padding-top: 5px">
+                <h2 class="brief"> 측정 결과 그래프 </h2>
+                <div class="clearfix"></div>
+              </div>
+              <div class="x_content">
+                <canvas id="myChart" height="180px"></canvas>
+                <canvas id="myChart2" style="display: none" height="180px"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- DataTable -->
+          <div class="col-md-6 col-sm-12 col-xs-12" id="rom-data-table">
+            <div class="x_panel" id="rom-data-table-panel">
+              <div class="x_title" style="background-color: #2A3F54; color: #fff; padding-top: 5px">
+                <h2 class="brief"> 측정 결과 테이블 </h2>
+                <div class="clearfix"></div>
+              </div>
+              <div class="x_content">
+                <table id="rom-datatable" class="table table-striped table-bordered">
+                  <thead>
+                    <tr>
+                      <th id="rom-table-thead-date">Date</th>
+                      <th id="rom-table-thead-angle">Max Angle</th>
+                      <th id="rom-table-thead-variation">Variation</th>
+                      <th id="rom-table-thead-number">Pain</th>
+                    </tr>
+                  </thead>
+
+                  <tbody id="table_tbody">
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="container-fluid" style='page-break-before:always; margin-top: 10px' id="image-box">
+        <div class="row">
+          <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+
+              <div class="x_title" style="background-color: #2A3F54; color: #fff; padding-top: 5px">
+                <h2> 측정 이미지 </h2>
+
+                <div class="clearfix"></div>
+              </div>
+
+              <div class="x_content">
+                <div class="row col-md-12 col-sm-12 col-xs-12" id="image_container">
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container-fluid hidden-print" style='page-break-before:always'>
+        <div class="row">
+          <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+
+              <div class="x_title" style="background-color: #2A3F54; color: #fff; padding-top: 5px">
+                <h2 class="title_toggle" data-toggle="collapse" href="#collapseMovie" aria-expanded="true" aria-controls="collapseMovie">
+                  측정 영상
+                </h2>
+                <div class="clearfix"></div>
+              </div>
+
+              <div class="container collapse" id="collapseMovie">
+                 <div class="row">
+                    <div class="col-md-7">
+                      <div id="video_container">
+                       <video id="video_tag" width="100%" controls>
+                         <source id="source_tag" type="video/mp4" src=""/>
+                       </video>
+                     </div>
+                    </div>
+
+                   <div class="col-md-5">
+                     <div style="vertical-align: middle;">
+                       <p style="font-size: 15px;vertical-align: middle;"><strong>원하는 영상을 선택해주세요.</strong></p>
+                       <ul class="nav nav-pills" role="tablist">
+                         <li role="presentation" class="dropdown">
+                           <select id="drop3" href="#" class="selectpicker dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="true" onchange="selectMovie()">
+                             <option id="movie" value='' selected> -- Measurement Movie -- </option>
+                           </select>
+                         </li>
+                       </ul>
+                     </div>
+                   </div>
+                 </div>
+               </div>
+             </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container-fluid" id="screenshot-box" style='page-break-before:always'>
+        <div class="row">
+          <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+              <div class="x_title" style="background-color: #2A3F54; color: #fff; padding-top: 5px">
+                <h2 class="title_toggle" data-toggle="collapse" href="#collapseScreenshot" aria-expanded="false" aria-controls="collapseScreenshot">
+                  스크린샷
+                </h2>
+                <div class="clearfix"></div>
+              </div>
+
+              <div class="x_content collapse" id="collapseScreenshot">
+                <div class="row col-md-12 col-sm-12 col-xs-12" id="screenshot_container">
+                
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- page content -->
+      <div class="modal fade" id="paintingModal" role="dialog">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">선택한 이미지</h4>
+            </div>
+            <div class="modal-body">
+              <div class="gui toolbar">
+                <div class="tools">
+                    <a class="bu tton canvas-clear icon-trash" title="Clear Canvas"></a>
+                </div>
+                <div class="clear"></div>
+                <div class="palettejs-root"></div>
+                <div class="clear"></div>
+                <div class="info hidden"></div>
+              </div>
+              <div class="form-group" id="form-group-image">
+                <canvas id="imageCanvas" width="852" height="540" style="-webkit-user-drag: none; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); background: #ccc"></canvas>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" onclick="savePaintedImage()">저장</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- page content -->
+      <div class="modal fade" id="NRSModal" role="dialog">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">NRS 통증척도</h4>
+            </div>
+            <div class="modal-body">
+              <div id="slidecontainer">
+                <input type="range" min="1" max="10" value="5" class="slider" id="myRange" />
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" onclick="saveNRS()">저장</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+
+      <!-- footer content -->
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="pull-right">
+              COPYRIGHT © <a href="http://www.teamelysium.kr"><b>Team Elysium Inc.</b></a> ALL RIGHTS RESERVED
+            </div>
+            <div class="clearfix"></div>
+          </div>
+        </div>
+      </div>
+      <!-- /footer content -->
+
+      <div id="savePart"></div>
+
+      <!-- jQuery -->
+
+      <script src="../vendor/jquery/dist/jquery.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
+      <!-- Bootstrap -->
+      <script src="../vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+      <!-- Chart.js -->
+      <script src="../vendor/Chart.js/dist/Chart.min.js"></script>
+      <script src="./rom_chart_maximum.js"></script>
+      <!-- Paper.js -->
+      <script src="../node_modules/paper/dist/paper-full.js"></script>
+      <!-- Datatables -->
+      <script src="../vendor/datatables.net/js/jquery.dataTables.min.js"></script>
+      <script src="../vendor/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+      <script src="../vendor/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+      <script src="../vendor/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+      <script src="../vendor/datatables.net-buttons/js/buttons.flash.min.js"></script>
+      <script src="../vendor/datatables.net-buttons/js/buttons.html5.min.js"></script>
+      <script src="../vendor/datatables.net-buttons/js/buttons.print.min.js"></script>
+      <script src="../vendor/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+      <script src="../vendor/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+
+      <!-- Custom Theme Scripts -->
+      <script src="./build/js/custom.min.js"></script>
+
+  </body>
+</html>
