@@ -13,11 +13,13 @@ include '../include/Config.php';
 
 $patient_id = $_GET['patient_id'];
 $patient_jointdirection = $_GET['patient_jointdirection'];
+$type = $_GET['type'];
 
 if(isset($_GET['patient_id']) && isset($_GET['patient_jointdirection'])){
-//$patient_id = substr($patient_id, 0 , 7);
+$patient_id = substr($patient_id, 0 , 7);
 // 폴더명 지정
-$dir = 'C:\AutoSet9\public_html\image\\'.$patient_id;
+
+$dir = 'C:\AutoSet9\public_html\\'.$type.'\\'.$patient_id;
  
 // 핸들 획득
 $handle  = opendir($dir);

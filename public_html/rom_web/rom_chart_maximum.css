@@ -73,7 +73,7 @@ img {
 }
 
 #screenshot_container{
-  border: 1.5px solid #3292A2;
+  /*border: 1.5px solid #3292A2;*/
   width: 100%;
   height: 100%;
   margin-left: 5px;
@@ -154,4 +154,24 @@ img {
 
 .title_toggle {
   cursor: pointer;
+}
+
+/*video play button*/
+.video_flex{
+  display: flex;
+   align-items: center;
+}
+
+.video_select_container{
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-top:1%;
+}
+
+.video_list{
+  cursor: pointer;
+}
+
+#video_select{
+  overflow-y: scroll;
 }

@@ -383,25 +383,21 @@
               </div>
 
               <div class="container collapse" id="collapseMovie">
-                 <div class="row">
-                    <div class="col-md-7">
+                 <div class="row video_flex">
+                    <div class="col-md-7 ">
                       <div id="video_container">
                        <video id="video_tag" width="100%" controls>
                          <source id="source_tag" type="video/mp4" src=""/>
                        </video>
+
                      </div>
                     </div>
 
-                   <div class="col-md-5">
+                   <div class="col-md-5 video_select_container">
                      <div style="vertical-align: middle;">
-                       <p style="font-size: 15px;vertical-align: middle;"><strong>원하는 영상을 선택해주세요.</strong></p>
-                       <ul class="nav nav-pills" role="tablist">
-                         <li role="presentation" class="dropdown">
-                           <select id="drop3" href="#" class="selectpicker dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="true" onchange="selectMovie()">
-                             <option id="movie" value='' selected> -- Measurement Movie -- </option>
-                           </select>
-                         </li>
+                       <ul class="list-group" id="video_select">
                        </ul>
+
                      </div>
                    </div>
                  </div>
