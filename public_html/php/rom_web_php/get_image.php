@@ -16,10 +16,9 @@ $patient_jointdirection = $_GET['patient_jointdirection'];
 $type = $_GET['type'];
 
 if(isset($_GET['patient_id']) && isset($_GET['patient_jointdirection'])){
-$patient_id = substr($patient_id, 0 , 7);
 // 폴더명 지정
 
-$dir = 'C:\AutoSet9\public_html\\'.$type.'\\'.$patient_id;
+$dir = 'C:\AutoSet9\public_html\\'.$type;
  
 // 핸들 획득
 $handle  = opendir($dir);
@@ -34,12 +33,12 @@ while (false !== ($filename = readdir($handle))) {
  
     // 파일인 경우만 목록에 추가한다.
     if(is_file($dir . "/" . $filename)){
-    	$filenames = explode ("_", $filename);
-    	$jointdirection = $filenames[1];
-
-    	if($jointdirection == $patient_jointdirection){
-    		$files[] = $filename;
-    	}        
+        $filenames = explode ("_", $filename);
+        $jointdirection = $filenames[1];
+        $patientid = $filenames[0];
+        if($jointdirection == $patient_jointdirection && $patient_id == $patientid){
+            $files[] = $filename;
+        }        
     }
 }
  
