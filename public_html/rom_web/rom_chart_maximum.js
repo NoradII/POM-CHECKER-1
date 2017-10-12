@@ -434,7 +434,7 @@ function setJointDirection(){
         }
 
 
-        //--nrs range-- 
+        //--nrs range--
         var sheet = document.createElement('style'),
             $rangeInput = $('.range input'),
             prefs = ['webkit-slider-runnable-track', 'moz-range-track', 'ms-track'];
@@ -538,8 +538,8 @@ function getImage() {
         // images
         var image_container = document.getElementById('image_container');
         var div_container = document.createElement("div");
-        var img_tag = document.createElement("img");   
-     
+        var img_tag = document.createElement("img");
+
         img_tag.setAttribute("class", "img-responsive col-md-12 col-sm-12 col-xs-12");
         img_tag.setAttribute("width", "100%");
         img_tag.setAttribute("onclick", "paintOnImage(this.id)");
@@ -550,9 +550,9 @@ function getImage() {
         div_container.setAttribute("class", "div_container col-md-3 col-sm-4 col-xs-3");
 
         image_container.appendChild(div_container);
-        div_container.appendChild(img_tag); 
+        div_container.appendChild(img_tag);
     }
-  
+
     },
     error: function(request, status, error) {
       console.log(request, status, error);
@@ -577,8 +577,8 @@ function getScreenshot(){
         // images
         var screenshot_container = document.getElementById('screenshot_container');
         var div_container = document.createElement("div");
-        var img_tag = document.createElement("img");   
-     
+        var img_tag = document.createElement("img");
+
         img_tag.setAttribute("class", "img-responsive col-md-12 col-sm-12 col-xs-12");
         img_tag.setAttribute("width", "100%");
         img_tag.setAttribute("onclick", "paintOnImage(this.id)");
@@ -589,9 +589,9 @@ function getScreenshot(){
         div_container.setAttribute("class", "div_container col-md-3 col-sm-4 col-xs-3");
 
         screenshot_container.appendChild(div_container);
-        div_container.appendChild(img_tag); 
+        div_container.appendChild(img_tag);
     }
-  
+
     },
     error: function(request, status, error) {
       console.log(request, status, error);
