@@ -15,38 +15,36 @@ $patient_id = $_GET['patient_id'];
 $patient_jointdirection = $_GET['patient_jointdirection'];
 $type = $_GET['type'];
 
-if(isset($_GET['patient_id']) && isset($_GET['patient_jointdirection'])){
-$patient_id = substr($patient_id, 0 , 7);
-// 폴더명 지정
+if(isset($_GET['patient_id']) && isset($_GET['patient_jointdirection'])) {
 
-$dir = 'C:\AutoSet9\public_html\\'.$type.'\\'.$patient_id;
- 
-// 핸들 획득
-$handle  = opendir($dir);
- 
-$files = array();
- 
-// 디렉터리에 포함된 파일을 저장한다.
-while (false !== ($filename = readdir($handle))) {
-    if($filename == "." || $filename == ".."){
-        continue;
-    }
- 
-    // 파일인 경우만 목록에 추가한다.
-    if(is_file($dir . "/" . $filename)){
-    	$filenames = explode ("_", $filename);
-    	$jointdirection = $filenames[1];
+  // 폴더명 지정
+  $dir = 'C:\AutoSet9\public_html\\'.$type;
 
-    	if($jointdirection == $patient_jointdirection){
-    		$files[] = $filename;
-    	}        
-    }
-}
- 
-// 핸들 해제 
-closedir($handle);
-echo json_encode($files,JSON_UNESCAPED_UNICODE);
+  // 핸들 획득
+  $handle  = opendir($dir);
 
+  $files = array();
+
+  // 디렉터리에 포함된 파일을 저장한다.
+  while (false !== ($filename = readdir($handle))) {
+      if($filename == "." || $filename == ".."){
+          continue;
+      }
+
+      // 파일인 경우만 목록에 추가한다.
+      if(is_file($dir . "/" . $filename)){
+          $filenames = explode ("_", $filename);
+          $jointdirection = $filenames[1];
+          $patientid = $filenames[0];
+          if($jointdirection == $patient_jointdirection && $patient_id == $patientid){
+              $files[] = $filename;
+          }
+      }
+  }
+
+  // 핸들 해제
+  closedir($handle);
+  echo json_encode($files,JSON_UNESCAPED_UNICODE);
 }
 
 ?>
