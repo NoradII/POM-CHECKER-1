@@ -19,7 +19,9 @@ if(isset($_POST['name']) && isset($_POST['jointdirection']))
 
 	$return_arr = Array();
 
-	$result = mysqli_query($connection, "SELECT rom_checkdate.datetime, rom_checkdate.maxangle, rom_checkdate.sh_angle, rom_checkdate.hh_angle, rom_checkdate.checkdateid, rom_checkdate.nrs FROM rom_checkdate , (SELECT rom_checkdate.datetime, rom_checkdate.maxangle FROM rom_checkdate, rom_patient WHERE rom_patient.name = '".$name."' AND rom_patient.patientid = rom_checkdate.patientid AND jointdirection = '".$jointdirection."' ORDER BY rom_checkdate.datetime DESC) as A WHERE A.datetime = rom_checkdate.datetime ORDER BY rom_checkdate.datetime");
+	$result = mysqli_query($connection, "SELECT rom_checkdate.datetime, rom_checkdate.maxangle, rom_checkdate.sh_angle, rom_checkdate.hh_angle, rom_checkdate.checkdateid, rom_checkdate.nrs
+		FROM rom_checkdate , (SELECT rom_checkdate.datetime, rom_checkdate.maxangle FROM rom_checkdate, rom_patient WHERE rom_patient.name = '".$name."' AND rom_patient.patientid = rom_checkdate.patientid AND jointdirection = '".$jointdirection."' ORDER BY rom_checkdate.datetime DESC)
+		 as A WHERE A.datetime = rom_checkdate.datetime ORDER BY rom_checkdate.datetime");
 
 	while ($row = mysqli_fetch_array($result)) {
 		$row_array['datetime'] = $row['datetime'];

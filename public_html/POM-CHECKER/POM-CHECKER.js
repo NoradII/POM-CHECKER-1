@@ -1,5 +1,6 @@
 "use strict";
 var selectedId;
+// TODO : 어디서 쓰이는지 확인지 안됨. 확인 필요.
 //var i = 1;
 var ip;
 var setViewList;
@@ -63,13 +64,13 @@ function getPatientName(){
       success: function(data){
         $("#patientlist").empty();
 
-        // TODO: 마지막 업데이트 기준으로 sort하기 -> 원래 있던 환자가 또 진단을 할 시 적용여부(검색으로 가능해보임)
+        // TODO: 마지막 업데이트 기준으로 sort하기 -> 원래 있던 환자가 또 진단을 할 시 필요, 적용여부 확인(검색으로 가능해보임)
+        //
         data.sort(function(a, b) {
             return parseFloat(b.patientid) - parseFloat(a.patientid);
         });
 
         for(var i = 0; i < data.length; i++){
-          //console.log("PatientName : "+data[i].name);
           var name = data[i].name;
           var birth = data[i].birth;
           var number = data[i].number;

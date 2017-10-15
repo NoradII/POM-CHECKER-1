@@ -10,20 +10,19 @@ jQuery(document).bind("keyup keydown", function(e) {
 });
 
 window.onload = function() {
-    var patient_list = [];
+    var patientList = [];
     $.ajax({
         url: 'http://' + ip + '/php/rom_web_php/get_patient_name.php',
         type: 'GET',
         dataType: 'json',
         success: function(data) {
-            console.log(data);
             for (var i = 0; i < data.length; i++) {
-                var patient_name = data[i].name;
-                patient_list.push(patient_name);
+                var patientName = data[i].name;
+                patientList.push(patientName);
             }
 
             $("#drop1").select2({
-                data: patient_list
+                data: patientList
             });
             $('#drop1-wrapper > span').css("width", "111px");
             $('#drop1-wrapper > span').css("text-align", "center");
@@ -49,10 +48,7 @@ window.onload = function() {
         dom: 'rt<"bottom"ip><"clear">',
 
     });
-
-    //table.clear().draw();
     getPatientName();
-
 };
 
 var data_count = 0;
@@ -197,7 +193,6 @@ function addData(chart, label, data, data2) {
     chart.data.datasets[0].data.push(data); // 환자
     chart.data.datasets[1].data.push(data2); // 정상범위
     chart.update();
-
 }
 
 function removeData(chart) {
@@ -262,7 +257,6 @@ function getPatientInfo(post_data) {
         data: post_data,
         dataType: 'json',
         success: function(data) {
-            console.log("asdasd: " + data);
             for (var i = 0; i < data.length; i++) {
                 document.getElementById('patient_name').innerHTML = data[i].name;
                 document.getElementById('patient_number').innerHTML = "No." + data[i].number;
@@ -318,9 +312,7 @@ function setJointDirection() {
         success: function(data) {
             //console.log(data);
             for (var i = 0; i < data.length; i++) {
-
                 var jointdirection = selected_jointdirection;
-
                 switch (jointdirection) {
                     case "11":
                         data2.push("170");
@@ -397,7 +389,7 @@ function setJointDirection() {
                 var rate = 0;
                 var angle = 0;
 
-                if (i == 0) {
+                if (i === 0) {
                     rate = 0;
                 }
 
@@ -428,7 +420,7 @@ function setJointDirection() {
                 }
 
                 var nrs = "<button class='btn-primary' style='font-size: 10px; border-radius: 3px' onclick='setNRS(this)' data-status='create' data-toggle='modal' data-target='#NRSModal' data-id='"+data[i].checkdateid+"'> 평가하기 </button>";
-                if(data[i].nrs !== null){
+                if(data[i].nrs !== 0){
                   nrs = "<span onclick='setNRS(this)' data-status='modify' data-toggle='modal' data-target='#NRSModal' data-id='"+data[i].checkdateid+"'>"+data[i].nrs+"</span>";
                 }
 
@@ -713,8 +705,6 @@ function setNRS(target){
        모달 마다 달라지게
        기존 값 지워지게
        새로고침
-
-<<<<<<< HEAD
     */
   }
 }
