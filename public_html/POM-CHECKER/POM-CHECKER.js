@@ -1,6 +1,6 @@
 "use strict";
 var selectedId;
-var i = 1;
+//var i = 1;
 var ip;
 var setViewList;
 
@@ -63,6 +63,11 @@ function getPatientName(){
       success: function(data){
         $("#patientlist").empty();
 
+        // TODO: 마지막 업데이트 기준으로 sort하기 -> 원래 있던 환자가 또 진단을 할 시 적용여부(검색으로 가능해보임)
+        data.sort(function(a, b) {
+            return parseFloat(b.patientid) - parseFloat(a.patientid);
+        });
+
         for(var i = 0; i < data.length; i++){
           //console.log("PatientName : "+data[i].name);
           var name = data[i].name;
@@ -83,13 +88,14 @@ function getPatientName(){
     });
 }
 
-var prevClickId = "";
+var prevClickId;
 function getCheckDate(clickId) {
+  // 처음에 클릭한 사람 style 변환
+  document.getElementById(clickId).style = "background-color: #e6e6e6; text-align: left;";
 
-  if(prevClickId !== clickId){
+  if(prevClickId !== clickId && prevClickId !== undefined){
     document.getElementById(prevClickId).style = "background-color: white; text-align: left;";
   }
-  document.getElementById(clickId).style = "background-color: #e6e6e6; text-align: left;";
 
   var data = {patientid : clickId};
   selectedId = clickId;
@@ -101,7 +107,7 @@ function getCheckDate(clickId) {
       success: function(data){
 
         data.sort(function(a, b) {
-            return parseFloat(a.lastupdate) - parseFloat(b.lastupdate);
+            return parseFloat(b.datatime) - parseFloat(a.datatime);
         });
 
         $("#cdatelist").empty();
@@ -155,6 +161,7 @@ function getCheckDate(clickId) {
     },
   });
   prevClickId = clickId;
+  console.log("prevClickId" + prevClickId);
 }
 
 function registerFirstMeasurement() {
@@ -242,31 +249,34 @@ var left = document.getElementById('test3');
 var right = document.getElementById('test4');
 
 function registerMeasurement(){
-  var name = $("#"+selectedId+" > div:first-child > div:first-child").text();
-  var patient_number = $("#"+selectedId+" > div:first-child > div:eq(1)").text();
-  name = name.substr(5,name.length);
-  patient_number = patient_number.substr(7,patient_number.length);
-  var select_jointdirection = document.getElementById('drop1');
-  var selected_jointdirection = select_jointdirection.options[select_jointdirection.selectedIndex].value;
-  console.log("selected_jointdirection : " + selected_jointdirection);
+  var name = $("#"+selectedId+" > div:first-child > div:eq(0)").text();
+  var patientNumber = $("#"+selectedId+" > div:first-child > div:eq(1)").text();
+  name = name.substr(5, name.length);
+  patientNumber = patientNumber.substr(7, patientNumber.length);
+  console.log("name : " + name);
+  console.log("patientNumber : " + patientNumber);
+  var selectJointdirection = document.getElementById('drop1');
+  var selectedJointdirection = selectJointdirection.options[selectJointdirection.selectedIndex].value;
 
   if(name.length === 0){
     document.getElementById("Modaltitle").innerHTML = "등록 실패";
     document.getElementById("ModalPatientName").innerHTML = "환자를 선택해주세요";
     document.getElementById("ModalFooter").innerHTML = "확인";
+    name = "";
+    patientNumber = "";
     $('#modal-body').hide();
   }
   else {
     document.getElementById("Modaltitle").innerHTML = "검진 등록";
-    document.getElementById("ModalPatientName").innerHTML = "<b>이름 : </b>" + name + " / <b>병록번호 : </b>" + patient_number;
+    document.getElementById("ModalPatientName").innerHTML = "<b>이름 : </b>" + name + " / <b>병록번호 : </b>" + patientNumber;
     document.getElementById("ModalPatientName").setAttribute('style', 'color: #73879C; font-size: 15px; margin-top: 10px');
     document.getElementById("ModalFooter").innerHTML = "검진 시작하기";
     $('#modal-body').show();
 
-    if (selected_jointdirection === "201") { // Posture인 경우
+    if (selectedJointdirection === "201") { // Posture인 경우
       document.getElementById('modal-direction').style.visibility = 'hidden';
     }
-    else if(selected_jointdirection === "100"){
+    else if(selectedJointdirection === "100"){
       $("label[for*='test3']").html("Up(Extension)");
       $("label[for*='test4']").html("Down(Flexion)");
     }
@@ -414,7 +424,7 @@ function viewMeasuring()
     dataType: 'json',
     success: function(data){
       $("#Measuring").empty();
-      console.log("Measuring DATA :"+data);
+      console.log("viewMeasuring List DATA :" + data);
 
       var patientid = data[0].patientid;
       var name = data[0].name;

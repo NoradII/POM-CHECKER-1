@@ -401,6 +401,8 @@ function setJointDirection() {
                     rate = 0;
                 }
 
+                console.log("LENGTH : " + data.length);
+
                 if (jointdirection === "Posture") {
                     document.getElementById('rom-table-thead-angle').innerHTML = "Shoudler, Pelvic balance";
                     data[i].sh_angle *= 1;
@@ -417,22 +419,22 @@ function setJointDirection() {
                 } else {
                     document.getElementById('image-box').style.display = 'block';
                     document.getElementById('rom-table-thead-angle').innerHTML = "Max Angle";
-                    data[(data.length-1) - i].maxangle *= 1;
-                    angle = data[(data.length-1) - i].maxangle.toFixed(2) + " °";
+                    data[i].maxangle *= 1;
+                    angle = data[i].maxangle.toFixed(2) + " °";
                     if (i >= 1) {
-                        data[(data.length-1) - i - 1].maxangle *= 1;
-                        rate = Math.floor(data[data.length-1) - i].maxangle.toFixed(2) - data[data.length-1) - i - 1].maxangle.toFixed(2));
+                        data[i - 1].maxangle *= 1;
+                        rate = Math.floor(data[i].maxangle.toFixed(2) - data[i - 1].maxangle.toFixed(2));
                     }
                 }
 
                 var nrs = "<button class='btn-primary' style='font-size: 10px; border-radius: 3px' onclick='setNRS(this)' data-status='create' data-toggle='modal' data-target='#NRSModal' data-id='"+data[i].checkdateid+"'> 평가하기 </button>";
-                if(data[i].nrs !=== null){
+                if(data[i].nrs !== null){
                   nrs = "<span onclick='setNRS(this)' data-status='modify' data-toggle='modal' data-target='#NRSModal' data-id='"+data[i].checkdateid+"'>"+data[i].nrs+"</span>";
                 }
 
 
                 table.row.add([
-                    info + data[(data.length-1) - i].datetime,
+                    info + data[i].datetime,
                     info + angle,
                     info + rate + " °",
                     info + nrs,
