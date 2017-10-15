@@ -424,12 +424,19 @@ function setJointDirection() {
                         rate = Math.floor(data[i].maxangle.toFixed(2) - data[i - 1].maxangle.toFixed(2));
                     }
                 }
-                var selectTag = "<button class='btn-primary'; style='font-size: 10px; border-radius: 3px' onclick='setNRS()'> 평가하기 </button>";
+
+
+                var nrs = "<button class='btn-primary' style='font-size: 10px; border-radius: 3px' onclick='setNRS(this)' data-status='create' data-toggle='modal' data-target='#NRSModal' data-id='"+data[i].checkdateid+"'> 평가하기 </button>";
+                if(data[i].nrs!==null){
+                  nrs = "<span onclick='setNRS(this)' data-status='modify' data-toggle='modal' data-target='#NRSModal' data-id='"+data[i].checkdateid+"'>"+data[i].nrs+"</span>";
+                }
+
+
                 table.row.add([
                     info + data[i].datetime,
                     info + angle,
                     info + rate + " °",
-                    info + selectTag,
+                    info + nrs,
                 ]).draw(false);
             }
 
@@ -443,10 +450,9 @@ function setJointDirection() {
 
             var getTrackStyle = function(el) {
                 var curVal = el.value,
-                    val = (curVal - 1) * 17,
+                    val = (curVal - 1) * 10,
                     style = '';
 
-                console.log(curVal + "," + val);
                 // Set active label
                 $('.range-labels li').removeClass('active selected');
 
@@ -471,7 +477,6 @@ function setJointDirection() {
             // Change input value on label click
             $('.range-labels li').on('click', function() {
                 var index = $(this).index();
-                console.log(index);
                 $rangeInput.val(index + 1).trigger('input');
 
             });
@@ -522,9 +527,10 @@ function setJointDirection() {
 }
 
 function getImage() {
-    var patient_id = $('#patient_id').text();
+    var str = $('#patient_id').text();
+    var patient_id = str.substring(0, 7);
     var patient_jointdirection = setNumberingforJointdirection($("#drop2").val());
-    var type = 'image';
+    var type = 'patientimage';
 
     var data = {
         patient_id: patient_id,
@@ -547,7 +553,7 @@ function getImage() {
                 img_tag.setAttribute("class", "img-responsive col-md-12 col-sm-12 col-xs-12");
                 img_tag.setAttribute("width", "100%");
                 img_tag.setAttribute("onclick", "paintOnImage(this.id)");
-                img_tag.setAttribute("src", "http://" + ip + "/image/" + patient_id + "/" + data[i]);
+                img_tag.setAttribute("src", "http://" + ip + "/patientimage/" + data[i]);
                 img_tag.setAttribute("alt", "There is no image");
                 img_tag.setAttribute("id", "img_" + (i + 1));
 
@@ -565,7 +571,8 @@ function getImage() {
 }
 
 function getScreenshot() {
-    var patient_id = $('#patient_id').text();
+    var str = $('#patient_id').text();
+    var patient_id = str.substring(0, 7);
     var patient_jointdirection = setNumberingforJointdirection($("#drop2").val());
     var type = 'screenshot';
 
@@ -590,7 +597,7 @@ function getScreenshot() {
                 img_tag.setAttribute("class", "img-responsive col-md-12 col-sm-12 col-xs-12");
                 img_tag.setAttribute("width", "100%");
                 img_tag.setAttribute("onclick", "paintOnImage(this.id)");
-                img_tag.setAttribute("src", "http://" + ip + "/screenshot/" + patient_id + "/" + data[i]);
+                img_tag.setAttribute("src", "http://" + ip + "/screenshot/" + data[i]);
                 img_tag.setAttribute("alt", "There is no image");
                 img_tag.setAttribute("id", "img_" + (i + 1));
 
@@ -612,7 +619,8 @@ function getScreenshot() {
 function getMovie() {
     var video_height = $('#collapseMovie').height();
     $('#video_select').css("max-height", video_height);
-    var patient_id = $('#patient_id').text();
+    var str = $('#patient_id').text();
+    var patient_id = str.substring(0, 7);
     var patient_jointdirection = setNumberingforJointdirection($("#drop2").val());
     var type = 'movie';
 
@@ -683,7 +691,7 @@ function selectMovie(filename, patient_id) {
     var source_tag = document.createElement('source');
     source_tag.setAttribute("id", "source_tag");
     source_tag.setAttribute("type", "video/mp4");
-    source_tag.setAttribute("src", "http://" + ip + "/movie/" + patient_id + "/" + filename);
+    source_tag.setAttribute("src", "http://" + ip + "/movie/" + filename);
 
     video_tag.appendChild(source_tag);
     video_container.appendChild(video_tag);
@@ -691,35 +699,70 @@ function selectMovie(filename, patient_id) {
     $('#video_tag').get(0).play()
 }
 
-function setNRS() {
-    $('#NRSModal').modal('show');
+var checkdateid;
+
+function setNRS(target){
+  checkdateid = target.getAttribute('data-id');
+  var status = target.getAttribute('data-status');
+  if(status == 'modify'){
+    var index = target.innerHTML;
+    /* TODO1012
+      입력된 값을 수정하려 할 때
+       기존 NRS 값이 range에 표시되게 하기
+       모달 마다 달라지게
+       기존 값 지워지게
+       새로고침
+
+    */
+  }
 }
+
 
 function saveNRS() {
+  var nrs = $('.range-labels .selected').last().text();
+  console.log(nrs+","+checkdateid);
+  var data = {nrs : nrs, checkdateid : checkdateid};
+
+   $.ajax({
+        url: "http://" + ip + "/php/rom_web_php/post_nrs_data.php",
+        type: 'POST',
+        data: data,
+        dataType: 'json',
+        success: function(data) {
+
+        },
+        error: function(request, status, error) {
+            console.log(request, status, error);
+        },
+    });
     $('#NRSModal').modal('hide');
+
+
 }
 
 // block this func on protoype 1.0
-//function paintOnImage(selectedImageId) {}
+function paintOnImage(selectedImageId) {
+
+}
 
 // block this func on protoype 1.0
-//function savePaintedImage() {}
+function savePaintedImage() {}
 
-// TODO : set this func on prototype 1.1
+/* TODO : set this func on prototype 1.1
 function paintOnImage(selectedImageId){
   var selectedImageSrc = document.getElementById(selectedImageId).src;
   var canvas = document.getElementById('imageCanvas');
 
-	paper.setup(canvas);
+  paper.setup(canvas);
   paper.install(window);
 
   var raster = new Raster(selectedImageSrc);
   raster.position = view.center;
 
   $('#paintingModal').modal('show');
-}
+} */
 
-// TODO : set this func on prototype 1.1
+/* TODO : set this func on prototype 1.1
 function savePaintedImage(){
   var canvas = document.getElementById('imageCanvas');
 
@@ -735,7 +778,7 @@ function savePaintedImage(){
     }
   });
 
-}
+}*/
 
 
 
