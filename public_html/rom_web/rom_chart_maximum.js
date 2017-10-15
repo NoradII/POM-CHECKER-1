@@ -425,11 +425,6 @@ function setJointDirection() {
                     }
                 }
 
-<<<<<<< HEAD
-
-=======
-                
->>>>>>> e6dd5ff6b237744369d90e07f867600a8f9afa5f
                 var nrs = "<button class='btn-primary' style='font-size: 10px; border-radius: 3px' onclick='setNRS(this)' data-status='create' data-toggle='modal' data-target='#NRSModal' data-id='"+data[i].checkdateid+"'> 평가하기 </button>";
                 if(data[i].nrs!==null){
                   nrs = "<span onclick='setNRS(this)' data-status='modify' data-toggle='modal' data-target='#NRSModal' data-id='"+data[i].checkdateid+"'>"+data[i].nrs+"</span>";
@@ -445,11 +440,7 @@ function setJointDirection() {
             }
 
 
-<<<<<<< HEAD
             //--nrs range--
-=======
-            //--nrs range-- 
->>>>>>> e6dd5ff6b237744369d90e07f867600a8f9afa5f
             var sheet = document.createElement('style'),
                 $rangeInput = $('.range input'),
                 prefs = ['webkit-slider-runnable-track', 'moz-range-track', 'ms-track'];
@@ -714,7 +705,7 @@ function setNRS(target){
   var status = target.getAttribute('data-status');
   if(status == 'modify'){
     var index = target.innerHTML;
-    /* TODO1012
+    /* TODO : 1012
       입력된 값을 수정하려 할 때
        기존 NRS 값이 range에 표시되게 하기
        모달 마다 달라지게
@@ -723,9 +714,6 @@ function setNRS(target){
 
 <<<<<<< HEAD
     */
-=======
-    */ 
->>>>>>> e6dd5ff6b237744369d90e07f867600a8f9afa5f
   }
 }
 
@@ -741,11 +729,7 @@ function saveNRS() {
         data: data,
         dataType: 'json',
         success: function(data) {
-<<<<<<< HEAD
 
-=======
-          
->>>>>>> e6dd5ff6b237744369d90e07f867600a8f9afa5f
         },
         error: function(request, status, error) {
             console.log(request, status, error);
@@ -1049,8 +1033,4 @@ function setNamingforJointdirection(jointdirection) {
         default:
     }
     return jointdirection;
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> e6dd5ff6b237744369d90e07f867600a8f9afa5f
