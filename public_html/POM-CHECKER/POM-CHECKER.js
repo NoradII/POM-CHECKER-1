@@ -83,10 +83,10 @@ function getPatientName(){
     });
 }
 
-var prevClickId = 0;
+var prevClickId = "";
 function getCheckDate(clickId) {
 
-  if(prevClickId > 0){
+  if(prevClickId !== clickId){
     document.getElementById(prevClickId).style = "background-color: white; text-align: left;";
   }
   document.getElementById(clickId).style = "background-color: #e6e6e6; text-align: left;";
@@ -101,7 +101,7 @@ function getCheckDate(clickId) {
       success: function(data){
 
         data.sort(function(a, b) {
-            return parseFloat(b.checkdateid) - parseFloat(a.checkdateid);
+            return parseFloat(a.lastupdate) - parseFloat(b.lastupdate);
         });
 
         $("#cdatelist").empty();
