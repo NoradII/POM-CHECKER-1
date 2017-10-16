@@ -420,7 +420,7 @@ function setJointDirection() {
                 }
 
                 var nrs = "<button class='btn-primary' style='font-size: 10px; border-radius: 3px' onclick='setNRS(this)' data-status='create' data-toggle='modal' data-target='#NRSModal' data-id='"+data[i].checkdateid+"'> 평가하기 </button>";
-                if(data[i].nrs !== 0){
+                if(data[i].nrs !== null){
                   nrs = "<span onclick='setNRS(this)' data-status='modify' data-toggle='modal' data-target='#NRSModal' data-id='"+data[i].checkdateid+"'>"+data[i].nrs+"</span>";
                 }
 
@@ -433,47 +433,7 @@ function setJointDirection() {
                 ]).draw(false);
             }
 
-
-            //--nrs range--
-            var sheet = document.createElement('style'),
-                $rangeInput = $('.range input'),
-                prefs = ['webkit-slider-runnable-track', 'moz-range-track', 'ms-track'];
-
-            document.body.appendChild(sheet);
-
-            var getTrackStyle = function(el) {
-                var curVal = el.value,
-                    val = (curVal - 1) * 10,
-                    style = '';
-
-                // Set active label
-                $('.range-labels li').removeClass('active selected');
-
-                var curLabel = $('.range-labels').find('li:nth-child(' + curVal + ')');
-
-                curLabel.addClass('active selected');
-                curLabel.prevAll().addClass('selected');
-
-                // Change background gradient
-                for (var i = 0; i < prefs.length; i++) {
-                    style += '.range {background: linear-gradient(to right, #37adbf 0%, #37adbf ' + val + '%, #fff ' + val + '%, #fff 100%)}';
-                    style += '.range input::-' + prefs[i] + '{background: linear-gradient(to right, #37adbf 0%, #37adbf ' + val + '%, #b2b2b2 ' + val + '%, #b2b2b2 100%)}';
-                }
-
-                return style;
-            }
-
-            $rangeInput.on('input', function() {
-                sheet.textContent = getTrackStyle(this);
-            });
-
-            // Change input value on label click
-            $('.range-labels li').on('click', function() {
-                var index = $(this).index();
-                $rangeInput.val(index + 1).trigger('input');
-
-            });
-            //----nrs range----
+            setNrsRange('submit',0);
 
             var j = 0;
             var cnt = 0;
@@ -545,7 +505,6 @@ function getImage() {
 
                 img_tag.setAttribute("class", "img-responsive col-md-12 col-sm-12 col-xs-12");
                 img_tag.setAttribute("width", "100%");
-                img_tag.setAttribute("onclick", "paintOnImage(this.id)");
                 img_tag.setAttribute("src", "http://" + ip + "/patientimage/" + data[i]);
                 img_tag.setAttribute("alt", "There is no image");
                 img_tag.setAttribute("id", "img_" + (i + 1));
@@ -592,7 +551,7 @@ function getScreenshot() {
                 img_tag.setAttribute("onclick", "paintOnImage(this.id)");
                 img_tag.setAttribute("src", "http://" + ip + "/screenshot/" + data[i]);
                 img_tag.setAttribute("alt", "There is no image");
-                img_tag.setAttribute("id", "img_" + (i + 1));
+                img_tag.setAttribute("id", "img_" + (i + 2));
 
                 div_container.setAttribute("class", "div_container col-md-3 col-sm-4 col-xs-3");
 
@@ -694,25 +653,66 @@ function selectMovie(filename, patient_id) {
 
 var checkdateid;
 
+
+function setNrsRange(target,index) {
+
+    var sheet = document.createElement('style'),
+        $rangeInput = $('.range input'),
+        prefs = ['webkit-slider-runnable-track', 'moz-range-track', 'ms-track'];
+
+    document.body.appendChild(sheet);
+
+    var getTrackStyle = function(el) {
+        var curVal = el.value,
+            val = (curVal - 1) * 10,
+            style = '';
+
+        // Set active label
+        $('.range-labels li').removeClass('active selected');
+
+        var curLabel = $('.range-labels').find('li:nth-child(' + curVal + ')');
+
+        curLabel.addClass('active selected');
+        curLabel.prevAll().addClass('selected');
+
+        // Change background gradient
+        for (var i = 0; i < prefs.length; i++) {
+            style += '.range {background: linear-gradient(to right, #37adbf 0%, #37adbf ' + val + '%, #fff ' + val + '%, #fff 100%)}';
+            style += '.range input::-' + prefs[i] + '{background: linear-gradient(to right, #37adbf 0%, #37adbf ' + val + '%, #b2b2b2 ' + val + '%, #b2b2b2 100%)}';
+        }
+
+        return style;
+    }
+
+    $rangeInput.on('input', function() {
+        sheet.textContent = getTrackStyle(this);
+    });
+    if(target == 'submit'){   
+        // Change input value on label click
+        $('.range-labels li').on('click', function() {
+            index = $(this).index();
+            $rangeInput.val(index + 1).trigger('input');
+        });
+    }
+    else{
+        $rangeInput.val(index + 1).trigger('input');
+    }
+
+}
+
 function setNRS(target){
+    setNrsRange('modify', 0);
   checkdateid = target.getAttribute('data-id');
   var status = target.getAttribute('data-status');
   if(status == 'modify'){
-    var index = target.innerHTML;
-    /* TODO : 1012
-      입력된 값을 수정하려 할 때
-       기존 NRS 값이 range에 표시되게 하기
-       모달 마다 달라지게
-       기존 값 지워지게
-       새로고침
-    */
+    var index = parseInt(target.innerHTML);
+    setNrsRange(status, index);
   }
 }
 
 
 function saveNRS() {
   var nrs = $('.range-labels .selected').last().text();
-  console.log(nrs+","+checkdateid);
   var data = {nrs : nrs, checkdateid : checkdateid};
 
    $.ajax({
@@ -728,33 +728,49 @@ function saveNRS() {
         },
     });
     $('#NRSModal').modal('hide');
-
-
+    setJointDirection();
 }
 
-// block this func on protoype 1.0
-function paintOnImage(selectedImageId) {
-
-}
-
-// block this func on protoype 1.0
-function savePaintedImage() {}
-
-/* TODO : set this func on prototype 1.1
 function paintOnImage(selectedImageId){
   var selectedImageSrc = document.getElementById(selectedImageId).src;
+  var selectedImageHeight = document.getElementById(selectedImageId).height;
+  var selectedImageWidth = document.getElementById(selectedImageId).width;
   var canvas = document.getElementById('imageCanvas');
+
+  var selectedImageHudSrc = selectedImageSrc.replace("normal","hud");
+  var selectedImageSkeletonSrc = selectedImageSrc.replace("normal","skeleton");
+
+  $(".hudImg").attr("src",selectedImageHudSrc);
+  $(".normalImg").attr("src",selectedImageSrc);
+  $(".skeletonImg").attr("src",selectedImageSkeletonSrc);
 
   paper.setup(canvas);
   paper.install(window);
 
   var raster = new Raster(selectedImageSrc);
+  raster.width = 852;
+  raster.height = (raster.width*selectedImageHeight)/selectedImageWidth;
   raster.position = view.center;
 
   $('#paintingModal').modal('show');
-} */
+}
 
-/* TODO : set this func on prototype 1.1
+$(".paintImgbtn").click(function() {
+  var canvas = document.getElementById('imageCanvas');
+  paper.setup(canvas);
+  paper.install(window);
+  var selectedtype = $(this).text();
+  var selectedSrc = $("."+selectedtype+"Img").attr("src");
+  var selectedImageHeight = 231;
+  var selectedImageWidth = 412;
+
+  var raster = new Raster(selectedSrc);
+  raster.width = 852;
+  raster.height = (raster.width*selectedImageHeight)/selectedImageWidth;
+  raster.position = view.center;
+
+});
+
 function savePaintedImage(){
   var canvas = document.getElementById('imageCanvas');
 
@@ -770,9 +786,7 @@ function savePaintedImage(){
     }
   });
 
-}*/
-
-
+}
 
 function romPrint() {
     document.getElementById('myChart').style.width = "95%";

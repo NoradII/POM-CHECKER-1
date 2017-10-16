@@ -471,33 +471,57 @@
 
       <!-- page content -->
       <div class="modal fade" id="paintingModal" role="dialog">
-        <div class="modal-dialog modal-lg">
-          <div class="modal-content">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
             <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal">&times;</button>
-              <h4 class="modal-title">선택한 이미지</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">선택한 이미지</h4>
             </div>
             <div class="modal-body">
-              <div class="gui toolbar">
-                <div class="tools">
-                    <a class="bu tton canvas-clear icon-trash" title="Clear Canvas"></a>
+                <div class="gui toolbar">
+                    <div class="tools">
+                        <a class="bu tton canvas-clear icon-trash" title="Clear Canvas"></a>
+                    </div>
+                    <div class="clear"></div>
+                    <div class="palettejs-root"></div>
+                    <div class="clear"></div>
+                    <div class="info hidden"></div>
                 </div>
-                <div class="clear"></div>
-                <div class="palettejs-root"></div>
-                <div class="clear"></div>
-                <div class="info hidden"></div>
-              </div>
-              <div class="form-group" id="form-group-image">
-                <canvas id="imageCanvas" width="852" height="540" style="-webkit-user-drag: none; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); background: #ccc"></canvas>
-              </div>
+                
+                    <div class="button-images">
+                        <div class="button-grid">
+                            <div class="button-container">
+                                <a href="#" class="paintImgbtn">hud</a>
+                                <img src="" class="hudImg" />
+                            </div>
+                        </div>
+                        <div class="button-grid">
+                            <div class="button-container">
+                                <a href="#" class="paintImgbtn">normal</a>
+                                <img src="" class="normalImg" />
+                            </div>
+                        </div>
+                        <div class="button-grid" style="margin-right:0">
+                            <div class="button-container">
+                                <a href="#" class="paintImgbtn">skeleton</a>
+                                <div class="button-image">
+                                    <img src="" class="skeletonImg" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                <div class="form-group" id="form-group-image">
+                    <canvas id="imageCanvas" width="852" height="540" style="-webkit-user-drag: none; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); background: #ccc"></canvas>
+                </div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-primary" onclick="savePaintedImage()">저장</button>
+                <button type="button" class="btn btn-primary" onclick="savePaintedImage()">저장</button>
             </div>
 
-          </div>
         </div>
-      </div>
+    </div>
+  </div>
 
       <!-- page content -->
       <div class="modal fade modal-center" id="NRSModal" role="dialog">
