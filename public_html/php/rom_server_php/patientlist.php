@@ -27,11 +27,11 @@ if(isset($_POST['patientid']))
 		array_push($return_arr,$row_array);
 	}
 
-	echo json_encode($return_arr,JSON_UNESCAPED_UNICODE); 
+	echo json_encode($return_arr,JSON_UNESCAPED_UNICODE);
 }
 else
 {
-	$result = mysqli_query($connection,"SELECT * FROM rom_patient ORDER BY lastupdate DESC"); 
+	$result = mysqli_query($connection,"SELECT * FROM rom_patient ORDER BY lastupdate DESC");
 
 	while ($row = mysqli_fetch_array($result)) {
 		$row_array['patientid'] = $row['patientid'];
@@ -39,10 +39,10 @@ else
 		$row_array['sex'] = $row['sex'];
 		$row_array['birth'] = $row['birth'];
 		$row_array['number'] = $row['number'];
+		$row_array['lastupdate'] = $row['lastupdate'];
 		array_push($return_arr,$row_array);
 	}
 
-	echo json_encode($return_arr,JSON_UNESCAPED_UNICODE); 
+	echo json_encode($return_arr,JSON_UNESCAPED_UNICODE);
 }
 ?>
-

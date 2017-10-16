@@ -10,7 +10,7 @@ window.onload = function () {
 
   $(".dragColumns").sortable();
   getPatientName();
-  setViewList = setInterval(viewBeforeMeasurementList, 1000);
+  //setViewList = setInterval(viewBeforeMeasurementList, 1000);
   var uid = localStorage.getItem("uid");
   if(uid === 'undefined' || uid === null){
     location.href = "./login.html";
@@ -64,10 +64,14 @@ function getPatientName(){
       success: function(data){
         $("#patientlist").empty();
 
-        // TODO: 마지막 업데이트 기준으로 sort하기 -> 원래 있던 환자가 또 진단을 할 시 필요, 적용여부 확인(검색으로 가능해보임)
-        //
+        // TODO: 마지막 업데이트 기준으로 sort하기
+        // 원래 있던 환자가 또 진단을 할 시 제일 위로 적용. 하지만 굳이 구현하지 않고, 검색으로 가능해보임
+        // 같은 환자에 대해서 측정 완료 시 rom_checkdata 테이블의 날짜가 업데이트 되면, rom_patient 테이블의 날짜도 업데이트 되게끔하면 될 듯
+
         data.sort(function(a, b) {
-            return parseFloat(b.patientid) - parseFloat(a.patientid);
+          if(b.lastupdate > a.lastupdate) return 1;
+          if(b.lastupdate < a.lastupdate) return -1;
+          return 0;
         });
 
         for(var i = 0; i < data.length; i++){
@@ -76,7 +80,7 @@ function getPatientName(){
           var number = data[i].number;
           var patientid = data[i].patientid;
           var sex;
-          if(data[i].sex == 1)
+          if(data[i].sex === 1)
             sex = "남";
           else
             sex = "여";
@@ -184,7 +188,6 @@ function registerFirstMeasurement() {
     name = name.value;
   }
 
-  //(patientNumber.length != 10)
   if(number.value === ""){
     alert("병록번호란을 입력해주세요.");
     document.getElementById('form-group-number').setAttribute('class','form-group has-error has-feedback');
