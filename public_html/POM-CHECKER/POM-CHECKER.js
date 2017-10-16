@@ -69,9 +69,7 @@ function getPatientName(){
         // 같은 환자에 대해서 측정 완료 시 rom_checkdata 테이블의 날짜가 업데이트 되면, rom_patient 테이블의 날짜도 업데이트 되게끔하면 될 듯
 
         data.sort(function(a, b) {
-          if(b.lastupdate > a.lastupdate) return 1;
-          if(b.lastupdate < a.lastupdate) return -1;
-          return 0;
+          return b.lastupdate > a.lastupdate ? 1 : b.lastupdate < a.lastupdate  ? -1 : 0;
         });
 
         for(var i = 0; i < data.length; i++){
