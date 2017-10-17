@@ -74,6 +74,16 @@ var chart = new Chart(ctx, {
             pointHitRadius: 10,
             data: [],
             fill: false,
+            yAxisID:'Left',
+        },
+        {
+            label: 'NRS',
+            borderColor: 'rgb(20, 179, 0)',
+            pointRadius: 4,
+            pointHitRadius: 10,
+            data: [],
+            fill: false,
+            yAxisID:'Right',
         }]
     },
     // Configuration options go here
@@ -95,6 +105,8 @@ var chart = new Chart(ctx, {
             }],
             yAxes: [{
                 display: true,
+                id: 'Left',
+                position : 'left',
                 scaleLabel: {
                     display: true,
                     labelString: '각도'
@@ -104,7 +116,21 @@ var chart = new Chart(ctx, {
                     suggestedMax: 180,
                     stepSize: 10
                 }
-            }]
+            },
+            {
+                display: true,
+                id:'Right',
+                position:'right',
+                scaleLabel: {
+                    display: true,
+                    labelString: 'NRS'
+                },
+                ticks: {
+                    suggestedMin: 0,
+                    suggestedMax: 10,
+                    stepSize: 1
+                }
+            },]
         },
         title: {
             display: true,
@@ -135,6 +161,7 @@ var chartForPosture = new Chart(ctx2, {
             pointHitRadius: 10,
             data: [],
             fill: false,
+            yAxisID:'Left',
         }, {
             label: 'Pelvic balance',
             borderColor: 'rgb(20, 179, 0)',
@@ -142,6 +169,16 @@ var chartForPosture = new Chart(ctx2, {
             pointHitRadius: 10,
             data: [],
             fill: false,
+            yAxisID:'Left',
+        },
+        {
+            label: 'NRS',
+            borderColor: 'rgb(57, 113, 204)',
+            pointRadius: 4,
+            pointHitRadius: 10,
+            data: [],
+            fill: false,
+            yAxisID:'Right',
         }]
     },
     // Configuration options go here
@@ -163,6 +200,8 @@ var chartForPosture = new Chart(ctx2, {
             }],
             yAxes: [{
                 display: true,
+                id:'Left',
+                position:'left',
                 scaleLabel: {
                     display: true,
                     labelString: '각도'
@@ -172,7 +211,22 @@ var chartForPosture = new Chart(ctx2, {
                     suggestedMax: 10,
                     stepSize: 10
                 }
-            }]
+            },
+            {
+                display: true,
+                id:'Right',
+                position:'right',
+                scaleLabel: {
+                    display: true,
+                    labelString: 'NRS'
+                },
+                ticks: {
+                    suggestedMin: 0,
+                    suggestedMax: 10,
+                    stepSize: 1
+                }
+            },
+            ]
         },
         title: {
             display: true,
@@ -188,10 +242,11 @@ var chartForPosture = new Chart(ctx2, {
     }
 });
 
-function addData(chart, label, data, data2) {
+function addData(chart, label, data, data2, data3) {
     chart.data.labels.push(label);
     chart.data.datasets[0].data.push(data); // 환자
     chart.data.datasets[1].data.push(data2); // 정상범위
+    chart.data.datasets[2].data.push(data3); // nrs
     chart.update();
 }
 
@@ -457,12 +512,12 @@ function setJointDirection() {
                     document.getElementById('myChart2').style.display = 'block';
                     data[j].sh_angle *= 1;
                     data[j].hh_angle *= 1;
-                    addData(chartForPosture, data[j].datetime.substring(0, 10), data[j].sh_angle.toFixed(2), data[j].hh_angle.toFixed(2));
+                    addData(chartForPosture, data[j].datetime.substring(0, 10), data[j].sh_angle.toFixed(2), data[j].hh_angle.toFixed(2), data[j].nrs);
                 } else {
                     document.getElementById('myChart2').style.display = 'none';
                     document.getElementById('myChart').style.display = 'block';
                     data[j].maxangle *= 1;
-                    addData(chart, data[j].datetime.substring(0, 10), data[j].maxangle.toFixed(2), data2[j]);
+                    addData(chart, data[j].datetime.substring(0, 10), data[j].maxangle.toFixed(2), data2[j], data[j].nrs);
                 }
             }
             cnt++;
@@ -664,8 +719,9 @@ function setNrsRange(target,index) {
 
     var getTrackStyle = function(el) {
         var curVal = el.value,
-            val = (curVal - 1) * 10,
+            val = (curVal - 1) * 9.8,
             style = '';
+
 
         // Set active label
         $('.range-labels li').removeClass('active selected');
