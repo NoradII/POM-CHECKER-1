@@ -78,7 +78,7 @@ function getPatientName(){
           var number = data[i].number;
           var patientid = data[i].patientid;
           var sex;
-          if(data[i].sex === 1)
+          if(data[i].sex === "1")
             sex = "남";
           else
             sex = "여";
