@@ -77,6 +77,7 @@ else if(isset($_POST['checkdateid']) && isset($_POST['patientid']) && isset($_PO
 // Branch statement for Side
 else if(isset($_POST['checkdateid']) && isset($_POST['patientid']) && isset($_POST['jointdirection']) && isset($_POST['side_head_length'])  && isset($_POST['side_shoulder_length'])
  && isset($_POST['side_hip_length']) && isset($_POST['side_angle'])) {
+   $checkdateid = $_POST['checkdateid'];
    $patientid = $_POST['patientid'];
    $jointdirection = $_POST['jointdirection'];
    $side_head_length = $_POST['side_head_length'];
