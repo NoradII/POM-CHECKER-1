@@ -617,8 +617,7 @@ function setJointDirection() {
 
                 var nrs = "<button class='btn-primary' style='font-size: 10px; border-radius: 3px' onclick='setNRS(this)' data-status='create' data-toggle='modal' data-target='#NRSModal' data-id='"+data[i].checkdateid+"'> 평가하기 </button>";
                 if(data[i].nrs !== null){
-                  nrs = "<span class='setNRSclick' onclick='setNRS(this)' data-status='modify' data-toggle='modal' data-target='#NRSModal' data-id='"+data[i].checkdateid+"' >"+data[i].nrs+"</span>";
-                  $('.setNRSclick').css("width",$('.setNRSclick').parent().width()); 
+                  nrs = "<span class='setNRSclick' onclick='setNRS(this)' data-status='modify' data-toggle='modal' data-target='#NRSModal' data-id='"+data[i].checkdateid+"' style='width:"+$('.setNRSclick').parent().width()+"px;' >"+data[i].nrs+"</span>";
                 }
 
 
@@ -1003,11 +1002,11 @@ function savePaintedImage(){
 
 function romPrint() {
     document.getElementById('myChart').style.width = "95%";
-    document.getElementById('myChart').style.height = "100%";
+    document.getElementById('myChart').style.height = "95%";
     document.getElementById('myChart2').style.width = "95%";
-    document.getElementById('myChart2').style.height = "100%";
+    document.getElementById('myChart2').style.height = "95%";
     document.getElementById('myChart3').style.width = "95%";
-    document.getElementById('myChart3').style.height = "100%";
+    document.getElementById('myChart3').style.height = "95%";
 
     window.print();
 }
