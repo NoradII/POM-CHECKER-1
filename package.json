@@ -1,0 +1,19 @@
+{
+  "name": "pomchecker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "paper": "^0.11.5"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "\u001b\u001b\u001b\u001b\u001b\u001b"
+  },
+  "author": "",
+  "license": "ISC"
+}
