@@ -10,7 +10,7 @@ window.onload = function () {
 
   $(".dragColumns").sortable();
   getPatientName();
-  //setViewList = setInterval(viewBeforeMeasurementList, 1000);
+  setViewList = setInterval(viewBeforeMeasurementList, 1000);
   var uid = localStorage.getItem("uid");
   if(uid === 'undefined' || uid === null){
     location.href = "./login.html";
@@ -275,7 +275,7 @@ function registerMeasurement(){
     document.getElementById("ModalFooter").innerHTML = "검진 시작하기";
     $('#modal-body').show();
 
-    if (selectedJointdirection === "201") { // Posture인 경우
+    if (selectedJointdirection === "201" || selectedJointdirection == "300") { // Posture 또는 Side Posture인 경우
       document.getElementById('modal-direction').style.visibility = 'hidden';
     }
     else if(selectedJointdirection === "100"){
@@ -308,8 +308,10 @@ function startMeasurement(){
     }
 
     // 측정 방향에 대한 예외처리
-    if (selected_jointdirection != '201') {
-        if ((left.checked === false) && (right.checked === false)) {
+    if (selected_jointdirection === '201' || selected_jointdirection === '300') {
+    }
+    else{
+      if ((left.checked === false) && (right.checked === false)) {
             alert("측정방향을 선택해주세요.");
             return;
         } else if (left.checked === true) {
@@ -733,6 +735,9 @@ function setNamingforJointdirection(jointdirection) {
       break;
     case "201":
       jointdirection = 'Posture';
+      break;
+    case "300":
+      jointdirection = 'Side Posture';
       break;
     default:
   }

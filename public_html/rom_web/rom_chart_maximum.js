@@ -242,11 +242,135 @@ var chartForPosture = new Chart(ctx2, {
     }
 });
 
+var ctx3 = document.getElementById('myChart3').getContext('2d');
+var chartForSidePosture = new Chart(ctx3, {
+    // The type of chart we want to create
+    type: 'line',
+
+    // The data for our dataset
+    data: {
+        labels: [],
+        datasets: [{
+            label: 'Head length',
+            borderColor: 'rgb(0, 153, 255)',
+            pointRadius: 4,
+            pointHitRadius: 10,
+            data: [],
+            fill: false,
+            yAxisID:'Left',
+        }, {
+            label: 'Shoulder length',
+            borderColor: 'rgb(20, 179, 0)',
+            pointRadius: 4,
+            pointHitRadius: 10,
+            data: [],
+            fill: false,
+            yAxisID:'Left',
+        },
+        {
+            label: 'Hip length',
+            borderColor: 'rgb(20, 179, 0)',
+            pointRadius: 4,
+            pointHitRadius: 10,
+            data: [],
+            fill: false,
+            yAxisID:'Left',
+        },
+        {
+            label: 'Angle',
+            borderColor: 'rgb(20, 179, 0)',
+            pointRadius: 4,
+            pointHitRadius: 10,
+            data: [],
+            fill: false,
+            yAxisID:'Left',
+        },
+        {
+            label: 'NRS',
+            borderColor: 'rgb(57, 113, 204)',
+            pointRadius: 4,
+            pointHitRadius: 10,
+            data: [],
+            fill: false,
+            yAxisID:'Right',
+        }]
+    },
+    // Configuration options go here
+    options: {
+        responsive: true,
+        legend: {
+            labels: {
+                usePointStyle: false,
+                position: 'bottom',
+            }
+        },
+        scales: {
+            xAxes: [{
+                display: true,
+                scaleLabel: {
+                    display: true,
+                    labelString: '날짜'
+                }
+            }],
+            yAxes: [{
+                display: true,
+                id:'Left',
+                position:'left',
+                scaleLabel: {
+                    display: true,
+                    labelString: '각도'
+                },
+                ticks: {
+                    suggestedMin: -10,
+                    suggestedMax: 10,
+                    stepSize: 10
+                }
+            },
+            {
+                display: true,
+                id:'Right',
+                position:'right',
+                scaleLabel: {
+                    display: true,
+                    labelString: 'NRS'
+                },
+                ticks: {
+                    suggestedMin: 0,
+                    suggestedMax: 10,
+                    stepSize: 1
+                }
+            },
+            ]
+        },
+        title: {
+            display: true,
+            text: '진단 결과'
+        },
+        tooltips: {
+            callbacks: {
+                label: function(tooltipItem) {
+                    return tooltipItem.yLabel;
+                }
+            }
+        }
+    }
+});
+
 function addData(chart, label, data, data2, data3) {
     chart.data.labels.push(label);
     chart.data.datasets[0].data.push(data); // 환자
     chart.data.datasets[1].data.push(data2); // 정상범위
     chart.data.datasets[2].data.push(data3); // nrs
+    chart.update();
+}
+
+function addDataForSidePosture(chart, label, data, data2, data3, data4, data5){
+    chart.data.labels.push(label);
+    chart.data.datasets[0].data.push(data); // head length
+    chart.data.datasets[1].data.push(data2); // shoulder length
+    chart.data.datasets[2].data.push(data3); //hip length
+    chart.data.datasets[3].data.push(data4); //angle
+    chart.data.datasets[4].data.push(data5); // nrs
     chart.update();
 }
 
@@ -344,6 +468,7 @@ function setJointDirection() {
     for (var i = 0; i < data_count; i++) {
         removeData(chart);
         removeData(chartForPosture);
+        removeData(chartForSidePosture);
     }
 
     var select_name = document.getElementById('drop1');
@@ -438,6 +563,9 @@ function setJointDirection() {
                     case "201":
                         jointdirection = 'Posture';
                         break;
+                    case "300":
+                        jointdirection = 'Side Posture';
+                        break;
                     default:
                 }
 
@@ -463,7 +591,20 @@ function setJointDirection() {
 
                     document.getElementById('image-box').style.display = 'none';
 
-                } else {
+                }
+                else if(jointdirection === "Side Posture"){
+                    document.getElementById('rom-table-thead-angle').innerHTML = "Angle";
+                    document.getElementById('rom-table-thead-variation').innerHTML = "Head, Shoudler, Hip length";
+                    data[i].side_head_length *= 1;
+                    data[i].side_shoulder_length *= 1;
+                    data[i].side_hip_length *= 1;
+                    data[i].side_angle *= 1;
+                    angle = data[i].side_angle;
+                    rate = data[i].side_head_length + ", " + data[i].side_shoulder_length + ", " + data[i].side_hip_length;
+                    document.getElementById('image-box').style.display = 'none';
+                }
+
+                 else {
                     document.getElementById('image-box').style.display = 'block';
                     document.getElementById('rom-table-thead-angle').innerHTML = "Max Angle";
                     data[i].maxangle *= 1;
@@ -476,7 +617,8 @@ function setJointDirection() {
 
                 var nrs = "<button class='btn-primary' style='font-size: 10px; border-radius: 3px' onclick='setNRS(this)' data-status='create' data-toggle='modal' data-target='#NRSModal' data-id='"+data[i].checkdateid+"'> 평가하기 </button>";
                 if(data[i].nrs !== null){
-                  nrs = "<span onclick='setNRS(this)' data-status='modify' data-toggle='modal' data-target='#NRSModal' data-id='"+data[i].checkdateid+"'>"+data[i].nrs+"</span>";
+                  nrs = "<span class='setNRSclick' onclick='setNRS(this)' data-status='modify' data-toggle='modal' data-target='#NRSModal' data-id='"+data[i].checkdateid+"' >"+data[i].nrs+"</span>";
+                  $('.setNRSclick').css("width",$('.setNRSclick').parent().width()); 
                 }
 
 
@@ -486,6 +628,8 @@ function setJointDirection() {
                     info + rate + " °",
                     info + nrs,
                 ]).draw(false);
+
+
             }
 
             setNrsRange('submit',0);
@@ -503,19 +647,32 @@ function setJointDirection() {
             }
 
             for (; j < data.length; j++) {
-                if (j % 10 == 0 && j != 0) {
+               /* if (j % 10 == 0 && j != 0) {
                     break;
-                }
+                }*/
 
                 if (jointdirection === "Posture") {
                     document.getElementById('myChart').style.display = 'none';
                     document.getElementById('myChart2').style.display = 'block';
+                    document.getElementById('myChart3').style.display = 'none';
                     data[j].sh_angle *= 1;
                     data[j].hh_angle *= 1;
                     addData(chartForPosture, data[j].datetime.substring(0, 10), data[j].sh_angle.toFixed(2), data[j].hh_angle.toFixed(2), data[j].nrs);
-                } else {
+                } 
+                else if(jointdirection === "Side Posture"){
+                    document.getElementById('myChart').style.display = 'none';
+                    document.getElementById('myChart2').style.display = 'none';
+                    document.getElementById('myChart3').style.display = 'block';
+                    data[j].side_head_length *= 1;
+                    data[j].side_shoulder_length *= 1;
+                    data[j].side_hip_length *= 1;
+                    data[j].side_angle *= 1;
+                    addDataForSidePosture(chartForSidePosture, data[j].datetime.substring(0, 10), data[j].side_head_length, data[j].side_shoulder_length, data[j].side_hip_length, data[j].side_angle ,data[j].nrs); 
+                }
+                else {
                     document.getElementById('myChart2').style.display = 'none';
                     document.getElementById('myChart').style.display = 'block';
+                    document.getElementById('myChart3').style.display = 'none';
                     data[j].maxangle *= 1;
                     addData(chart, data[j].datetime.substring(0, 10), data[j].maxangle.toFixed(2), data2[j], data[j].nrs);
                 }
@@ -849,6 +1006,8 @@ function romPrint() {
     document.getElementById('myChart').style.height = "100%";
     document.getElementById('myChart2').style.width = "95%";
     document.getElementById('myChart2').style.height = "100%";
+    document.getElementById('myChart3').style.width = "95%";
+    document.getElementById('myChart3').style.height = "100%";
 
     window.print();
 }
@@ -1014,6 +1173,9 @@ function setNumberingforJointdirection(jointdirection) {
         case "Posture":
             jointdirection = '201';
             break;
+		case "Side Posture":
+            jointdirection = '300';
+            break;
         default:
     }
     return jointdirection;
@@ -1091,6 +1253,9 @@ function setNamingforJointdirection(jointdirection) {
             break;
         case "201":
             jointdirection = 'Posture';
+            break;
+		case "300":
+            jointdirection = 'Side Posture';
             break;
         default:
     }
