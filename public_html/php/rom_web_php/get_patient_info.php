@@ -18,7 +18,8 @@ $return_arr = Array();
 if(isset($_POST['name']))
 {
 	$name = $_POST['name'];
-	$result = mysqli_query($connection,"SELECT name, sex, birth, number, patientid FROM rom_patient WHERE name = '".$name."' ORDER BY patientid");
+	$patientid = $_POST['patientid'];
+	$result = mysqli_query($connection,"SELECT name, sex, birth, number, patientid FROM rom_patient WHERE name = '".$name."' AND patientid = '".$patientid."' ORDER BY patientid");
 	while ($row = mysqli_fetch_array($result)) {
 		$row_array['name'] = $row['name'];
 		$row_array['sex'] = $row['sex'];

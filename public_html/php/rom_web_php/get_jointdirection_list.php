@@ -14,6 +14,7 @@ include '../include/Config.php';
 if(isset($_POST['name']) )
 {
 	$name =$_POST['name'];
+	$patientid = $_POST['patientid'];
 
 	$connection = mysqli_connect(DB_HOST,DB_USER,DB_PASSWORD,DB_DATABASE);
 
@@ -21,8 +22,8 @@ if(isset($_POST['name']) )
 
 	$result = mysqli_query($connection,"SELECT DISTINCT jointdirection
 		FROM rom_checkdate, rom_patient WHERE 
-		rom_patient.name = '".$name."'AND rom_patient.patientid = 
-		rom_checkdate.patientid");
+		rom_patient.name = '".$name."'AND rom_checkdate.patientid = 
+		'".$patientid."'");
 
 	while ($row = mysqli_fetch_array($result)) {
 	$row_array['jointdirection'] = $row['jointdirection'];
