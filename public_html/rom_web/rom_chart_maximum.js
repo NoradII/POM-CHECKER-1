@@ -16,11 +16,14 @@ window.onload = function() {
         type: 'GET',
         dataType: 'json',
         success: function(data) {
-            for (var i = 0; i < data.length; i++) {
-                var patientName = data[i].name;
-                patientList.push(patientName);
-            }
-
+            $.each(data, function (i, itemData) {
+                var patientId = itemData.patientid;
+                var patientName = itemData.name;
+                
+                var data = {"id" : patientId, "text" : patientName};
+                patientList.push(data);
+            });
+      
             $("#drop1").select2({
                 data: patientList
             });
@@ -173,7 +176,7 @@ var chartForPosture = new Chart(ctx2, {
         },
         {
             label: 'NRS',
-            borderColor: 'rgb(57, 113, 204)',
+            borderColor: 'rgb(255, 0, 0)',
             pointRadius: 4,
             pointHitRadius: 10,
             data: [],
@@ -385,8 +388,9 @@ function removeData(chart) {
 function getPatientName() {
     var select_name = document.getElementById('drop1');
     var selected_name = select_name.options[select_name.selectedIndex].text;
-    getPatientInfo(selected_name);
-    var post_data = "name=" + selected_name;
+    var selected_patientid = select_name.options[select_name.selectedIndex].value;
+    getPatientInfo(selected_name, selected_patientid);
+    var post_data = "name=" + selected_name + "&patientid=" +selected_patientid;
     console.log("patient_name=누구: " + post_data);
     var jointdirection_list = [];
     if (selected_name == " -- Patient ID -- ") {
@@ -427,9 +431,9 @@ function getPatientName() {
     }
 }
 
-function getPatientInfo(post_data) {
+function getPatientInfo(post_data_name, post_data_patientid) {
 
-    post_data = "name=" + post_data;
+    var post_data = "name=" + post_data_name + "&patientid=" + post_data_patientid;
     $.ajax({
         url: 'http://' + ip + '/php/rom_web_php/get_patient_info.php',
         type: 'POST',
@@ -460,7 +464,13 @@ function setJointDirection() {
 
     $("#image_container").empty();
     $("#screenshot_container").empty();
-    $("#video_tag").empty();
+    $("#video_tag").remove();
+    var video_container = document.getElementById('video_container');
+    var video_tag = document.createElement('video');
+    video_tag.setAttribute("id", "video_tag");
+    video_tag.setAttribute("width", "100%");
+    video_tag.setAttribute("controls", "");
+    video_container.appendChild(video_tag);
     $("#video_select").empty();
 
     $("#drop3 option:gt(0)").remove();
@@ -691,8 +701,7 @@ function setJointDirection() {
 }
 
 function getImage() {
-    var str = $('#patient_id').text();
-    var patient_id = str.substring(0, 7);
+    var patient_id = $('#patient_id').text();
     var patient_jointdirection = setNumberingforJointdirection($("#drop2").val());
     var type = 'patientimage';
 
@@ -734,11 +743,9 @@ function getImage() {
 }
 
 function getScreenshot() {
-    var str = $('#patient_id').text();
-    var patient_id = str.substring(0, 7);
+    var patient_id = $('#patient_id').text();
     var patient_jointdirection = setNumberingforJointdirection($("#drop2").val());
     var type = 'screenshot';
-
     var data = {
         patient_id: patient_id,
         patient_jointdirection: patient_jointdirection,
@@ -782,8 +789,7 @@ function getScreenshot() {
 function getMovie() {
     var video_height = $('#collapseMovie').height();
     $('#video_select').css("max-height", video_height);
-    var str = $('#patient_id').text();
-    var patient_id = str.substring(0, 7);
+    var patient_id = $('#patient_id').text();
     var patient_jointdirection = setNumberingforJointdirection($("#drop2").val());
     var type = 'movie';
 
@@ -800,7 +806,8 @@ function getMovie() {
         dataType: 'json',
         success: function(data) {
             for (var i in data) {
-                var fileName = data[i].split('_');
+                var file = data[i].filename;
+                var fileName = file.split('_');
                 //0:uid 1:jointdirection(number) 2:date(mm-dd-yyyy) 3:time(hh-mm-ss)
                 var date = fileName[2].split('-');
                 //0:mm 1:dd 2:yyyy
@@ -808,14 +815,21 @@ function getMovie() {
                 //0:hh 1:mm 2:ss
 
                 var video_select_container = document.getElementById('video_select');
-
                 var li_tag = document.createElement("li");
                 li_tag.setAttribute("class", "list-group-item video_list list-group-item-action");
-                li_tag.setAttribute("data-filename", data[i]);
+                li_tag.setAttribute("data-filename", file);
 
                 var h5_tag = document.createElement("h5");
                 h5_tag.setAttribute("class", "mb-1");
-                h5_tag.innerHTML = setNamingforJointdirection(fileName[1]);
+                if(patient_jointdirection == '201'){
+                    h5_tag.innerHTML = "Shoudler : "+ data[i].sh_angle + ", Pelvic : " + data[i].hh_angle;
+                }
+                else if(patient_jointdirection == '300'){
+                    h5_tag.innerHTML = "Head : "+ data[i].side_head_length + ", Shoudler : "+data[i].side_shoulder_length + ", Hip : "+data[i].side_hip_length+", Side : " +data[i].side_length;
+                }
+                else{
+                    h5_tag.innerHTML = "Max Angle : "+ data[i].angle;
+                }                
 
                 var p_tag = document.createElement("p");
                 p_tag.setAttribute("class", "mb-1");
@@ -832,7 +846,7 @@ function getMovie() {
                 var select_fileName = $(this).attr('data-filename');
                 $(this).addClass('active');
                 selectMovie(select_fileName, patient_id);
-                videoMethods.hideVideoPlayButton();
+                //videoMethods.hideVideoPlayButton();
             });
 
         },
@@ -844,20 +858,14 @@ function getMovie() {
 
 
 function selectMovie(filename, patient_id) {
-    $("#video_tag").remove();
     var video_container = document.getElementById('video_container');
-    var video_tag = document.createElement('video');
-    video_tag.setAttribute("id", "video_tag");
-    video_tag.setAttribute("width", "100%");
-    video_tag.setAttribute("controls", "");
-
+    var video_tag = document.getElementById('video_tag');
     var source_tag = document.createElement('source');
     source_tag.setAttribute("id", "source_tag");
     source_tag.setAttribute("type", "video/mp4");
     source_tag.setAttribute("src", "http://" + ip + "/movie/" + filename);
 
     video_tag.appendChild(source_tag);
-    video_container.appendChild(video_tag);
 
     $('#video_tag').get(0).play()
 }
@@ -950,7 +958,7 @@ function paintOnImage(selectedImageId){
   var canvas = document.getElementById('imageCanvas');
 
   var selectedImageHudSrc = selectedImageSrc.replace("normal","hud");
-  var selectedImageSkeletonSrc = selectedImageSrc.replace("normal","skeleton");
+  var selectedImageSkeletonSrc = selectedImageSrc.replace("normal","");
 
   $(".hudImg").attr("src",selectedImageHudSrc);
   $(".normalImg").attr("src",selectedImageSrc);

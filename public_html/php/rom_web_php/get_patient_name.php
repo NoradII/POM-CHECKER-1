@@ -16,10 +16,11 @@ $connection = mysqli_connect(DB_HOST,DB_USER,DB_PASSWORD,DB_DATABASE);
 
 $return_arr = Array();
 
-$result = mysqli_query($connection,"SELECT distinct name FROM rom_checkdate, rom_patient WHERE rom_patient.patientid = rom_checkdate.patientid ORDER BY name");
+$result = mysqli_query($connection,"SELECT DISTINCT name, rom_checkdate.patientid as patientid FROM rom_checkdate, rom_patient WHERE rom_patient.patientid = rom_checkdate.patientid ORDER BY name");
 
 while ($row = mysqli_fetch_array($result)) {
 	$row_array['name'] = $row['name'];
+	$row_array['patientid'] = $row['patientid'];
 	array_push($return_arr,$row_array);
 }
 
