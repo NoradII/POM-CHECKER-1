@@ -19,18 +19,19 @@ window.onload = function() {
             $.each(data, function (i, itemData) {
                 var patientId = itemData.patientid;
                 var patientName = itemData.name;
-                
-                var data = {"id" : patientId, "text" : patientName};
+                var patientNumber = itemData.number;
+
+                var data = {"id" : patientId, "text" : patientName + "(No. " + patientNumber + ")"};
                 patientList.push(data);
+                console.log("patientList : " + patientList);
             });
-      
+
             $("#drop1").select2({
                 data: patientList
             });
-            $('#drop1-wrapper > span').css("width", "111px");
+            $('#drop1-wrapper > span').css("width", "100%");
             $('#drop1-wrapper > span').css("text-align", "center");
             $('#drop1-wrapper > select').css("height", "38px");
-
         },
         error: function(request, status, error) {
             console.log(request, status, error);
@@ -51,7 +52,7 @@ window.onload = function() {
         dom: 'rt<"bottom"ip><"clear">',
 
     });
-    getPatientName();
+    getPatientJonintDirection();
 };
 
 var data_count = 0;
@@ -385,43 +386,40 @@ function removeData(chart) {
     chart.update();
 }
 
-function getPatientName() {
+function getPatientJonintDirection() {
     var select_name = document.getElementById('drop1');
     var selected_name = select_name.options[select_name.selectedIndex].text;
     var selected_patientid = select_name.options[select_name.selectedIndex].value;
-    getPatientInfo(selected_name, selected_patientid);
-    var post_data = "name=" + selected_name + "&patientid=" +selected_patientid;
+    getPatientInfo(selected_name.split('(')[0], selected_patientid);
+    var post_data = "name=" + selected_name.split('(')[0] + "&patientid=" + selected_patientid;
     console.log("patient_name=누구: " + post_data);
-    var jointdirection_list = [];
-    if (selected_name == " -- Patient ID -- ") {
-        alert("환자를 선택해주세요.");
+    //var jointdirection_list = [];
+    if (selected_name === "--- Patient --") {
+        //alert("환자를 선택해주세요.");
     } else {
+        var jointdirectionList = [];
         $.ajax({
             url: 'http://' + ip + '/php/rom_web_php/get_jointdirection_list.php',
             type: 'POST',
             data: post_data,
             dataType: 'json',
             success: function(data) {
-                //console.log("asdfasdfasdf:"+data);
-                var jointdirection_container = document.getElementById('drop2');
-                $("#drop2 option:gt(0)").remove();
-                $("#drop3 option:gt(0)").remove();
+              $.each(data, function (i, itemData) {
+                  var patientJointdirection = itemData.jointdirection;
+                  patientJointdirection = setNamingforJointdirection(patientJointdirection);
+                  var data = {"id" : patientJointdirection, "text" : patientJointdirection};
+                  jointdirectionList.push(data);
+                  console.log("patientJointdirection : " + jointdirectionList);
+              });
 
-                $('#drop2-wrapper > select').css("height", "38px");
+              $("#drop2").select2({
+                  data: jointdirectionList
+              });
+              $('#drop2-wrapper > span').css("width", "100%");
+              $('#drop2-wrapper > span').css("text-align", "center");
+              $('#drop2-wrapper > select').css("height", "38px");
 
-                for (var i = 0; i < data.length; i++) {
-                    var jointdirection = data[i].jointdirection;
-                    var select_tag = document.getElementById("drop2");
-                    var new_jointdirection = document.createElement("option");
-                    new_jointdirection.setAttribute('value', jointdirection);
-
-                    jointdirection = setNamingforJointdirection(jointdirection);
-                    new_jointdirection.innerHTML = jointdirection;
-                    select_tag.appendChild(new_jointdirection);
-                }
-
-
-                setJointDirection();
+              setJointDirection();
 
             },
             error: function(request, status, error) {
@@ -442,7 +440,7 @@ function getPatientInfo(post_data_name, post_data_patientid) {
         success: function(data) {
             for (var i = 0; i < data.length; i++) {
                 document.getElementById('patient_name').innerHTML = data[i].name;
-                document.getElementById('patient_number').innerHTML = "No." + data[i].number;
+                document.getElementById('patient_number').innerHTML = "No. " + data[i].number;
                 document.getElementById('patient_id').innerHTML = data[i].patientid;
                 console.log("gender: " + data[i].sex);
                 if (data[i].sex === "1") {
@@ -461,7 +459,6 @@ function getPatientInfo(post_data_name, post_data_patientid) {
 }
 
 function setJointDirection() {
-
     $("#image_container").empty();
     $("#screenshot_container").empty();
     $("#video_tag").remove();
@@ -473,7 +470,8 @@ function setJointDirection() {
     video_container.appendChild(video_tag);
     $("#video_select").empty();
 
-    $("#drop3 option:gt(0)").remove();
+    // TODO : drop3의 행방을 알 수 없다...
+    //$("#drop3 option:gt(0)").remove();
     table.clear().draw();
     for (var i = 0; i < data_count; i++) {
         removeData(chart);
@@ -486,8 +484,8 @@ function setJointDirection() {
 
     var select_jointdirection = document.getElementById('drop2');
     var selected_jointdirection = select_jointdirection.options[select_jointdirection.selectedIndex].value;
-
-    var post_data = "name=" + selected_name + "&jointdirection=" + selected_jointdirection;
+    selected_jointdirection = setNumberingforJointdirection(selected_jointdirection);
+    var post_data = "name=" + selected_name.split('(')[0] + "&jointdirection=" + selected_jointdirection;
     console.log(post_data);
 
     var info = "";
@@ -667,7 +665,7 @@ function setJointDirection() {
                     data[j].sh_angle *= 1;
                     data[j].hh_angle *= 1;
                     addData(chartForPosture, data[j].datetime.substring(0, 10), data[j].sh_angle.toFixed(2), data[j].hh_angle.toFixed(2), data[j].nrs);
-                } 
+                }
                 else if(jointdirection === "Side Posture"){
                     document.getElementById('myChart').style.display = 'none';
                     document.getElementById('myChart2').style.display = 'none';
@@ -676,7 +674,7 @@ function setJointDirection() {
                     data[j].side_shoulder_length *= 1;
                     data[j].side_hip_length *= 1;
                     data[j].side_angle *= 1;
-                    addDataForSidePosture(chartForSidePosture, data[j].datetime.substring(0, 10), data[j].side_head_length, data[j].side_shoulder_length, data[j].side_hip_length, data[j].side_angle ,data[j].nrs); 
+                    addDataForSidePosture(chartForSidePosture, data[j].datetime.substring(0, 10), data[j].side_head_length, data[j].side_shoulder_length, data[j].side_hip_length, data[j].side_angle ,data[j].nrs);
                 }
                 else {
                     document.getElementById('myChart2').style.display = 'none';
@@ -828,8 +826,8 @@ function getMovie() {
                     h5_tag.innerHTML = "Head : "+ data[i].side_head_length + ", Shoudler : "+data[i].side_shoulder_length + ", Hip : "+data[i].side_hip_length+", Side : " +data[i].side_length;
                 }
                 else{
-                    h5_tag.innerHTML = "Max Angle : "+ data[i].angle;
-                }                
+                    h5_tag.innerHTML = "Max Angle : "+ data[i].angle + " °";
+                }
 
                 var p_tag = document.createElement("p");
                 p_tag.setAttribute("class", "mb-1");
@@ -907,7 +905,7 @@ function setNrsRange(target,index) {
     $rangeInput.on('input', function() {
         sheet.textContent = getTrackStyle(this);
     });
-    if(target == 'submit'){   
+    if(target == 'submit'){
         // Change input value on label click
         $('.range-labels li').on('click', function() {
             index = $(this).index();

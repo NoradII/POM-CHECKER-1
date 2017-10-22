@@ -10,6 +10,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 
     <title>Team Elysium</title>
+    <link rel="shortcut icon" href="./image/theme/icon.png" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" rel="stylesheet" />
     <link href="../vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
@@ -289,7 +290,7 @@
                     <div class="well profile_view info_container" style="padding: 20px;">
                       <div class="col-md-12 col-sm-12 col-xs-12">
                         <div class="row">
-                          <div class="col-md-4 col-sm-4 col-xs-5">
+                          <div class="col-md-4 col-sm-4 col-xs-4">
                             <div class="row">
                               <div class="col-md-6 col-sm-6 col-xs-6" style="border-right: 2px solid #73879c">
                                 <p><strong>이름 : </strong><strong id="patient_name"> -- </strong></p>
@@ -303,18 +304,18 @@
                             </div>
                           </div>
 
-                          <div class="col-md-6 col-sm-6 col-xs-7" id="select_container">
+                          <div class="col-md-6 col-sm-6 col-xs-8" id="select_container">
                             <p style="font-size: 12px"><strong>환자와 측정 부위를 선택해주세요.</strong></p>
                             <ul class="nav nav-pills" role="tablist">
                               <li role="presentation" class="dropdown" id="drop1-wrapper">
-                                <select id="drop1" href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="true" onchange="getPatientName()">
-                                  <option id="patientid" value='' selected> -- Patient -- </option>
+                                <select id="drop1" href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="true" onchange="getPatientJonintDirection()">
+                                  <option id="patientid" value='' selected> 환자 리스트 </option>
                                 </select>
                               </li>
 
                               <li role="presentation" class="dropdown" id="drop2-wrapper">
                                 <select id="drop2" href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="true" onchange="setJointDirection()">
-                                  <option id="jointdirection" value='' selected> -- Joint Direction -- </option>
+                                  <option id="jointdirection" value='' selected> 측정 부위 </option>
                                 </select>
                               </li>
                             </ul>

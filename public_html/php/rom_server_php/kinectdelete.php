@@ -20,7 +20,7 @@ if(isset($_POST['kinectid']) )
 	$return_arr = Array();
 
 	$result = mysqli_query($connection,
-		"INSERT INTO rom_kinectsc2(patientid,jointdirection,datetime,forcecode) SELECT patientid,jointdirection,now(),forcecode from 
+		"INSERT INTO rom_kinectsc2(kinectid,patientid,jointdirection,datetime,forcecode) SELECT kinectid,patientid,jointdirection,now(),forcecode from
 		rom_kinectsc where kinectid = '".$kinectid."'");
 
 	echo result;

@@ -17,7 +17,7 @@ if(isset($_POST['patientid']))
 
 	$return_arr = Array();
 
-	$result = mysqli_query($connection,"SELECT * FROM rom_checkdate WHERE patientid='".$_POST['patientid']."' ORDER BY jointdirection, datetime");
+	$result = mysqli_query($connection,"SELECT * FROM rom_checkdate WHERE patientid='".$_POST['patientid']."' ORDER BY datetime DESC");
 
 	while ($row = mysqli_fetch_array($result)) {
 		$row_array['checkdateid'] = $row['checkdateid'];
@@ -30,21 +30,7 @@ if(isset($_POST['patientid']))
 	}
 
 	echo json_encode($return_arr,JSON_UNESCAPED_UNICODE);
-}
-else if(isset($_POST['checkdateid']))
-{
-	$connection = mysqli_connect(DB_HOST,DB_USER,DB_PASSWORD,DB_DATABASE);
-
-	$return_arr = Array();
-
-	$result = mysqli_query($connection,"SELECT * FROM rom_checkdate WHERE checkdateid='".$_POST['checkdateid']."' ORDER BY jointdirection, datetime");
-
-	while ($row = mysqli_fetch_array($result)) {
-		$row_array['image'] = $row['image'];
-		$row_array['movie'] = $row['movie'];
-		array_push($return_arr,$row_array);
-	}
-
-	echo json_encode($return_arr,JSON_UNESCAPED_UNICODE);
+}else{
+	echo "Error";
 }
 ?>
