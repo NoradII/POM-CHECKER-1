@@ -173,3 +173,18 @@ footer {
 .dragColumn{
 	cursor: pointer;
 }
+
+#closeButton {
+    float:right;
+    display:inline;
+    padding:2px 5px;
+		font-size: 15px;
+}
+
+#closeButton:hover {
+	float:right;
+  display:inline;
+  padding:2px 5px;
+	font-size: 15px;
+	color: red;
+}

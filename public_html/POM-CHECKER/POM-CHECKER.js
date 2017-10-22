@@ -1,7 +1,5 @@
 "use strict";
 var selectedId;
-// TODO : 어디서 쓰이는지 확인지 안됨. 확인 필요.
-//var i = 1;
 var ip;
 var setViewList;
 
@@ -10,7 +8,7 @@ window.onload = function () {
 
   $(".dragColumns").sortable();
   getPatientName();
-  setViewList = setInterval(viewBeforeMeasurementList, 1000);
+  //setViewList = setInterval(viewBeforeMeasurementList, 1000);
   var uid = localStorage.getItem("uid");
   if(uid === 'undefined' || uid === null){
     location.href = "./login.html";
@@ -25,6 +23,25 @@ window.onload = function () {
   });
 
 };
+
+function clickCloseButton(kinectid) {
+  // TODO : log에 undefined라고 되어있어서 다시 해봐야할듯..
+  var kinectscId = document.getElementById(kinectid).parentNode.parentNode.data_kinectid;
+  console.log("kinectid : " + kinectscId);
+  var data = {kinectid : kinectscId};
+  // $.ajax({
+  //     url: "http://" + ip + "/php/rom_web_php/delete_schedule_item.php",
+  //     type: 'POST',
+  //     data: data,
+  //     dataType: 'html',
+  //     success: function(data){
+  //       console.log("success");
+  //     },
+  //     error: function(request, status, error){
+  //       console.log(request, status, error);
+  //     },
+  // });
+}
 
 function setViewListPause(){
   //onDragStart
@@ -63,10 +80,6 @@ function getPatientName(){
       dataType: 'json',
       success: function(data){
         $("#patientlist").empty();
-
-        // TODO: 마지막 업데이트 기준으로 sort하기
-        // 원래 있던 환자가 또 진단을 할 시 제일 위로 적용. 하지만 굳이 구현하지 않고, 검색으로 가능해보임
-        // 같은 환자에 대해서 측정 완료 시 rom_checkdata 테이블의 날짜가 업데이트 되면, rom_patient 테이블의 날짜도 업데이트 되게끔하면 될 듯
 
         data.sort(function(a, b) {
           return b.lastupdate > a.lastupdate ? 1 : b.lastupdate < a.lastupdate  ? -1 : 0;
@@ -379,7 +392,7 @@ function viewBeforeMeasurementList()
         var new_kinectscList = document.createElement("div");
         new_kinectscList.setAttribute("id",patientid);
         new_kinectscList.setAttribute("class", "dragColumn");
-        new_kinectscList.setAttribute("data-kinectid", kinectid);
+        new_kinectscList.setAttribute("data_kinectid", kinectid);
         new_kinectscList.setAttribute("data-forcecode", forcecode);
         new_kinectscList.style["border"] = "1px solid #ccc";
         new_kinectscList.style["border-radius"] = "5px";
@@ -389,12 +402,18 @@ function viewBeforeMeasurementList()
         var row_div = document.createElement("div");
         row_div.setAttribute("class", "row");
 
+        var close_container = document.createElement("span");
+        close_container.setAttribute("id", "closebtn");
+        close_container.setAttribute("class", "col-md-1");
+        close_container.setAttribute("onclick", "clickCloseButton(this.id)");
+        close_container.innerHTML = "x";
+
         if(i==1){
           new_kinectscList.style["border"] = "3px solid #ff3f3f";
         }
 
         var patient_id = document.createElement("div");
-        patient_id.setAttribute("class", "col-md-12 col-sm-6 col-xs-6 baseinfo");
+        patient_id.setAttribute("class", "col-md-11 col-sm-6 col-xs-6 baseinfo");
         patient_id.innerHTML = "<b>이름 : </b>"+ name;
 
         var patientjointdirection = document.createElement("div");
@@ -402,6 +421,7 @@ function viewBeforeMeasurementList()
         patientjointdirection.innerHTML = "<b>부위 : </b>" + jointdirection;
 
         row_div.appendChild(patient_id);
+        row_div.appendChild(close_container);
         row_div.appendChild(patientjointdirection);
 
         new_kinectscList.appendChild(row_div);
