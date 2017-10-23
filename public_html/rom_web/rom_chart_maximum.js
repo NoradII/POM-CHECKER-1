@@ -467,6 +467,7 @@ function setJointDirection() {
     video_tag.setAttribute("id", "video_tag");
     video_tag.setAttribute("width", "100%");
     video_tag.setAttribute("controls", "");
+    video_tag.setAttribute("poster", "../image/videoposter.png");
     video_container.appendChild(video_tag);
     $("#video_select").empty();
 
@@ -757,22 +758,72 @@ function getScreenshot() {
         dataType: 'json',
         success: function(data) {
             for (var i in data) {
-                // images
-                var screenshot_container = document.getElementById('screenshot_container');
-                var div_container = document.createElement("div");
-                var img_tag = document.createElement("img");
+                //XUGTFTI_11_11-10-2017_16-20-01_normal.png
+                //0:id 1:joint 2:date 3:time 4:type
+                var file = data[i];
+                var fileInfo = file.split("_");
+                var fileDate = fileInfo[2].split("-");
+                //0:month 1:day 2:year
+                if(i==0){
+                    // images
+                    var screenshot_container = document.getElementById('screenshot_container');
+                    var div_container = document.createElement("div");
+                    var img_tag = document.createElement("img");
+                    var span_tag = document.createElement("span");
 
-                img_tag.setAttribute("class", "img-responsive col-md-12 col-sm-12 col-xs-12");
-                img_tag.setAttribute("width", "100%");
-                img_tag.setAttribute("onclick", "paintOnImage(this.id)");
-                img_tag.setAttribute("src", "http://" + ip + "/screenshot/" + data[i]);
-                img_tag.setAttribute("alt", "There is no image");
-                img_tag.setAttribute("id", "img_" + (i + 2));
+                    img_tag.setAttribute("class", "img-responsive col-md-12 col-sm-12 col-xs-12");
+                    img_tag.setAttribute("width", "100%");
+                    img_tag.setAttribute("src", "../image/screenshotfolder.png");
+                    img_tag.setAttribute("alt", "There is no image");
+                    img_tag.setAttribute("id", fileInfo[2]);
+              
+                    (function() { 
+                        var filtered = data.filter(screenshotDateFilter,fileInfo[2]);
+                        img_tag.onclick = function(){
+                            paintOnImage(filtered);
+                        };
+                    })();
 
-                div_container.setAttribute("class", "div_container col-md-3 col-sm-4 col-xs-3");
+                    span_tag.innerHTML = fileDate[2]+"년 "+fileDate[0]+"월 "+fileDate[1]+"일";
 
-                screenshot_container.appendChild(div_container);
-                div_container.appendChild(img_tag);
+                    div_container.setAttribute("class", "div_container col-md-3 col-sm-4 col-xs-3");
+
+                    screenshot_container.appendChild(div_container);
+                    div_container.appendChild(img_tag);
+                    div_container.appendChild(span_tag);
+                }
+                else{
+                    var beforeFile = data[i-1];
+                    var beforeFileInfo = beforeFile.split("_");
+                    if(fileInfo[2]!=beforeFileInfo[2]){
+                       // images
+                        var screenshot_container = document.getElementById('screenshot_container');
+                        var div_container = document.createElement("div");
+                        var img_tag = document.createElement("img");
+                        var span_tag = document.createElement("span");
+
+                        img_tag.setAttribute("class", "img-responsive col-md-12 col-sm-12 col-xs-12");
+                        img_tag.setAttribute("width", "100%");
+                        img_tag.setAttribute("src", "../image/screenshotfolder.png");
+                        img_tag.setAttribute("alt", "There is no image");
+                        img_tag.setAttribute("id", fileInfo[2]);
+                       
+                       (function() { 
+                            var filtered = data.filter(screenshotDateFilter,fileInfo[2]);
+                            img_tag.onclick = function(){
+                                paintOnImage(filtered);
+                            };
+                        })();
+                        span_tag.innerHTML = fileDate[2]+"년 "+fileDate[0]+"월 "+fileDate[1]+"일";
+
+                        div_container.setAttribute("class", "div_container col-md-3 col-sm-4 col-xs-3");
+
+                        screenshot_container.appendChild(div_container);
+                        div_container.appendChild(img_tag);
+                        div_container.appendChild(span_tag);
+                    }
+      
+                }
             }
 
         },
@@ -782,7 +833,11 @@ function getScreenshot() {
     });
 }
 
-
+function screenshotDateFilter(value){
+    value = value.split("_");
+    var valueDate = value[2];
+    return valueDate == this;
+}
 
 function getMovie() {
     var video_height = $('#collapseMovie').height();
@@ -949,10 +1004,19 @@ function saveNRS() {
     setJointDirection();
 }
 
-function paintOnImage(selectedImageId){
-  var selectedImageSrc = document.getElementById(selectedImageId).src;
-  var selectedImageHeight = document.getElementById(selectedImageId).height;
-  var selectedImageWidth = document.getElementById(selectedImageId).width;
+function paintOnImage(data){
+  var select_tag = document.getElementById("paintingDate");
+  $('#paintingDate').find('option').remove().end();
+
+  for(var i in data){
+    var option = document.createElement("option");
+    option.text = data[i];
+    select_tag.add(option);
+  }
+
+  var selectedImageSrc = "http://" + ip + "/screenshot/"+data[0];
+  var selectedImageHeight = 231;
+  var selectedImageWidth = 412;
   var canvas = document.getElementById('imageCanvas');
 
   var selectedImageHudSrc = selectedImageSrc.replace("normal","hud");
@@ -973,6 +1037,10 @@ function paintOnImage(selectedImageId){
   $('#paintingModal').modal('show');
 }
 
+$("#paintingDate").change(function(){
+    alert($("#paintingDate option:selected").text());
+});
+
 $(".paintImgbtn").click(function() {
   var canvas = document.getElementById('imageCanvas');
   paper.setup(canvas);
@@ -988,7 +1056,7 @@ $(".paintImgbtn").click(function() {
   raster.position = view.center;
 
 });
-
+/*
 function savePaintedImage(){
   var canvas = document.getElementById('imageCanvas');
 
@@ -1005,7 +1073,7 @@ function savePaintedImage(){
   });
 
 }
-
+*/
 function romPrint() {
     document.getElementById('myChart').style.width = "95%";
     document.getElementById('myChart').style.height = "95%";

@@ -25,22 +25,20 @@ window.onload = function () {
 };
 
 function clickCloseButton(kinectid) {
-  // TODO : log에 undefined라고 되어있어서 다시 해봐야할듯..
-  var kinectscId = document.getElementById(kinectid).parentNode.parentNode.data_kinectid;
-  console.log("kinectid : " + kinectscId);
+  var kinectscId = kinectid.parentNode.parentNode.getAttribute("data_kinectid");
   var data = {kinectid : kinectscId};
-  // $.ajax({
-  //     url: "http://" + ip + "/php/rom_web_php/delete_schedule_item.php",
-  //     type: 'POST',
-  //     data: data,
-  //     dataType: 'html',
-  //     success: function(data){
-  //       console.log("success");
-  //     },
-  //     error: function(request, status, error){
-  //       console.log(request, status, error);
-  //     },
-  // });
+   $.ajax({
+       url: "http://" + ip + "/php/rom_web_php/delete_schedule_item.php",
+       type: 'POST',
+       data: data,
+       dataType: 'html',
+       success: function(data){
+         console.log("success");
+       },
+       error: function(request, status, error){
+         console.log(request, status, error);
+       },
+   });
 }
 
 function setViewListPause(){
@@ -403,9 +401,8 @@ function viewBeforeMeasurementList()
         row_div.setAttribute("class", "row");
 
         var close_container = document.createElement("span");
-        close_container.setAttribute("id", "closebtn");
         close_container.setAttribute("class", "col-md-1");
-        close_container.setAttribute("onclick", "clickCloseButton(this.id)");
+        close_container.setAttribute("onclick", 'clickCloseButton(this)');
         close_container.innerHTML = "x";
 
         if(i==1){
@@ -454,9 +451,11 @@ function viewMeasuring()
       var name = data[0].name;
       var jointdirection = data[0].jointdirection;
       var forcecode = data[0].forcecode;
+      var kinectid = data[0].kinectid;
       jointdirection = setNamingforJointdirection(jointdirection);
       var new_kinectscList = document.createElement("div");
       new_kinectscList.setAttribute("id",patientid);
+      new_kinectscList.setAttribute("data_kinectid", kinectid);
       new_kinectscList.setAttribute("data-forcecode", forcecode);
       new_kinectscList.setAttribute("class","measurePatient")
       new_kinectscList.style["border"] = "1px solid #ccc";
@@ -467,8 +466,13 @@ function viewMeasuring()
       var row_div = document.createElement("div");
       row_div.setAttribute("class", "row");
 
+      var close_container = document.createElement("span");
+      close_container.setAttribute("class", "col-md-1 MeasuringCloseBtn");
+      close_container.setAttribute("onclick", 'clickCloseButton(this)');
+      close_container.innerHTML = "x";
+
       var patient_id = document.createElement("div");
-      patient_id.setAttribute("class", "col-md-12 col-sm-6 col-xs-6 baseinfo");
+      patient_id.setAttribute("class", "col-md-11 col-sm-6 col-xs-6 baseinfo");
       patient_id.innerHTML = "<b>이름 : </b>"+ name;
 
       var patientjointdirection = document.createElement("div");
@@ -476,6 +480,7 @@ function viewMeasuring()
       patientjointdirection.innerHTML = "<b>부위 : </b>" + jointdirection;
 
       row_div.appendChild(patient_id);
+      row_div.appendChild(close_container);
       row_div.appendChild(patientjointdirection);
 
       new_kinectscList.appendChild(row_div);
