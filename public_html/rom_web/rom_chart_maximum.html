@@ -477,8 +477,8 @@
         <div class="modal-content">
             <div class="modal-header row">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">선택한 이미지</h4>
-                <select class="form-control" id="paintingDate">
+                <h4 class="modal-title paintingModalTitle">선택한 날짜</h4>
+                <select class="form-control" id="paintingModalSelect">
                 </select>
             </div>
             <div class="modal-body">
@@ -496,31 +496,29 @@
                         <div class="button-grid">
                             <div class="button-container">
                                 <a class="paintImgbtn">hud</a>
-                                <img src="" class="hudImg" alt="No Image" />
+                                <img src="" class="hudImg" alt="No Image" onerror='this.src="../image/noimg.png"' />
                             </div>
                         </div>
                         <div class="button-grid">
                             <div class="button-container">
                                 <a class="paintImgbtn">normal</a>
-                                <img src="" class="normalImg" />
+                                <img src="" class="normalImg" alt="No Image"/>
                             </div>
                         </div>
                         <div class="button-grid" style="margin-right:0">
                             <div class="button-container">
                                 <a class="paintImgbtn">skeleton</a>
-                                <div class="button-image">
-                                    <img src="" class="skeletonImg" />
-                                </div>
+                                <img src="" class="skeletonImg" alt="No Image" onerror='this.src="../image/noimg.png"' />                           
                             </div>
                         </div>
                     </div>
 
-                <div class="form-group" id="form-group-image">
-                    <canvas id="imageCanvas" width="852" height="540" style="-webkit-user-drag: none; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); background: #fff"></canvas>
-                </div>
+                    <canvas id="imageCanvas" style="-webkit-user-drag: none; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); background: #fff; width: 100%;
+  height: 50%;"></canvas>
+             
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" onclick="savePaintedImage()">저장</button>
+                <button type="button" class="btn btn-primary" onclick="$('#paintingModal').modal('hide');">확인</button>
             </div>
 
         </div>
