@@ -765,72 +765,56 @@ function getScreenshot() {
                 var fileDate = fileInfo[2].split("-");
                 //0:month 1:day 2:year
                 if(i==0){
-                    // images
-                    var screenshot_container = document.getElementById('screenshot_container');
-                    var div_container = document.createElement("div");
-                    var img_tag = document.createElement("img");
-                    var span_tag = document.createElement("span");
-
-                    img_tag.setAttribute("class", "img-responsive col-md-12 col-sm-12 col-xs-12");
-                    img_tag.setAttribute("width", "100%");
-                    img_tag.setAttribute("src", "../image/screenshotfolder.png");
-                    img_tag.setAttribute("alt", "There is no image");
-                    img_tag.setAttribute("id", fileInfo[2]);
-              
-                    (function() { 
-                        var filtered = data.filter(screenshotDateFilter,fileInfo[2]);
-                        img_tag.onclick = function(){
-                            paintOnImage(filtered);
-                        };
-                    })();
-
-                    span_tag.innerHTML = fileDate[2]+"년 "+fileDate[0]+"월 "+fileDate[1]+"일";
-
-                    div_container.setAttribute("class", "div_container col-md-3 col-sm-4 col-xs-3");
-
-                    screenshot_container.appendChild(div_container);
-                    div_container.appendChild(img_tag);
-                    div_container.appendChild(span_tag);
+                   makeScreenshotFolder(fileInfo, fileDate, data);
                 }
                 else{
                     var beforeFile = data[i-1];
                     var beforeFileInfo = beforeFile.split("_");
                     if(fileInfo[2]!=beforeFileInfo[2]){
-                       // images
-                        var screenshot_container = document.getElementById('screenshot_container');
-                        var div_container = document.createElement("div");
-                        var img_tag = document.createElement("img");
-                        var span_tag = document.createElement("span");
-
-                        img_tag.setAttribute("class", "img-responsive col-md-12 col-sm-12 col-xs-12");
-                        img_tag.setAttribute("width", "100%");
-                        img_tag.setAttribute("src", "../image/screenshotfolder.png");
-                        img_tag.setAttribute("alt", "There is no image");
-                        img_tag.setAttribute("id", fileInfo[2]);
-                       
-                       (function() { 
-                            var filtered = data.filter(screenshotDateFilter,fileInfo[2]);
-                            img_tag.onclick = function(){
-                                paintOnImage(filtered);
-                            };
-                        })();
-                        span_tag.innerHTML = fileDate[2]+"년 "+fileDate[0]+"월 "+fileDate[1]+"일";
-
-                        div_container.setAttribute("class", "div_container col-md-3 col-sm-4 col-xs-3");
-
-                        screenshot_container.appendChild(div_container);
-                        div_container.appendChild(img_tag);
-                        div_container.appendChild(span_tag);
-                    }
-      
+                        makeScreenshotFolder(fileInfo, fileDate, data);
+                    }      
                 }
             }
-
         },
         error: function(request, status, error) {
             console.log(request, status, error);
         },
     });
+}
+
+function makeScreenshotFolder(fileInfo, fileDate, data) {
+    // images
+    var screenshot_container = document.getElementById('screenshot_container');
+    var div_container = document.createElement("div");
+    var img_tag = document.createElement("img");
+    var span_tag = document.createElement("span");
+
+    img_tag.setAttribute("class", "img-responsive col-md-12 col-sm-12 col-xs-12");
+    img_tag.setAttribute("width", "100%");
+    img_tag.setAttribute("src", "../image/screenshotfolder.png");
+    img_tag.setAttribute("alt", "There is no image");
+    img_tag.setAttribute("id", fileInfo[2]);
+    img_tag.style["cursor"] = "pointer";
+
+    (function() {
+        var filtered = data.filter(screenshotDateFilter, fileInfo[2]);
+        var date = fileDate[2] + "년 " + fileDate[0] + "월 " + fileDate[1] + "일";
+        img_tag.onclick = function() {
+            viewPaintModal(filtered, date);
+        };
+    })();
+
+    span_tag.innerHTML = fileDate[2] + "년 " + fileDate[0] + "월 " + fileDate[1] + "일";
+    span_tag.style["display"] = "inline-block"
+    span_tag.style["text-align"] = "center";
+    span_tag.style["width"] = "100%";
+    span_tag.style["margin-top"] = "5px";
+
+    div_container.setAttribute("class", "div_container col-md-1 col-sm-2 col-xs-1");
+
+    screenshot_container.appendChild(div_container);
+    div_container.appendChild(img_tag);
+    div_container.appendChild(span_tag);
 }
 
 function screenshotDateFilter(value){
@@ -912,7 +896,13 @@ function getMovie() {
 
 function selectMovie(filename, patient_id) {
     var video_container = document.getElementById('video_container');
-    var video_tag = document.getElementById('video_tag');
+    $("#video_tag").remove();
+    var video_tag = document.createElement('video');
+    video_tag.setAttribute("id", "video_tag");
+    video_tag.setAttribute("width", "100%");
+    video_tag.setAttribute("controls", "");
+    video_tag.setAttribute("poster", "../image/videoposter.png");
+    video_container.appendChild(video_tag);
     var source_tag = document.createElement('source');
     source_tag.setAttribute("id", "source_tag");
     source_tag.setAttribute("type", "video/mp4");
@@ -924,7 +914,6 @@ function selectMovie(filename, patient_id) {
 }
 
 var checkdateid;
-
 
 function setNrsRange(target,index) {
 
@@ -939,7 +928,6 @@ function setNrsRange(target,index) {
             val = (curVal - 1) * 9.8,
             style = '';
 
-
         // Set active label
         $('.range-labels li').removeClass('active selected');
 
@@ -953,7 +941,6 @@ function setNrsRange(target,index) {
             style += '.range {background: linear-gradient(to right, #37adbf 0%, #37adbf ' + val + '%, #fff ' + val + '%, #fff 100%)}';
             style += '.range input::-' + prefs[i] + '{background: linear-gradient(to right, #37adbf 0%, #37adbf ' + val + '%, #b2b2b2 ' + val + '%, #b2b2b2 100%)}';
         }
-
         return style;
     }
 
@@ -983,7 +970,6 @@ function setNRS(target){
   }
 }
 
-
 function saveNRS() {
   var nrs = $('.range-labels .selected').last().text();
   var data = {nrs : nrs, checkdateid : checkdateid};
@@ -1004,41 +990,44 @@ function saveNRS() {
     setJointDirection();
 }
 
-function paintOnImage(data){
-  var select_tag = document.getElementById("paintingDate");
-  $('#paintingDate').find('option').remove().end();
-
+function viewPaintModal(data, date){
+  var select_tag = document.getElementById("paintingModalSelect");
+  $('#paintingModalSelect').find('option').remove().end();
+  $('.paintingModalTitle').text(date);
+  //XUGTFTI_11_10-10-2017_16-20-01_normal.png
   for(var i in data){
     var option = document.createElement("option");
-    option.text = data[i];
+    var filename = data[i].split("_");
+    var filetime = filename[3].split("-");
+    option.text = filetime[0]+"시 "+filetime[1]+"분 "+filetime[2]+"초";
+    option.setAttribute("id",data[i]);
     select_tag.add(option);
   }
+  paintOnImage();  
+}
 
-  var selectedImageSrc = "http://" + ip + "/screenshot/"+data[0];
-  var selectedImageHeight = 231;
-  var selectedImageWidth = 412;
+function paintOnImage(){
   var canvas = document.getElementById('imageCanvas');
-
+  paper.setup(canvas);
+  paper.install(window);
+  var selectedImgId = $("#paintingModalSelect option:selected").attr("id");
+  var selectedImageSrc = "http://" + ip + "/screenshot/"+selectedImgId;
   var selectedImageHudSrc = selectedImageSrc.replace("normal","hud");
   var selectedImageSkeletonSrc = selectedImageSrc.replace("normal","");
-
+  var raster = new Raster(selectedImageSrc);
+  //왜 적용이 안되는 걸까요 왜그러는걸까요.. ㅎ ㅏ
+  raster.width = 852;
+  raster.height = (raster.width*339)/603;
+  raster.position = view.center;
   $(".hudImg").attr("src",selectedImageHudSrc);
   $(".normalImg").attr("src",selectedImageSrc);
   $(".skeletonImg").attr("src",selectedImageSkeletonSrc);
 
-  paper.setup(canvas);
-  paper.install(window);
-
-  var raster = new Raster(selectedImageSrc);
-  raster.width = 852;
-  raster.height = (raster.width*selectedImageHeight)/selectedImageWidth;
-  raster.position = view.center;
-
   $('#paintingModal').modal('show');
 }
 
-$("#paintingDate").change(function(){
-    alert($("#paintingDate option:selected").text());
+$("#paintingModalSelect").change(function(){
+   paintOnImage();
 });
 
 $(".paintImgbtn").click(function() {
@@ -1047,15 +1036,13 @@ $(".paintImgbtn").click(function() {
   paper.install(window);
   var selectedtype = $(this).text();
   var selectedSrc = $("."+selectedtype+"Img").attr("src");
-  var selectedImageHeight = 231;
-  var selectedImageWidth = 412;
 
   var raster = new Raster(selectedSrc);
-  raster.width = 852;
-  raster.height = (raster.width*selectedImageHeight)/selectedImageWidth;
+  raster.width = canvas.width-90;
+  raster.height = (raster.width*651)/1159;
   raster.position = view.center;
-
 });
+
 /*
 function savePaintedImage(){
   var canvas = document.getElementById('imageCanvas');
@@ -1074,6 +1061,7 @@ function savePaintedImage(){
 
 }
 */
+
 function romPrint() {
     document.getElementById('myChart').style.width = "95%";
     document.getElementById('myChart').style.height = "95%";
@@ -1085,6 +1073,7 @@ function romPrint() {
     window.print();
 }
 
+/*
 function takeScreenShot() {
 
     html2canvas(document.getElementsByClassName("profile_details"), {
@@ -1170,6 +1159,7 @@ function takeScreenShot() {
         },
     });
 }
+*/
 
 function goMainPage() {
     location.href = "../POM-CHECKER/POM-CHECKER.html";

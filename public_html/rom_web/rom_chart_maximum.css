@@ -64,8 +64,13 @@ span {display:inline-block}
   font-family: sans-serif;
 }
 
-#paintingModal{
-  height: 900px;
+#paintingModal .modal-dialog{
+  width: 50%;
+  height: 100%;
+}
+
+#paintingModal .modal-header{
+  border-bottom: none;
 }
 
 #screenshot_container{
@@ -339,7 +344,7 @@ span {display:inline-block}
 
 /*paint modal button css*/
 .button-images{
-  width: 852px;
+  width: 100%;
 }
 .button-container {
 position: relative;
