@@ -99,10 +99,8 @@
         height: $item.outerHeight(),
         width: $item.outerWidth()
       })
-      $item.addClass(container.group.options.draggedClass)
-      $("body").addClass(container.group.options.bodyClass)
-      forcecode = $item.index();
-      console.log(forcecode);
+      $item.addClass(container.group.options.draggedClass);
+      $("body").addClass(container.group.options.bodyClass);
       setViewListPause();
      // console.log("isPaused");
     },
@@ -117,7 +115,7 @@
         changeForcecodePrev = $(".dragColumn").eq($item.index()-1).attr("data-forcecode");
       }
       changeForcecodeNext = $(".dragColumn").eq($item.index()+1).attr("data-forcecode");
-      setViewListPlay($item.attr("data-kinectid"), changeForcecodePrev, changeForcecodeNext, $item.index(), $item.attr("data-forcecode"));
+      setViewListPlay($item.attr("data_kinectid"), changeForcecodePrev, changeForcecodeNext, $item.index(), $item.attr("data-forcecode"));
     },
     // Called on mousedown. If falsy value is returned, the dragging will not start.
     // Ignore if element clicked is input, select or textarea
