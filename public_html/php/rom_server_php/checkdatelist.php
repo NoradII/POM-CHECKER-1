@@ -25,6 +25,9 @@ if(isset($_POST['patientid']))
 		$row_array['datetime'] = $row['datetime'];
 		$row_array['jointdirection'] = $row['jointdirection'];
 		$row_array['maxangle'] = $row['maxangle'];
+		$row_array['side_angle'] = $row['side_angle'];
+		$row_array['sh_angle'] = $row['sh_angle'];
+		$row_array['hh_angle'] = $row['hh_angle'];
 
 		array_push($return_arr,$row_array);
 	}

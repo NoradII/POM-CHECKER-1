@@ -55,7 +55,7 @@ if(isset($_GET['patient_id']) && isset($_GET['patient_jointdirection'])) {
                 $file_array['hh_angle'] = $row['hh_angle'];
               }
               else if($patient_jointdirection=='300'){
-                $result = mysqli_query($connection,"SELECT side_head_length, side_shoulder_length, side_hip_length, side_length FROM rom_checkdate WHERE datetime = '".$datetime."' AND patientid = '".$patient_id."'");
+                $result = mysqli_query($connection,"SELECT side_head_length, side_shoulder_length, side_hip_length, side_angle FROM rom_checkdate WHERE datetime = '".$datetime."' AND patientid = '".$patient_id."'");
                 $row = mysqli_fetch_assoc($result);
                 $file_array['side_head_length'] = $row['side_head_length'];
                 $file_array['side_shoulder_length'] = $row['side_shoulder_length'];

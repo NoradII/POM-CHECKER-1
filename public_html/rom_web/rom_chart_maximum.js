@@ -256,7 +256,7 @@ var chartForSidePosture = new Chart(ctx3, {
         labels: [],
         datasets: [{
             label: 'Head length',
-            borderColor: 'rgb(0, 153, 255)',
+            borderColor: 'rgb(233, 240, 24)',
             pointRadius: 4,
             pointHitRadius: 10,
             data: [],
@@ -273,7 +273,7 @@ var chartForSidePosture = new Chart(ctx3, {
         },
         {
             label: 'Hip length',
-            borderColor: 'rgb(20, 179, 0)',
+            borderColor: 'rgb(186, 60, 0)',
             pointRadius: 4,
             pointHitRadius: 10,
             data: [],
@@ -282,7 +282,7 @@ var chartForSidePosture = new Chart(ctx3, {
         },
         {
             label: 'Angle',
-            borderColor: 'rgb(20, 179, 0)',
+            borderColor: 'rgb(57, 113, 204)',
             pointRadius: 4,
             pointHitRadius: 10,
             data: [],
@@ -291,7 +291,7 @@ var chartForSidePosture = new Chart(ctx3, {
         },
         {
             label: 'NRS',
-            borderColor: 'rgb(57, 113, 204)',
+            borderColor: 'rgb(255, 0, 0)',
             pointRadius: 4,
             pointHitRadius: 10,
             data: [],
@@ -370,11 +370,11 @@ function addData(chart, label, data, data2, data3) {
 
 function addDataForSidePosture(chart, label, data, data2, data3, data4, data5){
     chart.data.labels.push(label);
-    chart.data.datasets[0].data.push(data); // head length
-    chart.data.datasets[1].data.push(data2); // shoulder length
+    chart.data.datasets[0].data.push(data); //head length
+    chart.data.datasets[1].data.push(data2); //shoulder length
     chart.data.datasets[2].data.push(data3); //hip length
     chart.data.datasets[3].data.push(data4); //angle
-    chart.data.datasets[4].data.push(data5); // nrs
+    chart.data.datasets[4].data.push(data5); //nrs
     chart.update();
 }
 
@@ -856,7 +856,9 @@ function getMovie() {
                 li_tag.setAttribute("class", "list-group-item video_list list-group-item-action");
                 li_tag.setAttribute("data-filename", file);
 
-                var h5_tag = document.createElement("h5");
+                //TODO : proto type 1.2
+                //angle 표시 datetime 일치 오류로 표시 불가능
+                /* var h5_tag = document.createElement("h5");
                 h5_tag.setAttribute("class", "mb-1");
                 if(patient_jointdirection == '201'){
                     h5_tag.innerHTML = "Shoudler : "+ data[i].sh_angle + ", Pelvic : " + data[i].hh_angle;
@@ -867,12 +869,13 @@ function getMovie() {
                 else{
                     h5_tag.innerHTML = "Max Angle : "+ data[i].angle + " °";
                 }
+                li_tag.appendChild(h5_tag);
+                */
 
                 var p_tag = document.createElement("p");
                 p_tag.setAttribute("class", "mb-1");
                 p_tag.innerHTML = date[2] + '년 ' + date[0] + '월 ' + date[1] + '일 ' + time[0] + '시 ' + time[1] + '분';
 
-                li_tag.appendChild(h5_tag);
                 li_tag.appendChild(p_tag);
                 video_select_container.appendChild(li_tag);
 
@@ -893,7 +896,6 @@ function getMovie() {
     });
 }
 
-
 function selectMovie(filename, patient_id) {
     var video_container = document.getElementById('video_container');
     $("#video_tag").remove();
@@ -912,8 +914,6 @@ function selectMovie(filename, patient_id) {
 
     $('#video_tag').get(0).play()
 }
-
-var checkdateid;
 
 function setNrsRange(target,index) {
 
@@ -957,9 +957,9 @@ function setNrsRange(target,index) {
     else{
         $rangeInput.val(index + 1).trigger('input');
     }
-
 }
 
+var checkdateid;
 function setNRS(target){
     setNrsRange('modify', 0);
   checkdateid = target.getAttribute('data-id');
@@ -1007,22 +1007,19 @@ function viewPaintModal(data, date){
 }
 
 function paintOnImage(){
-  var canvas = document.getElementById('imageCanvas');
-  paper.setup(canvas);
-  paper.install(window);
   var selectedImgId = $("#paintingModalSelect option:selected").attr("id");
   var selectedImageSrc = "http://" + ip + "/screenshot/"+selectedImgId;
   var selectedImageHudSrc = selectedImageSrc.replace("normal","hud");
   var selectedImageSkeletonSrc = selectedImageSrc.replace("normal","");
-  var raster = new Raster(selectedImageSrc);
-  //왜 적용이 안되는 걸까요 왜그러는걸까요.. ㅎ ㅏ
-  raster.width = 852;
-  raster.height = (raster.width*339)/603;
-  raster.position = view.center;
+  var canvas = document.getElementById('imageCanvas');
+  paper.setup(canvas);
+  paper.install(window);
+
+  var raster = new Raster();
+
   $(".hudImg").attr("src",selectedImageHudSrc);
   $(".normalImg").attr("src",selectedImageSrc);
   $(".skeletonImg").attr("src",selectedImageSkeletonSrc);
-
   $('#paintingModal').modal('show');
 }
 
@@ -1036,9 +1033,10 @@ $(".paintImgbtn").click(function() {
   paper.install(window);
   var selectedtype = $(this).text();
   var selectedSrc = $("."+selectedtype+"Img").attr("src");
-
+  var selectedWidth = $("."+selectedtype+"Img").width();
+  var selectedHeight = $("."+selectedtype+"Img").height();
   var raster = new Raster(selectedSrc);
-  raster.width = canvas.width-90;
+  raster.width = canvas.width;
   raster.height = (raster.width*651)/1159;
   raster.position = view.center;
 });
@@ -1061,7 +1059,6 @@ function savePaintedImage(){
 
 }
 */
-
 function romPrint() {
     document.getElementById('myChart').style.width = "95%";
     document.getElementById('myChart').style.height = "95%";
@@ -1072,7 +1069,6 @@ function romPrint() {
 
     window.print();
 }
-
 /*
 function takeScreenShot() {
 
@@ -1243,8 +1239,6 @@ function setNumberingforJointdirection(jointdirection) {
     }
     return jointdirection;
 }
-
-
 
 function setNamingforJointdirection(jointdirection) {
     switch (jointdirection) {

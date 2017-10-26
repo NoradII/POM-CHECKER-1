@@ -8,7 +8,7 @@ window.onload = function () {
 
   $(".dragColumns").sortable();
   getPatientName();
-  //setViewList = setInterval(viewBeforeMeasurementList, 1000);
+  setViewList = setInterval(viewBeforeMeasurementList, 1000);
   var uid = localStorage.getItem("uid");
   if(uid === 'undefined' || uid === null){
     location.href = "./login.html";
@@ -132,6 +132,9 @@ function getCheckDate(clickId) {
           var datetime = data[i].datetime;
           var jointdirection = data[i].jointdirection;
           var maxangle = data[i].maxangle;
+          var side_angle = data[i].side_angle;
+          var sh_angle = data[i].sh_angle;
+          var hh_angle = data[i].hh_angle
           jointdirection = setNamingforJointdirection(jointdirection);
           var new_checkdatelist = document.createElement("div");
           new_checkdatelist.setAttribute("class","btn btn-default btn-group-justified");
@@ -157,7 +160,16 @@ function getCheckDate(clickId) {
 
           var patientmaxangle = document.createElement("div");
           patientmaxangle.setAttribute("class", "col-md-12 col-sm-6 col-xs-6 baseinfo");
-          patientmaxangle.innerHTML = "<b>최대각도 : </b>"+ maxangle + "°";
+
+          if(data[i].jointdirection=="300"){
+            patientmaxangle.innerHTML = "<b>각도 : </b>"+ side_angle + "°";
+          }
+          else if(data[i].jointdirection=="201"){
+            patientmaxangle.innerHTML = "<b>Shoulder : </b>"+ sh_angle + "°, <b>Pelvic : </b>"+ hh_angle +"°";
+          }
+          else{
+            patientmaxangle.innerHTML = "<b>최대각도 : </b>"+ maxangle + "°";
+          }          
 
           row_div.appendChild(checkdatetime);
           row_div.appendChild(patientjointdirection);
