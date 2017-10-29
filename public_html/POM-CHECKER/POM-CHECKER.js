@@ -22,12 +22,6 @@ window.onload = function () {
       }
   });
 
-  $('#checkupModal').on('hidden.bs.modal', function () {
-     $('#drop1').val($('#drop1').children().eq(0).val());
-     document.getElementById("test3").checked = false;
-     document.getElementById("test4").checked = false;
-});
-
 };
 
 function clickCloseButton(kinectid) {
@@ -56,6 +50,8 @@ function setViewListPlay(kinectid, changeForcecodePrev, changeForcecodeNext, ind
  //onDrop
  var forcecodeAdd = (changeForcecodeNext - changeForcecodePrev)/2;
  forcecode = parseInt(changeForcecodePrev) + parseInt(forcecodeAdd);
+ console.log(changeForcecodePrev+","+changeForcecodeNext);
+ console.log(forcecodeAdd+","+forcecode);
 
  if(index!=-1){
   var data = {kinectid : kinectid, forcecode : forcecode};
@@ -173,7 +169,7 @@ function getCheckDate(clickId) {
           }
           else{
             patientmaxangle.innerHTML = "<b>최대각도 : </b>"+ maxangle + "°";
-          }          
+          }
 
           row_div.appendChild(checkdatetime);
           row_div.appendChild(patientjointdirection);
@@ -739,10 +735,10 @@ function setNamingforJointdirection(jointdirection) {
       jointdirection = 'Right Elbow Supination / Pronation';
       break;
     case "61":
-      jointdirection = 'Left Knee Flexion / Extension';
+      jointdirection = 'Left Elbow Lateral Rotaion';
       break;
     case "62":
-      jointdirection = 'Right Knee Flexion / Extension';
+      jointdirection = 'Right Elbow Lateral Rotaion';
       break;
     case "71":
       jointdirection = 'Left Hip Flexion / Extension';

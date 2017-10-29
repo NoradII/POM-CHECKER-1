@@ -324,9 +324,7 @@
                             <div class="bs-example-popovers center">
                               <!--<button type="button" class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Take ScreenShot!" onclick="takeScreenShot()">Capture</button>
                               -->
-                              <button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Go" onclick="alimtalk()">알림톡</button>
                               <button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Go printing!" onclick="romPrint()">Print</button>
-
 
                             </div>
                           </div>
@@ -392,7 +390,7 @@
         </div>
       </div>
 
-      <div class="container-fluid" style='page-break-before:always; margin-top: 10px' id="image-box">
+      <div class="container-fluid" style='margin-top: 10px' id="image-box">
         <div class="row">
           <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
@@ -452,7 +450,7 @@
         </div>
       </div>
 
-      <div class="container-fluid" id="screenshot-box" style='page-break-before:always'>
+      <div class="container-fluid" id="screenshot-box">
         <div class="row">
           <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
@@ -510,13 +508,13 @@
                         <div class="button-grid" style="margin-right:0">
                             <div class="button-container">
                                 <a class="paintImgbtn">skeleton</a>
-                                <img src="" class="skeletonImg" alt="No Image" onerror='this.src="../image/noimg.png"' />                           
+                                <img src="" class="skeletonImg" alt="No Image" onerror='this.src="../image/noimg.png"' />
                             </div>
                         </div>
                     </div>
 
                     <canvas id="imageCanvas" style="-webkit-user-drag: none; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); background: #fff; width: 100%;" height="180"></canvas>
-             
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" onclick="$('#paintingModal').modal('hide');">확인</button>

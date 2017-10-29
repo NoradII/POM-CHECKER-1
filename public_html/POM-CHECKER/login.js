@@ -76,7 +76,7 @@ function registerForAdmin(){
   }
 
   if(email.value === ""){
-    alert("Password란을 입력해주세요.");
+    alert("e-mail란을 입력해주세요.");
     //document.getElementById('form-group-number').setAttribute('class','form-group has-error has-feedback');
     email.focus();
     return;

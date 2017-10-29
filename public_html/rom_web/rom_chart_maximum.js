@@ -409,6 +409,7 @@ function getPatientJonintDirection() {
                   patientJointdirection = setNamingforJointdirection(patientJointdirection);
                   var data = {"id" : patientJointdirection, "text" : patientJointdirection};
                   jointdirectionList.push(data);
+                  console.log("patientJointdirection : " + jointdirectionList);
               });
 
               $("#drop2").select2({
@@ -533,10 +534,10 @@ function setJointDirection() {
                         data2.push("80");
                         break;
                     case "61":
-                        data2.push("135");
+                        data2.push("60");
                         break;
                     case "62":
-                        data2.push("135");
+                        data2.push("60");
                         break;
                     case "71":
                         data2.push("120");
@@ -607,15 +608,14 @@ function setJointDirection() {
                     data[i].side_shoulder_length *= 1;
                     data[i].side_hip_length *= 1;
                     data[i].side_angle *= 1;
-                    angle = data[i].side_angle+" °";
-                    rate = data[i].side_head_length + " °, " + data[i].side_shoulder_length + " °, " + data[i].side_hip_length;
+                    angle = data[i].side_angle;
+                    rate = data[i].side_head_length + ", " + data[i].side_shoulder_length + ", " + data[i].side_hip_length;
                     document.getElementById('image-box').style.display = 'none';
                 }
 
                  else {
                     document.getElementById('image-box').style.display = 'block';
                     document.getElementById('rom-table-thead-angle').innerHTML = "Max Angle";
-                    document.getElementById('rom-table-thead-variation').innerHTML = "Variation";
                     data[i].maxangle *= 1;
                     angle = data[i].maxangle.toFixed(2) + " °";
                     if (i >= 1) {
@@ -633,7 +633,7 @@ function setJointDirection() {
                 table.row.add([
                     info + data[i].datetime,
                     info + angle,
-                    info + rate +" °",
+                    info + rate + " °",
                     info + nrs,
                 ]).draw(false);
 
@@ -772,7 +772,7 @@ function getScreenshot() {
                     var beforeFileInfo = beforeFile.split("_");
                     if(fileInfo[2]!=beforeFileInfo[2]){
                         makeScreenshotFolder(fileInfo, fileDate, data);
-                    }      
+                    }
                 }
             }
         },
@@ -1003,7 +1003,7 @@ function viewPaintModal(data, date){
     option.setAttribute("id",data[i]);
     select_tag.add(option);
   }
-  paintOnImage();  
+  paintOnImage();
 }
 
 function paintOnImage(){
@@ -1157,33 +1157,6 @@ function takeScreenShot() {
 }
 */
 
-function alimtalk(){
-    var data = [
-    {
-     "userId": "teamelysium",
-     "message_type": "at",
-     "phn": "821051358616",
-     "profile": "722b710c822a43cef05bf53fe67cbc62724bc11b",
-     "tmplId": "1",
-     "msg": "[카카오뮤직] 회원가입 안내\n한소희님, 카카오뮤직 회원이 되신 것을 환영합니다.\n\n▶신규 가입 회원 혜택\n1개월 무료 스트리밍 서비스 제공\n카카오톡 이모티콘 증정"
-     }];
-
-   $.ajax({
-       url: "https://dev-alimtalk-api.bizmsg.kr:1443/v1/sender/send",
-       type: 'POST',
-       data: JSON.stringify(data),
-       contentType: "application/json; charset=utf-8",
-       dataType: "json",
-       success: function(data){
-         console.log(data);
-       },
-       error: function(request, status, error){
-         console.log(request, status, error);
-       },
-   });
-}
-
-
 function goMainPage() {
     location.href = "../POM-CHECKER/POM-CHECKER.html";
 }
@@ -1220,12 +1193,12 @@ function setNumberingforJointdirection(jointdirection) {
         case "Right Elbow Supination / Pronation":
             jointdirection = '52';
             break;
-        case "Left Knee Flexion / Extension":
-            jointdirection = '61';
-            break;
-        case "Right Knee Flexion / Extension":
-            jointdirection = '62';
-            break;
+        case "Left Elbow Lateral Rotaion":
+          jointdirection = '61';
+          break;
+        case "Right Elbow Lateral Rotaion":
+          jointdirection = '62';
+          break;
         case "Left Hip Flexion / Extension":
             jointdirection = '71';
             break;
@@ -1276,10 +1249,10 @@ function setNamingforJointdirection(jointdirection) {
             jointdirection = 'Right Shoulder Flexion / Extension';
             break;
         case "21":
-            jointdirection = 'Left Shoulder Abduction / Adduction';
+            jointdirection = 'Left Shoulder Abduction / Addunction';
             break;
         case "22":
-            jointdirection = 'Right Shoulder Abduction / Adduction';
+            jointdirection = 'Right Shoulder Abduction / Addunction';
             break;
         case "31":
             jointdirection = 'Left Shoulder Rotation';
@@ -1300,10 +1273,10 @@ function setNamingforJointdirection(jointdirection) {
             jointdirection = 'Right Elbow Supination / Pronation';
             break;
         case "61":
-            jointdirection = 'Left Knee Flexion / Extension';
+            jointdirection = 'Left Elbow Lateral Rotaion';
             break;
         case "62":
-            jointdirection = 'Right Knee Flexion / Extension';
+            jointdirection = 'Right Elbow Lateral Rotaion';
             break;
         case "71":
             jointdirection = 'Left Hip Flexion / Extension';

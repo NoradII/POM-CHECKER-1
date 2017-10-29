@@ -400,3 +400,9 @@ height: auto !important;
 .paintImgbtn{
   cursor: pointer;
 }
+
+@media print {
+  no-print-page {
+    display: none;
+  }
+}
