@@ -168,7 +168,7 @@ function getCheckDate(clickId) {
             patientmaxangle.innerHTML = "<b>각도 : </b>"+ side_angle + "°";
           }
           else if(data[i].jointdirection === "201"){
-            patientmaxangle.innerHTML = "<b>S.balance : </b>"+ sh_angle.toFixed(2) + "°, <b>P.balance : </b>"+ hh_angle.toFixed(2) +"°";
+            patientmaxangle.innerHTML = "<b>S.balance : </b>"+ sh_angle + "°, <b>P.balance : </b>"+ hh_angle +"°";
           }
           else{
             patientmaxangle.innerHTML = "<b>최대각도 : </b>"+ maxangle + "°";
@@ -461,6 +461,10 @@ function viewMeasuring()
     success: function(data){
       $("#Measuring").empty();
       console.log("viewMeasuring List DATA :" + data);
+
+      if(data.length === 0) {
+        return;
+      }
 
       var patientid = data[0].patientid;
       var name = data[0].name;
