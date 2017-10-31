@@ -1235,6 +1235,9 @@ function setNumberingforJointdirection(jointdirection) {
 		    case "Side Posture":
             jointdirection = '300';
             break;
+        case "Moiré":
+            jointdirection = '400';
+            break;
         default:
     }
     return jointdirection;
@@ -1311,8 +1314,11 @@ function setNamingforJointdirection(jointdirection) {
         case "201":
             jointdirection = 'Posture';
             break;
-		case "300":
+		    case "300":
             jointdirection = 'Side Posture';
+            break;
+        case "400":
+            jointdirection = 'Moiré';
             break;
         default:
     }

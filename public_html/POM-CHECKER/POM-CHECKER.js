@@ -301,7 +301,7 @@ function registerMeasurement(){
     document.getElementById("ModalFooter").innerHTML = "검진 시작하기";
     $('#modal-body').show();
 
-    if (selectedJointdirection === "201" || selectedJointdirection === "300") { // Posture 또는 Side Posture인 경우
+    if (selectedJointdirection === "201" || selectedJointdirection === "300" || selectedJointdirection === "400") { // Posture 또는 Side Posture인 경우
       document.getElementById('modal-direction').style.visibility = 'hidden';
     }
     else if(selectedJointdirection === "100"){
@@ -334,7 +334,7 @@ function startMeasurement(){
     }
 
     // 측정 방향에 대한 예외처리
-    if (selected_jointdirection === '201' || selected_jointdirection === '300') {
+    if (selected_jointdirection === '201' || selected_jointdirection === '300' || selected_jointdirection === '400') {
     }
     else{
       if ((left.checked === false) && (right.checked === false)) {
@@ -782,6 +782,9 @@ function setNamingforJointdirection(jointdirection) {
       break;
     case "300":
       jointdirection = 'Side Posture';
+      break;
+    case "400":
+      jointdirection = 'Moiré';
       break;
     default:
   }
