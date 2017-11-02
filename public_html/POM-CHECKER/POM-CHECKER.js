@@ -24,6 +24,12 @@ window.onload = function () {
 
 };
 
+  $('#checkupModal').on('hidden.bs.modal', function () {
+    $('#drop1').val($('#drop1').children().eq(0).val());
+      document.getElementById("test3").checked = false;
+     document.getElementById("test4").checked = false;
+ });
+
 function clickCloseButton(kinectid) {
   var kinectscId = kinectid.parentNode.parentNode.getAttribute("data_kinectid");
   var data = {kinectid : kinectscId};
@@ -50,8 +56,6 @@ function setViewListPlay(kinectid, changeForcecodePrev, changeForcecodeNext, ind
  //onDrop
  var forcecodeAdd = (changeForcecodeNext - changeForcecodePrev)/2;
  forcecode = parseInt(changeForcecodePrev) + parseInt(forcecodeAdd);
- console.log(changeForcecodePrev+","+changeForcecodeNext);
- console.log(forcecodeAdd+","+forcecode);
 
  if(index!=-1){
   var data = {kinectid : kinectid, forcecode : forcecode};
