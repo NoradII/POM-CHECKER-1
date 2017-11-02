@@ -208,7 +208,7 @@ var chartForPosture = new Chart(ctx2, {
                 position:'left',
                 scaleLabel: {
                     display: true,
-                    labelString: '각도'
+                    labelString: '좌                                   각도                                   우'
                 },
                 ticks: {
                     suggestedMin: -10,
@@ -322,7 +322,7 @@ var chartForSidePosture = new Chart(ctx3, {
                 position:'left',
                 scaleLabel: {
                     display: true,
-                    labelString: '각도'
+                    labelString: '좌                                   각도                                   우'
                 },
                 ticks: {
                     suggestedMin: -10,
@@ -493,209 +493,227 @@ function setJointDirection() {
     var label = [];
     var data2 = [];
 
-    $.ajax({
-        url: 'http://' + ip + '/php/rom_web_php/get_result_table.php',
-        type: 'POST',
-        dataType: 'json',
-        data: post_data,
-        success: function(data) {
-            //console.log(data);
-            for (var i = 0; i < data.length; i++) {
-                var jointdirection = selected_jointdirection;
-                switch (jointdirection) {
-                    case "11":
-                        data2.push("170");
-                        break;
-                    case "12":
-                        data2.push("170");
-                        break;
-                    case "21":
-                        data2.push("105");
-                        break;
-                    case "22":
-                        data2.push("105");
-                        break;
-                    case "31":
-                        data2.push("100");
-                        break;
-                    case "32":
-                        data2.push("100");
-                        break;
-                    case "41":
-                        data2.push("145");
-                        break;
-                    case "42":
-                        data2.push("145");
-                        break;
-                    case "51":
-                        data2.push("80");
-                        break;
-                    case "52":
-                        data2.push("80");
-                        break;
-                    case "61":
-                        data2.push("60");
-                        break;
-                    case "62":
-                        data2.push("60");
-                        break;
-                    case "71":
-                        data2.push("120");
-                        break;
-                    case "72":
-                        data2.push("120");
-                        break;
-                    case "81":
-                        data2.push("40");
-                        break;
-                    case "82":
-                        data2.push("40");
-                        break;
-                    case "91":
-                        data2.push("90");
-                        break;
-                    case "92":
-                        data2.push("90");
-                        break;
-                    case "101":
-                        data2.push("85");
-                        break;
-                    case "102":
-                        data2.push("85");
-                        break;
-                    case "111":
-                        data2.push("45");
-                        break;
-                    case "112":
-                        data2.push("45");
-                        break;
-                    case "201":
-                        jointdirection = 'Posture';
-                        break;
-                    case "300":
-                        jointdirection = 'Side Posture';
-                        break;
-                    default:
-                }
-
-                var rate = 0;
-                var angle = 0;
-
-                if (i === 0) {
-                    rate = 0;
-                }
-
-                console.log("LENGTH : " + data.length);
-
-                if (jointdirection === "Posture") {
-                    document.getElementById('rom-table-thead-angle').innerHTML = "Shoudler, Pelvic balance";
-                    data[i].sh_angle *= 1;
-                    data[i].hh_angle *= 1;
-                    angle = data[i].sh_angle.toFixed(2) + " °, " + data[i].hh_angle.toFixed(2) + " °";
-
-                    if (i >= 1) {
-                        rate = Math.floor(data[i].sh_angle.toFixed(2) - data[i - 1].sh_angle.toFixed(2)) + " °, " +
-                            Math.floor(data[i].hh_angle.toFixed(2) - data[i - 1].hh_angle.toFixed(2));
+    if(selected_jointdirection!= '400'){
+        $("#rom-data-chart").show();
+        $("#rom-data-table").show();
+        $("#image-box").show();
+        $.ajax({
+            url: 'http://' + ip + '/php/rom_web_php/get_result_table.php',
+            type: 'POST',
+            dataType: 'json',
+            data: post_data,
+            success: function(data) {
+                //console.log(data);
+                for (var i = 0; i < data.length; i++) {
+                    var jointdirection = selected_jointdirection;
+                    switch (jointdirection) {
+                        case "11":
+                            data2.push("170");
+                            break;
+                        case "12":
+                            data2.push("170");
+                            break;
+                        case "21":
+                            data2.push("105");
+                            break;
+                        case "22":
+                            data2.push("105");
+                            break;
+                        case "31":
+                            data2.push("100");
+                            break;
+                        case "32":
+                            data2.push("100");
+                            break;
+                        case "41":
+                            data2.push("145");
+                            break;
+                        case "42":
+                            data2.push("145");
+                            break;
+                        case "51":
+                            data2.push("80");
+                            break;
+                        case "52":
+                            data2.push("80");
+                            break;
+                        case "61":
+                            data2.push("60");
+                            break;
+                        case "62":
+                            data2.push("60");
+                            break;
+                        case "71":
+                            data2.push("120");
+                            break;
+                        case "72":
+                            data2.push("120");
+                            break;
+                        case "81":
+                            data2.push("40");
+                            break;
+                        case "82":
+                            data2.push("40");
+                            break;
+                        case "91":
+                            data2.push("90");
+                            break;
+                        case "92":
+                            data2.push("90");
+                            break;
+                        case "101":
+                            data2.push("85");
+                            break;
+                        case "102":
+                            data2.push("85");
+                            break;
+                        case "111":
+                            data2.push("45");
+                            break;
+                        case "112":
+                            data2.push("45");
+                            break;
+                        case "201":
+                            jointdirection = 'Posture';
+                            break;
+                        case "300":
+                            jointdirection = 'Side Posture';
+                            break;
+                        default:
                     }
 
-                    document.getElementById('image-box').style.display = 'none';
+                    var rate = 0;
+                    var angle = 0;
+
+                    if (i === 0) {
+                        rate = 0;
+                    }
+
+                    console.log("LENGTH : " + data.length);
+
+                    if (jointdirection === "Posture") {
+                        document.getElementById('rom-table-thead-angle').innerHTML = "Shoudler, Pelvic balance";
+                        data[i].sh_angle *= 1;
+                        data[i].hh_angle *= 1;
+                        angle = data[i].sh_angle.toFixed(2) + " °, " + data[i].hh_angle.toFixed(2) + " °";
+
+                        if (i >= 1) {
+                            rate = Math.floor(data[i].sh_angle.toFixed(2) - data[i - 1].sh_angle.toFixed(2)) + " °, " +
+                                Math.floor(data[i].hh_angle.toFixed(2) - data[i - 1].hh_angle.toFixed(2));
+                        }
+
+                        document.getElementById('image-box').style.display = 'none';
+
+                    }
+                    else if(jointdirection === "Side Posture"){
+                        document.getElementById('rom-table-thead-angle').innerHTML = "Angle";
+                        document.getElementById('rom-table-thead-variation').innerHTML = "Head, Shoudler, Hip length";
+                        data[i].side_head_length *= 1;
+                        data[i].side_shoulder_length *= 1;
+                        data[i].side_hip_length *= 1;
+                        data[i].side_angle *= 1;
+                        angle = data[i].side_angle+" °";
+                        rate = data[i].side_head_length + " °, " + data[i].side_shoulder_length + " °, " + data[i].side_hip_length;
+                        document.getElementById('image-box').style.display = 'none';
+                    }
+
+                     else {
+                        document.getElementById('image-box').style.display = 'block';
+                        document.getElementById('rom-table-thead-angle').innerHTML = "Max Angle";
+                        document.getElementById('rom-table-thead-variation').innerHTML = "Variation";
+                        data[i].maxangle *= 1;
+                        angle = data[i].maxangle.toFixed(2) + " °";
+                        if (i >= 1) {
+                            data[i - 1].maxangle *= 1;
+                            rate = Math.floor(data[i].maxangle.toFixed(2) - data[i - 1].maxangle.toFixed(2));
+                        }
+                    }
+
+                    var nrs = "<button class='btn-primary' style='font-size: 10px; border-radius: 3px' onclick='setNRS(this)' data-status='create' data-toggle='modal' data-target='#NRSModal' data-id='"+data[i].checkdateid+"'> 평가하기 </button>";
+                    if(data[i].nrs !== null){
+                      nrs = "<span class='setNRSclick' onclick='setNRS(this)' data-status='modify' data-toggle='modal' data-target='#NRSModal' data-id='"+data[i].checkdateid+"' style='width:"+$('.setNRSclick').parent().width()+"px;' >"+data[i].nrs+"</span>";
+                    }
+
+
+                    table.row.add([
+                        info + data[i].datetime,
+                        info + angle,
+                        info + rate + " °",
+                        info + nrs,
+                    ]).draw(false);
+
 
                 }
-                else if(jointdirection === "Side Posture"){
-                    document.getElementById('rom-table-thead-angle').innerHTML = "Angle";
-                    document.getElementById('rom-table-thead-variation').innerHTML = "Head, Shoudler, Hip length";
-                    data[i].side_head_length *= 1;
-                    data[i].side_shoulder_length *= 1;
-                    data[i].side_hip_length *= 1;
-                    data[i].side_angle *= 1;
-                    angle = data[i].side_angle;
-                    rate = data[i].side_head_length + ", " + data[i].side_shoulder_length + ", " + data[i].side_hip_length;
-                    document.getElementById('image-box').style.display = 'none';
+
+                setNrsRange('submit',0);
+
+                var j = 0;
+                var cnt = 0;
+                var flag = 0;
+                var index = 0;
+                var size;
+
+                if ((data.length % 10) == 0) {
+                    size = data.length / 10;
+                } else {
+                    size = (data.length / 10) + 1;
                 }
 
-                 else {
-                    document.getElementById('image-box').style.display = 'block';
-                    document.getElementById('rom-table-thead-angle').innerHTML = "Max Angle";
-                    data[i].maxangle *= 1;
-                    angle = data[i].maxangle.toFixed(2) + " °";
-                    if (i >= 1) {
-                        data[i - 1].maxangle *= 1;
-                        rate = Math.floor(data[i].maxangle.toFixed(2) - data[i - 1].maxangle.toFixed(2));
+                for (; j < data.length; j++) {
+                   /* if (j % 10 == 0 && j != 0) {
+                        break;
+                    }*/
+
+                    if (jointdirection === "Posture") {
+                        document.getElementById('myChart').style.display = 'none';
+                        document.getElementById('myChart2').style.display = 'block';
+                        document.getElementById('myChart3').style.display = 'none';
+                        data[j].sh_angle *= 1;
+                        data[j].hh_angle *= 1;
+                        addData(chartForPosture, data[j].datetime.substring(0, 10), data[j].sh_angle.toFixed(2), data[j].hh_angle.toFixed(2), data[j].nrs);
+                    }
+                    else if(jointdirection === "Side Posture"){
+                        document.getElementById('myChart').style.display = 'none';
+                        document.getElementById('myChart2').style.display = 'none';
+                        document.getElementById('myChart3').style.display = 'block';
+                        data[j].side_head_length *= 1;
+                        data[j].side_shoulder_length *= 1;
+                        data[j].side_hip_length *= 1;
+                        data[j].side_angle *= 1;
+                        addDataForSidePosture(chartForSidePosture, data[j].datetime.substring(0, 10), data[j].side_head_length, data[j].side_shoulder_length, data[j].side_hip_length, data[j].side_angle ,data[j].nrs);
+                    }
+                    else {
+                        document.getElementById('myChart2').style.display = 'none';
+                        document.getElementById('myChart').style.display = 'block';
+                        document.getElementById('myChart3').style.display = 'none';
+                        data[j].maxangle *= 1;
+                        addData(chart, data[j].datetime.substring(0, 10), data[j].maxangle.toFixed(2), data2[j], data[j].nrs);
                     }
                 }
+                cnt++;
+                data_count = data.length;
 
-                var nrs = "<button class='btn-primary' style='font-size: 10px; border-radius: 3px' onclick='setNRS(this)' data-status='create' data-toggle='modal' data-target='#NRSModal' data-id='"+data[i].checkdateid+"'> 평가하기 </button>";
-                if(data[i].nrs !== null){
-                  nrs = "<span class='setNRSclick' onclick='setNRS(this)' data-status='modify' data-toggle='modal' data-target='#NRSModal' data-id='"+data[i].checkdateid+"' style='width:"+$('.setNRSclick').parent().width()+"px;' >"+data[i].nrs+"</span>";
-                }
+                getImage();
+                getScreenshot();
+                getMovie();
+            },
+            error: function(request, status, error) {
+                console.log(request, status, error);
+            },
+        });
+    }
+    else{
+        getScreenshot();
+        getMovie();
+
+        $("#rom-data-chart").hide();
+        $("#rom-data-table").hide();
+        $("#image-box").hide();
 
 
-                table.row.add([
-                    info + data[i].datetime,
-                    info + angle,
-                    info + rate + " °",
-                    info + nrs,
-                ]).draw(false);
+    }
 
-
-            }
-
-            setNrsRange('submit',0);
-
-            var j = 0;
-            var cnt = 0;
-            var flag = 0;
-            var index = 0;
-            var size;
-
-            if ((data.length % 10) == 0) {
-                size = data.length / 10;
-            } else {
-                size = (data.length / 10) + 1;
-            }
-
-            for (; j < data.length; j++) {
-               /* if (j % 10 == 0 && j != 0) {
-                    break;
-                }*/
-
-                if (jointdirection === "Posture") {
-                    document.getElementById('myChart').style.display = 'none';
-                    document.getElementById('myChart2').style.display = 'block';
-                    document.getElementById('myChart3').style.display = 'none';
-                    data[j].sh_angle *= 1;
-                    data[j].hh_angle *= 1;
-                    addData(chartForPosture, data[j].datetime.substring(0, 10), data[j].sh_angle.toFixed(2), data[j].hh_angle.toFixed(2), data[j].nrs);
-                }
-                else if(jointdirection === "Side Posture"){
-                    document.getElementById('myChart').style.display = 'none';
-                    document.getElementById('myChart2').style.display = 'none';
-                    document.getElementById('myChart3').style.display = 'block';
-                    data[j].side_head_length *= 1;
-                    data[j].side_shoulder_length *= 1;
-                    data[j].side_hip_length *= 1;
-                    data[j].side_angle *= 1;
-                    addDataForSidePosture(chartForSidePosture, data[j].datetime.substring(0, 10), data[j].side_head_length, data[j].side_shoulder_length, data[j].side_hip_length, data[j].side_angle ,data[j].nrs);
-                }
-                else {
-                    document.getElementById('myChart2').style.display = 'none';
-                    document.getElementById('myChart').style.display = 'block';
-                    document.getElementById('myChart3').style.display = 'none';
-                    data[j].maxangle *= 1;
-                    addData(chart, data[j].datetime.substring(0, 10), data[j].maxangle.toFixed(2), data2[j], data[j].nrs);
-                }
-            }
-            cnt++;
-            data_count = data.length;
-
-            getImage();
-            getScreenshot();
-            getMovie();
-        },
-        error: function(request, status, error) {
-            console.log(request, status, error);
-        },
-    });
+    
 
 }
 
@@ -1157,6 +1175,33 @@ function takeScreenShot() {
 }
 */
 
+/*
+function alimtalk(){
+    var data = [
+    {
+     "userId": "teamelysium",
+     "message_type": "at",
+     "phn": "821051358616",
+     "profile": "722b710c822a43cef05bf53fe67cbc62724bc11b",
+     "tmplId": "1",
+     "msg": "[팀엘리시움]\n한소희님께서 요청하신 이미지를 보내드립니다.\n2017.10.31에 측정하신 이미지는 아래의 링크를 클릭하시면 보실 수 있습니다.\n\n▶이미지 링크 : www.naver.com"
+     }];
+
+   $.ajax({
+       url: "https://alimtalk-api.bizmsg.kr/v1/sender/send",
+       type: 'POST',
+       data: JSON.stringify(data),
+       contentType: "application/json; charset=utf-8",
+       dataType: "json",
+       success: function(data){
+         console.log(data);
+       },
+       error: function(request, status, error){
+         console.log(request, status, error);
+       },
+   });
+}
+*/
 function goMainPage() {
     location.href = "../POM-CHECKER/POM-CHECKER.html";
 }
@@ -1252,10 +1297,10 @@ function setNamingforJointdirection(jointdirection) {
             jointdirection = 'Right Shoulder Flexion / Extension';
             break;
         case "21":
-            jointdirection = 'Left Shoulder Abduction / Addunction';
+            jointdirection = 'Left Shoulder Abduction / Adduction';
             break;
         case "22":
-            jointdirection = 'Right Shoulder Abduction / Addunction';
+            jointdirection = 'Right Shoulder Abduction / Adduction';
             break;
         case "31":
             jointdirection = 'Left Shoulder Rotation';
