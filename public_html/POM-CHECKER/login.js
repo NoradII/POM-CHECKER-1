@@ -21,8 +21,7 @@ window.onload = function(){
     }
 
   } else {
-    //localStorage.setItem("uid", uid);
-    //localStorage.setItem("name", name);
+
     alert("Sorry, your browser does not support Web Storage...");
   }
 };
@@ -39,17 +38,15 @@ function registerForAdmin(){
 
   if(name.value === ""){
     alert("이름란을 입력해주세요.");
-    //document.getElementById('form-group-name').setAttribute('class','form-group has-error has-feedback');
     name.focus();
     return;
   }else{
-    //document.getElementById('form-group-name').setAttribute('class','form-group has-success has-feedback');
+
     name = name.value;
   }
 
   if(userid.value === ""){
     alert("ID란을 입력해주세요.");
-    //document.getElementById('form-group-number').setAttribute('class','form-group has-error has-feedback');
     userid.focus();
     return;
   }else{
@@ -58,7 +55,6 @@ function registerForAdmin(){
 
   if(password.value === ""){
     alert("Password란을 입력해주세요.");
-    //document.getElementById('form-group-number').setAttribute('class','form-group has-error has-feedback');
     password.focus();
     return;
   }else{
@@ -77,7 +73,6 @@ function registerForAdmin(){
 
   if(email.value === ""){
     alert("e-mail란을 입력해주세요.");
-    //document.getElementById('form-group-number').setAttribute('class','form-group has-error has-feedback');
     email.focus();
     return;
   }else{
@@ -108,7 +103,6 @@ function loginForAdmin() {
 
   if(userid.value === ""){
     alert("ID란을 입력해주세요.");
-    //document.getElementById('form-group-number').setAttribute('class','form-group has-error has-feedback');
     userid.focus();
     return;
   }else{
@@ -117,7 +111,6 @@ function loginForAdmin() {
 
   if(password.value === ""){
     alert("Password란을 입력해주세요.");
-    //document.getElementById('form-group-number').setAttribute('class','form-group has-error has-feedback');
     password.focus();
     return;
   }else{
