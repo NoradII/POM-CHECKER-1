@@ -1,4 +1,5 @@
 "use strict";
+
 var selectedId;
 var ip;
 var setViewList;
@@ -12,7 +13,7 @@ window.onload = function () {
   var uid = localStorage.getItem("uid");
   if(uid === 'undefined' || uid === null){
     location.href = "./login.html";
-  }else if(uid != 'undefined'){
+  }else if(uid !== 'undefined'){
     document.getElementById("nav-user-name").innerHTML = localStorage.getItem("name");
   }
 
@@ -21,13 +22,12 @@ window.onload = function () {
         registerFirstMeasurement();
       }
   });
-
 };
 
   $('#checkupModal').on('hidden.bs.modal', function () {
-    $('#drop1').val($('#drop1').children().eq(0).val());
-      document.getElementById("test3").checked = false;
-     document.getElementById("test4").checked = false;
+    document.getElementById("drop1").selectedIndex = 0;
+    document.getElementById("test3").checked = false;
+    document.getElementById("test4").checked = false;
  });
 
 function clickCloseButton(kinectid) {
@@ -38,8 +38,7 @@ function clickCloseButton(kinectid) {
        type: 'POST',
        data: data,
        dataType: 'html',
-       success: function(data){
-         console.log("success");
+       success: function(data){    
        },
        error: function(request, status, error){
          console.log(request, status, error);
@@ -57,7 +56,7 @@ function setViewListPlay(kinectid, changeForcecodePrev, changeForcecodeNext, ind
  var forcecodeAdd = (changeForcecodeNext - changeForcecodePrev)/2;
  forcecode = parseInt(changeForcecodePrev) + parseInt(forcecodeAdd);
 
- if(index!=-1){
+ if(index!==-1){
   var data = {kinectid : kinectid, forcecode : forcecode};
   $.ajax({
       url: "http://" + ip + "/php/rom_server_php/beforePatientUpdate.php",
@@ -133,7 +132,6 @@ function getCheckDate(clickId) {
         $("#cdatelist").empty();
 
         for(var i = 0; i < data.length; i++){
-          //console.log("CheckDate Data : " + data[i].datetime.split(" ")[1]);
           var checkdateid = data[i].checkdateid;
           var patientid = data[i].patientid;
           var datetime = data[i].datetime;
@@ -195,14 +193,12 @@ function getCheckDate(clickId) {
     },
   });
   prevClickId = clickId;
-  console.log("prevClickId" + prevClickId);
 }
 
 function registerFirstMeasurement() {
   var name = document.getElementById('inputPatientName');
   var birth = document.getElementById('inputPatientBirth');
   var number = document.getElementById('inputPatientNumber');
-  //var phone = document.getElementById('inputPatientPhone');
   var man = document.getElementById('test1');
   var woman = document.getElementById('test2');
   var gender;
@@ -236,7 +232,7 @@ function registerFirstMeasurement() {
     return;
   }
 
-  if(birth.value === "" || (birth.value.length != 8)){
+  if(birth.value === "" || (birth.value.length !== 8)){
     alert("생년월일란을 정확히 입력해주세요.");
     document.getElementById('form-group-birth').setAttribute('class','form-group has-error has-feedback');
     birth.focus();
@@ -245,21 +241,7 @@ function registerFirstMeasurement() {
     birth = birth.value;
   }
 
-  /*
-  var phoneno = /^\(?([0-9]{3})\)?[-. ]?([0-9]{4})[-. ]?([0-9]{4})$/;
-  if(!phone.value.match(phoneno)){
-    alert("핸드폰번호란을 정확히 입력해주세요.");
-    document.getElementById('form-group-phone').setAttribute('class','form-group has-error has-feedback');
-    phone.focus();
-    return;
-  }else{
-    phone = phone.value;
-  }
-  */
   var patientid = createHash();
-
-  // TODO : set the phone data for version 1.1
-  //var data = {patientid : patientid, name : name, sex : gender, birth : birth, number : number, phone : phone};
   var data = {patientid : patientid, name : name, sex : gender, birth : birth, number : number};
 
   $.ajax({
@@ -268,7 +250,6 @@ function registerFirstMeasurement() {
     data: data,
     dataType: 'html',
     success: function(data){
-      console.log("DATA " + data);
       $('#registerModal').modal('hide');
       getPatientName();
     },
@@ -278,18 +259,16 @@ function registerFirstMeasurement() {
   });
 }
 
-var left = document.getElementById('test3');
-var right = document.getElementById('test4');
 
 function registerMeasurement(){
   var name = $("#"+selectedId+" > div:first-child > div:eq(0)").text();
   var patientNumber = $("#"+selectedId+" > div:first-child > div:eq(1)").text();
   name = name.substr(5, name.length);
   patientNumber = patientNumber.substr(7, patientNumber.length);
-  console.log("name : " + name);
-  console.log("patientNumber : " + patientNumber);
+
   var selectJointdirection = document.getElementById('drop1');
   var selectedJointdirection = selectJointdirection.options[selectJointdirection.selectedIndex].value;
+  var selected_type =  selectJointdirection.options[selectJointdirection.selectedIndex].getAttribute("data-type");
 
   if(name.length === 0){
     document.getElementById("Modaltitle").innerHTML = "등록 실패";
@@ -306,26 +285,37 @@ function registerMeasurement(){
     document.getElementById("ModalFooter").innerHTML = "검진 시작하기";
     $('#modal-body').show();
 
-    if (selectedJointdirection === "201" || selectedJointdirection === "300" || selectedJointdirection === "400" || selectedJointdirection === "500") { // Posture 또는 Side Posture인 경우
-      document.getElementById('modal-direction').style.visibility = 'hidden';
+    if (selected_type === "posture" || selected_type === "exercise") { // Posture 또는 Side Posture인 경우
+      document.getElementById('modal-direction').style.display = 'none';
+      document.getElementById('modal-time').style.display = 'block';
+    }
+    else if (selected_type === "moire"){
+      document.getElementById('modal-direction').style.display = 'none';
+      document.getElementById('modal-time').style.display = 'none';
     }
     else if(selectedJointdirection === "100"){
+      document.getElementById('modal-direction').style.display = 'block';
+      document.getElementById('modal-time').style.display = 'none';
       $("label[for*='test3']").html("Up(Extension)");
       $("label[for*='test4']").html("Down(Flexion)");
     }
     else{
-      document.getElementById('modal-direction').style.visibility = 'visible';
+      document.getElementById('modal-direction').style.display = 'block';
+      document.getElementById('modal-time').style.display = 'none';
       $("label[for*='test3']").html("Left");
       $("label[for*='test4']").html("Right");
     }
+
   }
 }
 
 function startMeasurement(){
+  var left = document.getElementById('test3');
+  var right = document.getElementById('test4');
   var select_jointdirection = document.getElementById('drop1');
   var selected_jointdirection = select_jointdirection.options[select_jointdirection.selectedIndex].value;
-
-  console.log("selectedId : " + selectedId);
+  var selected_type = select_jointdirection.options[select_jointdirection.selectedIndex].getAttribute("data-type");
+  var measureTime;
 
   if(typeof selectedId === 'undefined') { // 환자를 선택하지 않았을 경우
     $('#checkupModal').modal('hide');
@@ -352,9 +342,16 @@ function startMeasurement(){
         }
     }
 
+    //측정 시간에 대한 예외처리
+    if(selected_type === "posture" || selected_type === "exercise"){
+      measureTime = document.getElementById("measureTime").value;
+    }
+    else{
+      measureTime = null;
+    }
+
     var kinectid = createHash();
-    console.log("kinectid:" + kinectid);
-    var data = {kinectid : kinectid, patientid : selectedId, jointdirection : selected_jointdirection};
+    var data = {kinectid : kinectid, patientid : selectedId, jointdirection : selected_jointdirection, measureTime : measureTime};
 
     $.ajax({
       url: "http://" + ip + "/php/rom_server_php/fronttokinect.php",
@@ -362,7 +359,6 @@ function startMeasurement(){
       data: data,
       dataType: 'html',
       success: function(data){
-        console.log("startMeasurement DATA " + data);
         $('#checkupModal').modal('hide');
       },
       error: function(request, status, error){
@@ -382,31 +378,16 @@ function viewBeforeMeasurementList()
     dataType: 'json',
     success: function(data){
       $("#BeforeMeasurement").empty();
-/*
-      var emptyDiv;
-      if(data){
-        emptyDiv = document.createElement("div");
-        emptyDiv.style["border"] = "3px solid #ff3f3f";
-        emptyDiv.style["border-radius"] = "5px";
-        emptyDiv.style["margin-top"] = "3px";
-        emptyDiv.style["margin-bottom"] = "3px";
-        emptyDiv.style['padding'] = "5px";
-        emptyDiv.style["z-index"] = "0";
-        emptyDiv.style["position"] = "absolute";
-        emptyDiv.style["width"] = "417px";
-        emptyDiv.style["height"] = "52px";
-        document.getElementById("BeforeMeasurement").appendChild(emptyDiv);
-      }*/
 
       for(var i = 1; i < data.length; i++){
-        //console.log("Patient List DATA : "+data[i]);
         var patientid = data[i].patientid;
         var name = data[i].name;
         var jointdirection = data[i].jointdirection;
-        jointdirection = setNamingforJointdirection(jointdirection);
+        var jointdirectionName = setNamingforJointdirection(jointdirection);
 
         var kinectid = data[i].kinectid;
         var forcecode = data[i].forcecode;
+        var measureTime = data[i].measureTime;
         var new_kinectscList = document.createElement("div");
         new_kinectscList.setAttribute("id",patientid);
         new_kinectscList.setAttribute("class", "dragColumn");
@@ -425,7 +406,7 @@ function viewBeforeMeasurementList()
         close_container.setAttribute("onclick", 'clickCloseButton(this)');
         close_container.innerHTML = "x";
 
-        if(i==1){
+        if(i===1){
           new_kinectscList.style["border"] = "3px solid #ff3f3f";
         }
 
@@ -435,11 +416,21 @@ function viewBeforeMeasurementList()
 
         var patientjointdirection = document.createElement("div");
         patientjointdirection.setAttribute("class", "col-md-12 col-sm-6 col-xs-6 baseinfo");
-        patientjointdirection.innerHTML = "<b>부위 : </b>" + jointdirection;
+        patientjointdirection.innerHTML = "<b>부위 : </b>" + jointdirectionName;
 
         row_div.appendChild(patient_id);
         row_div.appendChild(close_container);
         row_div.appendChild(patientjointdirection);
+
+        if(jointdirection === "201" || jointdirection ==="300" || jointdirection==="500"){
+          patientjointdirection.setAttribute("class", "col-md-6 col-sm-6 col-xs-6 baseinfo");
+
+          var patienttime = document.createElement("div");
+          patienttime.setAttribute("class", "col-md-6 col-sm-6 col-xs-6 baseinfo");
+          patienttime.innerHTML = "<b>측정시간 : </b>" + measureTime + "초";
+
+          row_div.appendChild(patienttime);
+        }
 
         new_kinectscList.appendChild(row_div);
 
@@ -465,7 +456,6 @@ function viewMeasuring()
     dataType: 'json',
     success: function(data){
       $("#Measuring").empty();
-      console.log("viewMeasuring List DATA :" + data);
 
       if(data.length === 0) {
         return;
@@ -476,7 +466,8 @@ function viewMeasuring()
       var jointdirection = data[0].jointdirection;
       var forcecode = data[0].forcecode;
       var kinectid = data[0].kinectid;
-      jointdirection = setNamingforJointdirection(jointdirection);
+      var measureTime = data[0].measureTime;
+      var jointdirectionName = setNamingforJointdirection(jointdirection);
       var new_kinectscList = document.createElement("div");
       new_kinectscList.setAttribute("id",patientid);
       new_kinectscList.setAttribute("data_kinectid", kinectid);
@@ -501,11 +492,21 @@ function viewMeasuring()
 
       var patientjointdirection = document.createElement("div");
       patientjointdirection.setAttribute("class", "col-md-12 col-sm-6 col-xs-6 baseinfo");
-      patientjointdirection.innerHTML = "<b>부위 : </b>" + jointdirection;
+      patientjointdirection.innerHTML = "<b>부위 : </b>" + jointdirectionName;
 
       row_div.appendChild(patient_id);
       row_div.appendChild(close_container);
       row_div.appendChild(patientjointdirection);
+
+      if(jointdirection === "201" || jointdirection ==="300" || jointdirection==="500"){
+          patientjointdirection.setAttribute("class", "col-md-6 col-sm-6 col-xs-6 baseinfo");
+
+          var patienttime = document.createElement("div");
+          patienttime.setAttribute("class", "col-md-6 col-sm-6 col-xs-6 baseinfo");
+          patienttime.innerHTML = "<b>측정시간 : </b>" + measureTime + "초";
+
+          row_div.appendChild(patienttime);
+      }
 
       new_kinectscList.appendChild(row_div);
 
@@ -532,7 +533,6 @@ function viewMeasuringSwap()
         data: swapData,
         dataType: 'html',
         success: function(data){
-          console.log("success!");
         },
         error: function(request, status, error){
           console.log(request, status, error);
@@ -558,12 +558,12 @@ function viewAfterMeasurementList()
     dataType: 'json',
     success: function(data){
       $("#AfterMeasurement").empty();
-      console.log("AfterMeasurement List DATA :" + data);
       for(var i = 0; i < data.length; i++){
         var patientid = data[i].patientid;
         var name = data[i].name;
         var jointdirection = data[i].jointdirection;
-        jointdirection = setNamingforJointdirection(jointdirection);
+        var measureTime = data[i].measureTime;
+        var jointdirectionName = setNamingforJointdirection(jointdirection);
         var new_kinectscList = document.createElement("div");
         new_kinectscList.setAttribute("class","btn btn-default btn-group-justified");
         new_kinectscList.setAttribute("onclick","deletePatientid(this.id)")
@@ -587,10 +587,21 @@ function viewAfterMeasurementList()
         patientjointdirection.setAttribute("class", "col-md-12 col-sm-6 col-xs-6");
         patientjointdirection.style.color =  "#73879C";
         patientjointdirection.style.fontSize = "13px";
-        patientjointdirection.innerHTML = "<b>부위 : </b>" + jointdirection;
+        patientjointdirection.innerHTML = "<b>부위 : </b>" + jointdirectionName;
 
         row_div.appendChild(patient_id);
         row_div.appendChild(patientjointdirection);
+
+        if(jointdirection === "201" || jointdirection ==="300" || jointdirection==="500"){
+          patientjointdirection.setAttribute("class", "col-md-6 col-sm-6 col-xs-6 baseinfo");
+
+          var patienttime = document.createElement("div");
+          patienttime.setAttribute("class", "col-md-6 col-sm-6 col-xs-6 baseinfo");
+          patienttime.innerHTML = "<b>측정시간 : </b>" + measureTime + "초";
+
+          row_div.appendChild(patienttime);
+      }
+
 
         new_kinectscList.appendChild(row_div);
 
@@ -607,7 +618,7 @@ function viewAfterMeasurementList()
 var clickdeleteid = '';
 function deletePatientid(deleteid){
   document.getElementById(deleteid).style = "background-color: #e6e6e6; text-align: left;";
-  if(deleteid == clickdeleteid){
+  if(deleteid === clickdeleteid){
     document.getElementById(deleteid).style = "background-color: #e6e6e6; text-align: left;";
   }else if(clickdeleteid > 0){
     document.getElementById(deleteid).style = "background-color: #e6e6e6; text-align: left;";
@@ -615,11 +626,10 @@ function deletePatientid(deleteid){
   }
 
   clickdeleteid = deleteid.substr(0, deleteid.length-1);
-  console.log(clickdeleteid);
+
 }
 
 function deletePatientAfterMeasurement(){
-  console.log("clickdeleteid : " + clickdeleteid);
   if(clickdeleteid === null){
     alert("환자를 선택해주세요.");
     return;
@@ -631,7 +641,6 @@ function deletePatientAfterMeasurement(){
     data: patientid,
     dataType: 'html',
     success: function(data){
-      console.log("Success");
     },
     error: function(request, status, error){
       console.log(request, status, error);
@@ -647,14 +656,13 @@ function getSearchName(){
     success: function(data){
       $("#patientlist").empty();
 
-      console.log("getSearchName : " + data);
       for(var i = 0; i < data.length; i++){
         var name = data[i].name;
         var birth = data[i].birth;
         var number = data[i].number;
         var patientid = data[i].patientid;
         var sex;
-        if(data[i].sex == 1)
+        if(data[i].sex === 1)
           sex = "남";
         else
           sex = "여";
@@ -807,7 +815,6 @@ function createHash() {
   var rnum = Math.floor(Math.random() * chars.length);
   randomstring += chars.substring(rnum,rnum+1);
   }
-  console.log("randomstring: "  + randomstring);
   return randomstring;
 }
 

@@ -4,7 +4,7 @@ var table;
 var ip = localStorage.getItem("IP");
 
 jQuery(document).bind("keyup keydown", function(e) {
-    if (e.ctrlKey && e.keyCode == 80) {
+    if (e.ctrlKey && e.keyCode === 80) {
         return false;
     }
 });
@@ -23,7 +23,6 @@ window.onload = function() {
 
                 var data = {"id" : patientId, "text" : patientName + "(No. " + patientNumber + ")"};
                 patientList.push(data);
-                console.log("patientList : " + patientList);
             });
 
             $("#drop1").select2({
@@ -393,9 +392,8 @@ function getPatientJonintDirection() {
     getPatientInfo(selected_name.split('(')[0], selected_patientid);
     var post_data = "name=" + selected_name.split('(')[0] + "&patientid=" + selected_patientid;
     console.log("patient_name=누구: " + post_data);
-    //var jointdirection_list = [];
+
     if (selected_name === "--- Patient --") {
-        //alert("환자를 선택해주세요.");
     } else {
         var jointdirectionList = [];
         $.ajax({
@@ -409,7 +407,6 @@ function getPatientJonintDirection() {
                   patientJointdirection = setNamingforJointdirection(patientJointdirection);
                   var data = {"id" : patientJointdirection, "text" : patientJointdirection};
                   jointdirectionList.push(data);
-                  console.log("patientJointdirection : " + jointdirectionList);
               });
 
               $("#drop2").select2({
@@ -442,7 +439,6 @@ function getPatientInfo(post_data_name, post_data_patientid) {
                 document.getElementById('patient_name').innerHTML = data[i].name;
                 document.getElementById('patient_number').innerHTML = "No. " + data[i].number;
                 document.getElementById('patient_id').innerHTML = data[i].patientid;
-                console.log("gender: " + data[i].sex);
                 if (data[i].sex === "1") {
                     document.getElementById('patient_gender').innerHTML = "남자";
                 } else {
@@ -471,8 +467,6 @@ function setJointDirection() {
     video_container.appendChild(video_tag);
     $("#video_select").empty();
 
-    // TODO : drop3의 행방을 알 수 없다...
-    //$("#drop3 option:gt(0)").remove();
     table.clear().draw();
     for (var i = 0; i < data_count; i++) {
         removeData(chart);
@@ -487,13 +481,12 @@ function setJointDirection() {
     var selected_jointdirection = select_jointdirection.options[select_jointdirection.selectedIndex].value;
     selected_jointdirection = setNumberingforJointdirection(selected_jointdirection);
     var post_data = "name=" + selected_name.split('(')[0] + "&jointdirection=" + selected_jointdirection;
-    console.log(post_data);
 
     var info = "";
     var label = [];
     var data2 = [];
 
-    if(selected_jointdirection!= '400'){
+    if(selected_jointdirection!== '400'){
         $("#rom-data-chart").show();
         $("#rom-data-table").show();
         $("#image-box").show();
@@ -503,7 +496,6 @@ function setJointDirection() {
             dataType: 'json',
             data: post_data,
             success: function(data) {
-                //console.log(data);
                 for (var i = 0; i < data.length; i++) {
                     var jointdirection = selected_jointdirection;
                     switch (jointdirection) {
@@ -589,8 +581,6 @@ function setJointDirection() {
                         rate = 0;
                     }
 
-                    console.log("LENGTH : " + data.length);
-
                     if (jointdirection === "Posture") {
                         document.getElementById('rom-table-thead-angle').innerHTML = "Shoudler, Pelvic balance";
                         data[i].sh_angle *= 1;
@@ -634,15 +624,12 @@ function setJointDirection() {
                       nrs = "<span class='setNRSclick' onclick='setNRS(this)' data-status='modify' data-toggle='modal' data-target='#NRSModal' data-id='"+data[i].checkdateid+"' style='width:"+$('.setNRSclick').parent().width()+"px;' >"+data[i].nrs+"</span>";
                     }
 
-
                     table.row.add([
                         info + data[i].datetime,
                         info + angle,
                         info + rate + " °",
                         info + nrs,
                     ]).draw(false);
-
-
                 }
 
                 setNrsRange('submit',0);
@@ -653,17 +640,14 @@ function setJointDirection() {
                 var index = 0;
                 var size;
 
-                if ((data.length % 10) == 0) {
+                if ((data.length % 10) === 0) {
                     size = data.length / 10;
                 } else {
                     size = (data.length / 10) + 1;
                 }
 
                 for (; j < data.length; j++) {
-                   /* if (j % 10 == 0 && j != 0) {
-                        break;
-                    }*/
-
+               
                     if (jointdirection === "Posture") {
                         document.getElementById('myChart').style.display = 'none';
                         document.getElementById('myChart2').style.display = 'block';
@@ -709,8 +693,6 @@ function setJointDirection() {
         $("#rom-data-chart").hide();
         $("#rom-data-table").hide();
         $("#image-box").hide();
-
-
     }
 
 
@@ -718,8 +700,9 @@ function setJointDirection() {
 }
 
 function getImage() {
-    var patient_id = $('#patient_id').text();
-    var patient_jointdirection = setNumberingforJointdirection($("#drop2").val());
+    var patient_id = document.getElementById("patient_id").textContent;
+    var drop2 = document.getElementById("drop2");
+    var patient_jointdirection = setNumberingforJointdirection(drop2.options[drop2.selectedIndex].value);
     var type = 'patientimage';
 
     var data = {
@@ -735,7 +718,6 @@ function getImage() {
         dataType: 'json',
         success: function(data) {
             for (var i in data) {
-                // images
                 var image_container = document.getElementById('image_container');
                 var div_container = document.createElement("div");
                 var img_tag = document.createElement("img");
@@ -760,8 +742,9 @@ function getImage() {
 }
 
 function getScreenshot() {
-    var patient_id = $('#patient_id').text();
-    var patient_jointdirection = setNumberingforJointdirection($("#drop2").val());
+    var patient_id = document.getElementById("patient_id").textContent;
+    var drop2 = document.getElementById("drop2");
+    var patient_jointdirection = setNumberingforJointdirection(drop2.options[drop2.selectedIndex].value);
     var type = 'screenshot';
     var data = {
         patient_id: patient_id,
@@ -801,7 +784,6 @@ function getScreenshot() {
 }
 
 function makeScreenshotFolder(fileInfo, fileDate, data) {
-    // images
     var screenshot_container = document.getElementById('screenshot_container');
     var div_container = document.createElement("div");
     var img_tag = document.createElement("img");
@@ -843,9 +825,10 @@ function screenshotDateFilter(value){
 
 function getMovie() {
     var video_height = $('#collapseMovie').height();
-    $('#video_select').css("max-height", video_height);
-    var patient_id = $('#patient_id').text();
-    var patient_jointdirection = setNumberingforJointdirection($("#drop2").val());
+    document.getElementById("video_select").style["max-height"] = video_height;
+    var patient_id = document.getElementById("patient_id").textContent;
+    var drop2 = document.getElementById("drop2");
+    var patient_jointdirection = setNumberingforJointdirection(drop2.options[drop2.selectedIndex].value);
     var type = 'movie';
 
     var data = {
@@ -874,29 +857,12 @@ function getMovie() {
                 li_tag.setAttribute("class", "list-group-item video_list list-group-item-action");
                 li_tag.setAttribute("data-filename", file);
 
-                //TODO : proto type 1.2
-                //angle 표시 datetime 일치 오류로 표시 불가능
-                /* var h5_tag = document.createElement("h5");
-                h5_tag.setAttribute("class", "mb-1");
-                if(patient_jointdirection == '201'){
-                    h5_tag.innerHTML = "Shoudler : "+ data[i].sh_angle + ", Pelvic : " + data[i].hh_angle;
-                }
-                else if(patient_jointdirection == '300'){
-                    h5_tag.innerHTML = "Head : "+ data[i].side_head_length + ", Shoudler : "+data[i].side_shoulder_length + ", Hip : "+data[i].side_hip_length+", Side : " +data[i].side_length;
-                }
-                else{
-                    h5_tag.innerHTML = "Max Angle : "+ data[i].angle + " °";
-                }
-                li_tag.appendChild(h5_tag);
-                */
-
                 var p_tag = document.createElement("p");
                 p_tag.setAttribute("class", "mb-1");
                 p_tag.innerHTML = date[2] + '년 ' + date[0] + '월 ' + date[1] + '일 ' + time[0] + '시 ' + time[1] + '분';
 
                 li_tag.appendChild(p_tag);
                 video_select_container.appendChild(li_tag);
-
             }
 
             $(".video_list").click(function() {
@@ -904,7 +870,6 @@ function getMovie() {
                 var select_fileName = $(this).attr('data-filename');
                 $(this).addClass('active');
                 selectMovie(select_fileName, patient_id);
-                //videoMethods.hideVideoPlayButton();
             });
 
         },
@@ -929,7 +894,6 @@ function selectMovie(filename, patient_id) {
     source_tag.setAttribute("src", "http://" + ip + "/movie/" + filename);
 
     video_tag.appendChild(source_tag);
-
     $('#video_tag').get(0).play()
 }
 
@@ -965,7 +929,7 @@ function setNrsRange(target,index) {
     $rangeInput.on('input', function() {
         sheet.textContent = getTrackStyle(this);
     });
-    if(target == 'submit'){
+    if(target === 'submit'){
         // Change input value on label click
         $('.range-labels li').on('click', function() {
             index = $(this).index();
@@ -979,17 +943,17 @@ function setNrsRange(target,index) {
 
 var checkdateid;
 function setNRS(target){
-    setNrsRange('modify', 0);
+  setNrsRange('modify', 0);
   checkdateid = target.getAttribute('data-id');
   var status = target.getAttribute('data-status');
-  if(status == 'modify'){
+  if(status === 'modify'){
     var index = parseInt(target.innerHTML);
     setNrsRange(status, index);
   }
 }
 
 function saveNRS() {
-  var nrs = $('.range-labels .selected').last().text();
+  var nrs = $('.range-labels .selected').last().text();  
   var data = {nrs : nrs, checkdateid : checkdateid};
 
    $.ajax({
@@ -998,7 +962,6 @@ function saveNRS() {
         data: data,
         dataType: 'json',
         success: function(data) {
-
         },
         error: function(request, status, error) {
             console.log(request, status, error);
@@ -1011,7 +974,7 @@ function saveNRS() {
 function viewPaintModal(data, date){
   var select_tag = document.getElementById("paintingModalSelect");
   $('#paintingModalSelect').find('option').remove().end();
-  $('.paintingModalTitle').text(date);
+  document.getElementById("paintingModalTitle").innerHTML = date;
   //XUGTFTI_11_10-10-2017_16-20-01_normal.png
   for(var i in data){
     var option = document.createElement("option");
@@ -1035,9 +998,9 @@ function paintOnImage(){
 
   var raster = new Raster();
 
-  $(".hudImg").attr("src",selectedImageHudSrc);
-  $(".normalImg").attr("src",selectedImageSrc);
-  $(".skeletonImg").attr("src",selectedImageSkeletonSrc);
+  document.getElementById("hudImg").setAttribute("src", selectedImageHudSrc);
+  document.getElementById("normalImg").setAttribute("src", selectedImageSrc);
+  document.getElementById("skeletonImg").setAttribute("src", selectedImageSkeletonSrc);
   $('#paintingModal').modal('show');
 }
 
@@ -1050,7 +1013,7 @@ $(".paintImgbtn").click(function() {
   paper.setup(canvas);
   paper.install(window);
   var selectedtype = $(this).text();
-  var selectedSrc = $("."+selectedtype+"Img").attr("src");
+  var selectedSrc = document.getElementById(selectedtype+"Img").getAttribute("src");
   var selectedWidth = $("."+selectedtype+"Img").width();
   var selectedHeight = $("."+selectedtype+"Img").height();
   var raster = new Raster(selectedSrc);
@@ -1059,24 +1022,6 @@ $(".paintImgbtn").click(function() {
   raster.position = view.center;
 });
 
-/*
-function savePaintedImage(){
-  var canvas = document.getElementById('imageCanvas');
-
-  html2canvas($("#imageCanvas"), {
-    onrendered: function (canvas) {
-      var url = canvas.toDataURL();
-      $("<a>", {
-        href: url,
-        download: "fileName"
-      })
-      .on("click", function() {$(this).remove()})
-      .appendTo("body")[0].click()
-    }
-  });
-
-}
-*/
 function romPrint() {
     document.getElementById('myChart').style.width = "95%";
     document.getElementById('myChart').style.height = "95%";
@@ -1087,93 +1032,6 @@ function romPrint() {
 
     window.print();
 }
-/*
-function takeScreenShot() {
-
-    html2canvas(document.getElementsByClassName("profile_details"), {
-        onrendered: function(canvas) {
-            var extra_canvas = document.createElement("canvas");
-            extra_canvas.setAttribute('width', $('.profile_details').width() - 150);
-            extra_canvas.setAttribute('height', $('.profile_details').height() - 20);
-            var ctx = extra_canvas.getContext('2d');
-            ctx.drawImage(canvas, 0, 0);
-            var dataURL = extra_canvas.toDataURL();
-            var img = $(document.createElement('img'));
-            img.attr('src', dataURL);
-            img.attr('id', 'profile_details_img');
-            img.attr('width', '100%');
-            $('#savePart').append(img);
-        },
-    });
-
-    html2canvas(document.getElementById("rom-data-chart-panel"), {
-        onrendered: function(canvas) {
-            var extra_canvas = document.createElement("canvas");
-            extra_canvas.setAttribute('width', $('#rom-data-chart').width());
-            extra_canvas.setAttribute('height', $('#rom-data-chart-panel').height() - 100);
-            var ctx = extra_canvas.getContext('2d');
-            ctx.drawImage(canvas, 0, 0);
-            var dataURL = extra_canvas.toDataURL();
-            var img = $(document.createElement('img'));
-            img.attr('src', dataURL);
-            img.attr('id', 'rom-data-chart_id');
-            img.attr('width', '100%');
-            img.attr('height', '95%');
-            $('#savePart').append(img);
-        },
-    });
-
-    html2canvas(document.getElementById("rom-data-table"), {
-        onrendered: function(canvas) {
-            var extra_canvas = document.createElement("canvas");
-            extra_canvas.setAttribute('width', $('#rom-data-table').width());
-            extra_canvas.setAttribute('height', $('#rom-data-table').height());
-            var ctx = extra_canvas.getContext('2d');
-            ctx.drawImage(canvas, 0, 0);
-            var dataURL = extra_canvas.toDataURL();
-            var img = $(document.createElement('img'));
-            img.attr('src', dataURL);
-            img.attr('id', 'rom-data-table_id');
-            img.attr('width', '100%');
-            img.attr('height', '95%');
-            $('#savePart').append(img);
-        },
-    });
-
-    html2canvas(document.getElementById("savePart"), {
-        onrendered: function(canvas) {
-            var canvasData = canvas.toDataURL("image/png");
-            var patient_name = $("#patient_name").text();
-            var patient_birth = $("#patient_birth").text();
-            var patient_jointdirection = $("#drop2").val();
-
-            if (patient_name == " -- ") {
-                alert("환자를 선택해주세요")
-            } else {
-                var data = {
-                    canvasData: canvasData,
-                    patient_name: patient_name,
-                    patient_birth: patient_birth,
-                    patient_jointdirection: patient_jointdirection
-                };
-                $.ajax({
-                    url: "http://" + ip + "/php/rom_web_php/post_capture_data.php",
-                    type: 'POST',
-                    data: data,
-                    dataType: 'html',
-                    success: function(data) {
-                        alert(data);
-                        $('#savePart').empty();
-                    },
-                    error: function(request, status, error) {
-                        console.log(request, status, error);
-                    },
-                });
-            }
-        },
-    });
-}
-*/
 
 /*
 function alimtalk(){

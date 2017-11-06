@@ -19,7 +19,7 @@
     <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <!-- Custom Theme Style -->
     <link href="../build/css/custom.min.css" rel="stylesheet">
-    <link href="POM-CHECKER.css" rel="stylesheet">
+    <script>document.write("<link href='POM-CHECKER.css?version=" + Date.now() + "' rel='stylesheet'");</script>
   </head>
 
   <body>
@@ -78,12 +78,7 @@
                   <label class="control-label" for="inputPatientBirth">생년월일</label>
                   <input type="text" class="form-control" id="inputPatientBirth" placeholder="ex) 19900101">
                 </div>
-                <!--
-                <div class="form-group" id="form-group-phone" style="margin-top: 10px;">
-                  <label class="control-label" for="inputPatientPhone">핸드폰번호</label>
-                  <input type="text" class="form-control" id="inputPatientPhone" placeholder="ex) 010-1234-1234">
-                </div>
-                -->
+
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-primary" onclick="registerFirstMeasurement()">초진환자 등록 및 검진</button>
@@ -117,15 +112,15 @@
                   </optgroup>
 
                   <optgroup label="[ 자세 측정 ]">
-                    <option value="201">1. Posture</option>
-                    <option value="300">2. Side Posture</option>
-                    <option value="400">3. Moiré</option>
-                    <option value="500">4. Push Up</option>
+                    <option data-type="posture" value="201">1. Posture</option>
+                    <option data-type="posture" value="300">2. Side Posture</option>
+                    <option data-type="moire" value="400">3. Moiré</option>
+                    <option data-type="exercise" value="500">4. Push Up</option>
                   </optgroup>
                   <option class="wating" value="80" disabled>Hip Rotation</option>
                   <option class="wating" value="90" disabled>Neck Rotation</option>
-                    <option class="wating" value="100" disabled>Neck Flexion / Extension</option>
-                    <option class="wating" value="110" disabled>Neck Lateral Flexion</option>
+                  <option class="wating" value="100" disabled>Neck Flexion / Extension</option>
+                  <option class="wating" value="110" disabled>Neck Lateral Flexion</option>
                 </select>
 
                 <div class="form-group" id="modal-direction" style="margin-top: 15px;">
@@ -136,7 +131,14 @@
                        &nbsp&nbsp&nbsp&nbsp
                        <input type="radio" name="radio-group" id="test4" value="2">
                        <label for="test4"> Right </label>
-                   </div>
+                   </div>                 
+                </div>
+
+                <div class="form-group" id="modal-time" style="margin-top: 15px;">                  
+                   <label class="control-label" for="inputTime">측정 시간</label>
+                   <div class="">
+                      <input type="number" name="inputTime" min="0" class="form-control" id="measureTime">  
+                   </div>  
                 </div>
               </div>
 
@@ -175,7 +177,7 @@
         				<ul class="nav nav-pills" style="margin-top: 2px;">
         					<li class="pull-left"><h4 style="color:#73879C">History</h4></li>
                   <li class="pull-right">
-                  <button class="btn btn-primary" id="CheckGraph" onclick="checkGraph()">그래프 확인</button>
+                  <button class="btn btn-primary" id="CheckGraph" onclick="checkGraph()">결과 확인</button>
                   </li>
         				</ul>
         			</div>
@@ -240,7 +242,7 @@
     <script src="../vendor/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap -->
     <script src="../vendor/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="POM-CHECKER.js"></script>
+    <script>document.write("<script type='text/javascript' src='POM-CHECKER.js?version=" + Date.now() + "'><\/script>");</script>
     <script src="drag.js"></script>
 
     <!-- Custom Theme Scripts -->

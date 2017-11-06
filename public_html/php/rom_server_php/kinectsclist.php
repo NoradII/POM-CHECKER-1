@@ -18,7 +18,7 @@ $return_arr = Array();
 
 
 //echo $query;
-$result = mysqli_query($connection,"SELECT patientid, name, jointdirection, kinectid, forcecode FROM rom_kinectsc natural join rom_patient WHERE rom_kinectsc.patientid = rom_patient.patientid ORDER BY forcecode");
+$result = mysqli_query($connection,"SELECT patientid, name, jointdirection, kinectid, forcecode, measureTime FROM rom_kinectsc natural join rom_patient WHERE rom_kinectsc.patientid = rom_patient.patientid ORDER BY forcecode");
 
 while ($row = mysqli_fetch_array($result)) {
 	$row_array['patientid'] = $row['patientid'];
@@ -26,6 +26,7 @@ while ($row = mysqli_fetch_array($result)) {
 	$row_array['jointdirection'] = $row['jointdirection'];
 	$row_array['kinectid'] = $row['kinectid'];
 	$row_array['forcecode'] = $row['forcecode'];
+	$row_array['measureTime'] = $row['measureTime'];
 	array_push($return_arr,$row_array);
 }
 

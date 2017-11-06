@@ -18,6 +18,7 @@ if(isset($_POST['kinectid']) && isset($_POST['patientid']) && isset($_POST['join
 	$kinectid = $_POST['kinectid'];
 	$patientid = $_POST['patientid'];
 	$jointdirection = $_POST['jointdirection'];
+	$measureTime = $_POST['measureTime'];
 
 	$connection = mysqli_connect(DB_HOST,DB_USER,DB_PASSWORD,DB_DATABASE);
 
@@ -26,8 +27,8 @@ if(isset($_POST['kinectid']) && isset($_POST['patientid']) && isset($_POST['join
 	$row = mysqli_fetch_row($result_set);
 	$forcecode= $row[0]+1000;
 
-	$result = mysqli_query($connection,"INSERT INTO rom_kinectsc(kinectid, patientid, datetime, jointdirection, forcecode)
-		values('".$kinectid."', '".$patientid."', now() , '".$jointdirection."', '".$forcecode."')");
+	$result = mysqli_query($connection,"INSERT INTO rom_kinectsc(kinectid, patientid, datetime, jointdirection, forcecode, measureTime)
+		values('".$kinectid."', '".$patientid."', now() , '".$jointdirection."', '".$forcecode."', '".$measureTime."')");
 
 	// echo "successly added";
 	echo json_encode("successly added",JSON_UNESCAPED_UNICODE);
