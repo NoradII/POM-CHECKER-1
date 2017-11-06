@@ -713,7 +713,7 @@ function setJointDirection() {
 
     }
 
-    
+
 
 }
 
@@ -1283,6 +1283,9 @@ function setNumberingforJointdirection(jointdirection) {
         case "Moiré":
             jointdirection = '400';
             break;
+        case "Push Up":
+            jointdirection = '500';
+            break;
         default:
     }
     return jointdirection;
@@ -1364,6 +1367,9 @@ function setNamingforJointdirection(jointdirection) {
             break;
         case "400":
             jointdirection = 'Moiré';
+            break;
+        case "500":
+            jointdirection = 'Push Up';
             break;
         default:
     }

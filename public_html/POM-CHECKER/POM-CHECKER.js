@@ -168,6 +168,7 @@ function getCheckDate(clickId) {
           var patientmaxangle = document.createElement("div");
           patientmaxangle.setAttribute("class", "col-md-12 col-sm-6 col-xs-6 baseinfo");
 
+          // TODO : 500번 예외처리하기
           if(data[i].jointdirection === "300"){
             patientmaxangle.innerHTML = "<b>각도 : </b>"+ side_angle + "°";
           }
@@ -305,7 +306,7 @@ function registerMeasurement(){
     document.getElementById("ModalFooter").innerHTML = "검진 시작하기";
     $('#modal-body').show();
 
-    if (selectedJointdirection === "201" || selectedJointdirection === "300" || selectedJointdirection === "400") { // Posture 또는 Side Posture인 경우
+    if (selectedJointdirection === "201" || selectedJointdirection === "300" || selectedJointdirection === "400" || selectedJointdirection === "500") { // Posture 또는 Side Posture인 경우
       document.getElementById('modal-direction').style.visibility = 'hidden';
     }
     else if(selectedJointdirection === "100"){
@@ -338,7 +339,7 @@ function startMeasurement(){
     }
 
     // 측정 방향에 대한 예외처리
-    if (selected_jointdirection === '201' || selected_jointdirection === '300' || selected_jointdirection === '400') {
+    if (selected_jointdirection === '201' || selected_jointdirection === '300' || selected_jointdirection === '500' || selected_jointdirection === '400') {
     }
     else{
       if ((left.checked === false) && (right.checked === false)) {
@@ -789,6 +790,9 @@ function setNamingforJointdirection(jointdirection) {
       break;
     case "400":
       jointdirection = 'Moiré';
+      break;
+    case "500":
+      jointdirection = 'Push Up';
       break;
     default:
   }
