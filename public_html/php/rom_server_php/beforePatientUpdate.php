@@ -14,7 +14,7 @@
 		$return_arr = Array();
 
 		if(TRUE==mysqli_query($connection,
-			"UPDATE igrus.rom_kinectsc SET forcecode = '".$forcecode."' WHERE rom_kinectsc.kinectid = '".$kinectid."'")){
+			"UPDATE teamelysium.rom_kinectsc SET forcecode = '".$forcecode."' WHERE rom_kinectsc.kinectid = '".$kinectid."'")){
 			echo "working!";
 		}
 		else{
