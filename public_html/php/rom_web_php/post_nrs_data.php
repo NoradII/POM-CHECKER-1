@@ -18,7 +18,7 @@ include '../include/Config.php';
 	$return_arr = Array();
 
 	if(TRUE == mysqli_query($connection,
-		"UPDATE igrus.rom_checkdate SET nrs = '".$nrs."' WHERE rom_checkdate.checkdateid = '".$checkdateid."'")){
+		"UPDATE teamelysium.rom_checkdate SET nrs = '".$nrs."' WHERE rom_checkdate.checkdateid = '".$checkdateid."'")){
 		echo "working!";
 	}
 	else{
