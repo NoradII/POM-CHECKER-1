@@ -19,7 +19,7 @@ if(isset($_POST['name']) && isset($_POST['jointdirection']))
 
 	$return_arr = Array();
 
-	$result = mysqli_query($connection, "SELECT rom_checkdate.datetime, rom_checkdate.maxangle, rom_checkdate.sh_angle, rom_checkdate.hh_angle, rom_checkdate.side_head_length, rom_checkdate.side_shoulder_length, rom_checkdate.side_hip_length, rom_checkdate.side_angle, rom_checkdate.checkdateid, rom_checkdate.nrs
+	$result = mysqli_query($connection, "SELECT rom_checkdate.datetime, rom_checkdate.maxangle, rom_checkdate.sh_angle, rom_checkdate.hh_angle, rom_checkdate.side_head_length, rom_checkdate.side_shoulder_length, rom_checkdate.side_hip_length, rom_checkdate.side_angle, rom_checkdate.checkdateid, rom_checkdate.nrs, rom_checkdate.count
 		FROM rom_checkdate , (SELECT rom_checkdate.datetime, rom_checkdate.maxangle FROM rom_checkdate, rom_patient WHERE rom_patient.name = '".$name."' AND rom_patient.patientid = rom_checkdate.patientid AND jointdirection = '".$jointdirection."' ORDER BY rom_checkdate.datetime DESC)
 		 as A WHERE A.datetime = rom_checkdate.datetime ORDER BY rom_checkdate.datetime");
 
@@ -34,6 +34,7 @@ if(isset($_POST['name']) && isset($_POST['jointdirection']))
 		$row_array['side_shoulder_length'] = $row['side_shoulder_length'];
 		$row_array['side_hip_length'] = $row['side_hip_length'];
 		$row_array['side_angle'] = $row['side_angle'];
+		$row_array['count'] = $row['count'];
 		array_push($return_arr,$row_array);
 	}
 

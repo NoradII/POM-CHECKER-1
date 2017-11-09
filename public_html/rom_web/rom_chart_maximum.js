@@ -571,6 +571,12 @@ function setJointDirection() {
                         case "300":
                             jointdirection = 'Side Posture';
                             break;
+                        case "500":
+                            jointdirection = 'Push Up';
+                            break;
+                        case "510":
+                            jointdirection = 'Squat';
+                            break;
                         default:
                     }
 
@@ -607,7 +613,16 @@ function setJointDirection() {
                         document.getElementById('image-box').style.display = 'none';
                     }
 
-                     else {
+                    //TODO : Exercise Table ? 
+                    else if(jointdirection === "Push Up" || jointdirection === "Squat"){
+                        document.getElementById('image-box').style.display = 'block';
+                        document.getElementById('rom-table-thead-angle').innerHTML = "Count";
+                        document.getElementById('rom-table-thead-variation').innerHTML = "Variation";
+                        data[i].count *= 1;
+                        angle = data[i].count;
+                    }
+
+                    else {
                         document.getElementById('image-box').style.display = 'block';
                         document.getElementById('rom-table-thead-angle').innerHTML = "Max Angle";
                         document.getElementById('rom-table-thead-variation').innerHTML = "Variation";
@@ -665,6 +680,10 @@ function setJointDirection() {
                         data[j].side_hip_length *= 1;
                         data[j].side_angle *= 1;
                         addDataForSidePosture(chartForSidePosture, data[j].datetime.substring(0, 10), data[j].side_head_length, data[j].side_shoulder_length, data[j].side_hip_length, data[j].side_angle ,data[j].nrs);
+                    }
+                    //TODO : Exercise Graph ? 
+                    else if(jointdirection === "Push Up" || jointdirection === "Squat"){
+
                     }
                     else {
                         document.getElementById('myChart2').style.display = 'none';
@@ -1144,6 +1163,9 @@ function setNumberingforJointdirection(jointdirection) {
         case "Push Up":
             jointdirection = '500';
             break;
+        case "Squat":
+            jointdirection = '510';
+            break;
         default:
     }
     return jointdirection;
@@ -1228,6 +1250,9 @@ function setNamingforJointdirection(jointdirection) {
             break;
         case "500":
             jointdirection = 'Push Up';
+            break;
+        case "510":
+            jointdirection = 'Squat';
             break;
         default:
     }

@@ -28,6 +28,7 @@ if(isset($_POST['patientid']))
 		$row_array['side_angle'] = $row['side_angle'];
 		$row_array['sh_angle'] = $row['sh_angle'];
 		$row_array['hh_angle'] = $row['hh_angle'];
+		$row_array['count'] = $row['count'];
 
 		array_push($return_arr,$row_array);
 	}
