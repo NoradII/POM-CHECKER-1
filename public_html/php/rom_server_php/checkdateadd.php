@@ -112,6 +112,35 @@ else if(isset($_POST['checkdateid']) && isset($_POST['patientid']) && isset($_PO
 
    echo json_encode($return_arr, JSON_UNESCAPED_UNICODE);
 }
+else if(isset($_POST['checkdateid']) && isset($_POST['patientid']) && isset($_POST['jointdirection']) && isset($_POST['count'])) {
+   $checkdateid = $_POST['checkdateid'];
+   $patientid = $_POST['patientid'];
+   $jointdirection = $_POST['jointdirection'];
+   $count = $_POST['count'];
+
+   $connection = mysqli_connect(DB_HOST,DB_USER,DB_PASSWORD,DB_DATABASE);
+
+   $return_arr = Array();
+
+   $result = mysqli_query($connection,"INSERT INTO rom_checkdate(checkdateid,patientid, datetime, jointdirection, count)
+      values('".$checkdateid."', '".$patientid."', now(), '".$jointdirection."', '".$count."')");
+
+   $result = mysqli_query($connection,"UPDATE rom_patient SET lastupdate = now() WHERE patientid = '".$patientid."'");
+
+   $result = mysqli_query($connection,"SELECT * FROM rom_checkdate ORDER BY checkdateid DESC LIMIT 1");
+
+   while ($row = mysqli_fetch_array($result)) {
+      $row_array['checkdateid'] = $row['checkdateid'];
+      $row_array['patientid'] = $row['patientid'];
+      $row_array['datetime'] = $row['datetime'];
+      $row_array['jointdirection'] = $row['jointdirection'];
+      $row_array['count'] = $row['count'];
+
+      array_push($return_arr, $row_array);
+   }
+
+   echo json_encode($return_arr, JSON_UNESCAPED_UNICODE);
+}
 else if(isset($_POST['checkdateid']) && isset($_POST['patientid']) && isset($_POST['jointdirection']))
 {
    $checkdateid = $_POST['checkdateid'];
@@ -140,6 +169,7 @@ else if(isset($_POST['checkdateid']) && isset($_POST['patientid']) && isset($_PO
 
    echo json_encode($return_arr, JSON_UNESCAPED_UNICODE);
 }
+
 else {
    // $connection = mysqli_connect(DB_HOST,DB_USER,DB_PASSWORD,DB_DATABASE);
    // $return_arr = Array();

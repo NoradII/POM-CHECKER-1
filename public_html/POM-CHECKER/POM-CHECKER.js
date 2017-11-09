@@ -140,6 +140,7 @@ function getCheckDate(clickId) {
           var side_angle = data[i].side_angle;
           var sh_angle = data[i].sh_angle;
           var hh_angle = data[i].hh_angle
+          var count = data[i].count;
           jointdirection = setNamingforJointdirection(jointdirection);
           var new_checkdatelist = document.createElement("div");
           new_checkdatelist.setAttribute("class","btn btn-default btn-group-justified");
@@ -166,12 +167,14 @@ function getCheckDate(clickId) {
           var patientmaxangle = document.createElement("div");
           patientmaxangle.setAttribute("class", "col-md-12 col-sm-6 col-xs-6 baseinfo");
 
-          // TODO : 500번 예외처리하기
           if(data[i].jointdirection === "300"){
             patientmaxangle.innerHTML = "<b>각도 : </b>"+ side_angle + "°";
           }
           else if(data[i].jointdirection === "201"){
             patientmaxangle.innerHTML = "<b>S.balance : </b>"+ sh_angle + "°, <b>P.balance : </b>"+ hh_angle +"°";
+          }
+          else if(data[i].jointdirection === "500" || data[i].jointdirection === "501"){
+            patientmaxangle.innerHTML = "<b>횟수 : </b>" + data[i].count;
           }
           else{
             patientmaxangle.innerHTML = "<b>최대각도 : </b>"+ maxangle + "°";
@@ -329,7 +332,7 @@ function startMeasurement(){
     }
 
     // 측정 방향에 대한 예외처리
-    if (selected_jointdirection === '201' || selected_jointdirection === '300' || selected_jointdirection === '500' || selected_jointdirection === '400') {
+    if (selected_type === "posture" || selected_type === "exercise" || selected_jointdirection === '400') {
     }
     else{
       if ((left.checked === false) && (right.checked === false)) {
@@ -422,7 +425,7 @@ function viewBeforeMeasurementList()
         row_div.appendChild(close_container);
         row_div.appendChild(patientjointdirection);
 
-        if(jointdirection === "201" || jointdirection ==="300" || jointdirection==="500"){
+        if(jointdirection === "201" || jointdirection ==="300" || jointdirection==="500"|| jointdirection==="510"){
           patientjointdirection.setAttribute("class", "col-md-6 col-sm-6 col-xs-6 baseinfo");
 
           var patienttime = document.createElement("div");
@@ -498,7 +501,7 @@ function viewMeasuring()
       row_div.appendChild(close_container);
       row_div.appendChild(patientjointdirection);
 
-      if(jointdirection === "201" || jointdirection ==="300" || jointdirection==="500"){
+      if(jointdirection === "201" || jointdirection ==="300" || jointdirection==="500" || jointdirection==="510"){
           patientjointdirection.setAttribute("class", "col-md-6 col-sm-6 col-xs-6 baseinfo");
 
           var patienttime = document.createElement("div");
@@ -801,6 +804,9 @@ function setNamingforJointdirection(jointdirection) {
       break;
     case "500":
       jointdirection = 'Push Up';
+      break;
+    case "510":
+      jointdirection = 'Squat';
       break;
     default:
   }
