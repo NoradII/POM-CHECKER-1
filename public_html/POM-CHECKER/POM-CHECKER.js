@@ -425,7 +425,7 @@ function viewBeforeMeasurementList()
         row_div.appendChild(close_container);
         row_div.appendChild(patientjointdirection);
 
-        if(jointdirection === "201" || jointdirection ==="300" || jointdirection.substr(0,1)==="5"){
+        if(jointdirection === "201" || jointdirection === "300" || parseInt((parseInt(jointdirection)/100)) === 5){
           patientjointdirection.setAttribute("class", "col-md-6 col-sm-6 col-xs-6 baseinfo");
 
           var patienttime = document.createElement("div");
@@ -501,7 +501,7 @@ function viewMeasuring()
       row_div.appendChild(close_container);
       row_div.appendChild(patientjointdirection);
 
-      if(jointdirection === "201" || jointdirection ==="300" || jointdirection.substr(0,1)==="5"){
+      if(jointdirection === "201" || jointdirection ==="300" || parseInt((parseInt(jointdirection)/100))==="5"){
           patientjointdirection.setAttribute("class", "col-md-6 col-sm-6 col-xs-6 baseinfo");
 
           var patienttime = document.createElement("div");
@@ -595,7 +595,7 @@ function viewAfterMeasurementList()
         row_div.appendChild(patient_id);
         row_div.appendChild(patientjointdirection);
 
-        if(jointdirection === "201" || jointdirection ==="300" || jointdirection.substr(0,1)==="5"){
+        if(jointdirection === "201" || jointdirection ==="300" || parseInt((parseInt(jointdirection)/100))==="5"){
           patientjointdirection.setAttribute("class", "col-md-6 col-sm-6 col-xs-6 baseinfo");
 
           var patienttime = document.createElement("div");
