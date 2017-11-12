@@ -1166,6 +1166,30 @@ function setNumberingforJointdirection(jointdirection) {
         case "Squat":
             jointdirection = '510';
             break;
+        case "Hip Extension":
+            jointdirection = '520';
+            break;
+        case "Opposite Arm & Leg Extension":
+            jointdirection = '530';
+            break;
+        case "Side Lunge":
+            jointdirection = '540';
+            break;
+        case "Cat Pose Yoga":
+            jointdirection = '550';
+            break;
+        case "Downward Facing Dog":
+            jointdirection = '560';
+            break;
+        case "Slopes Towards":
+            jointdirection = '570';
+            break;
+        case "Hands To Feet Yoga":
+            jointdirection = '580';
+            break;
+        case "Windmills":
+            jointdirection = '590';
+            break;
         default:
     }
     return jointdirection;
@@ -1254,6 +1278,29 @@ function setNamingforJointdirection(jointdirection) {
         case "510":
             jointdirection = 'Squat';
             break;
+        case "520":
+          jointdirection = 'Hip Extension';
+          break;
+        case "530":
+          jointdirection = 'Opposite Arm & Leg Extension';
+          break;
+        case "540":
+          jointdirection = 'Side Lunge';
+          break;
+        case "550":
+          jointdirection = 'Cat Pose Yoga';
+          break;
+        case "560":
+          jointdirection = 'Downward Facing Dog';
+          break;
+        case "570":
+          jointdirection = 'Slopes Towards';
+          break;
+        case "580":
+          jointdirection = 'Hands To Feet Yoga';
+          break;
+        case "590":
+          jointdirection = 'Windmills';
         default:
     }
     return jointdirection;

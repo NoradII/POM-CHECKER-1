@@ -425,7 +425,7 @@ function viewBeforeMeasurementList()
         row_div.appendChild(close_container);
         row_div.appendChild(patientjointdirection);
 
-        if(jointdirection === "201" || jointdirection ==="300" || jointdirection==="500"|| jointdirection==="510"){
+        if(jointdirection === "201" || jointdirection ==="300" || jointdirection.substr(0,1)==="5"){
           patientjointdirection.setAttribute("class", "col-md-6 col-sm-6 col-xs-6 baseinfo");
 
           var patienttime = document.createElement("div");
@@ -501,7 +501,7 @@ function viewMeasuring()
       row_div.appendChild(close_container);
       row_div.appendChild(patientjointdirection);
 
-      if(jointdirection === "201" || jointdirection ==="300" || jointdirection==="500" || jointdirection==="510"){
+      if(jointdirection === "201" || jointdirection ==="300" || jointdirection.substr(0,1)==="5"){
           patientjointdirection.setAttribute("class", "col-md-6 col-sm-6 col-xs-6 baseinfo");
 
           var patienttime = document.createElement("div");
@@ -595,7 +595,7 @@ function viewAfterMeasurementList()
         row_div.appendChild(patient_id);
         row_div.appendChild(patientjointdirection);
 
-        if(jointdirection === "201" || jointdirection ==="300" || jointdirection==="500"){
+        if(jointdirection === "201" || jointdirection ==="300" || jointdirection.substr(0,1)==="5"){
           patientjointdirection.setAttribute("class", "col-md-6 col-sm-6 col-xs-6 baseinfo");
 
           var patienttime = document.createElement("div");
@@ -807,6 +807,30 @@ function setNamingforJointdirection(jointdirection) {
       break;
     case "510":
       jointdirection = 'Squat';
+      break;
+    case "520":
+      jointdirection = 'Hip Extension';
+      break;
+    case "530":
+      jointdirection = 'Opposite Arm & Leg Extension';
+      break;
+    case "540":
+      jointdirection = 'Side Lunge';
+      break;
+    case "550":
+      jointdirection = 'Cat Pose Yoga';
+      break;
+    case "560":
+      jointdirection = 'Downward Facing Dog';
+      break;
+    case "570":
+      jointdirection = 'Slopes Towards';
+      break;
+    case "580":
+      jointdirection = 'Hands To Feet Yoga';
+      break;
+    case "590":
+      jointdirection = 'Windmills';
       break;
     default:
   }
