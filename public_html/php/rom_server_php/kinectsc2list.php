@@ -16,14 +16,15 @@ $connection = mysqli_connect(DB_HOST,DB_USER,DB_PASSWORD,DB_DATABASE);
 $return_arr = Array();
 
 //echo $query;
-$result = mysqli_query($connection,"SELECT patientid, name, jointdirection, measureTime FROM rom_kinectsc2 natural join rom_patient WHERE rom_kinectsc2.patientid = rom_patient.patientid ORDER BY datetime");
+$result = mysqli_query($connection,"SELECT patientid, name, jointdirection, measureTime, yogaCount FROM rom_kinectsc2 natural join rom_patient WHERE rom_kinectsc2.patientid = rom_patient.patientid ORDER BY datetime");
 
 while ($row = mysqli_fetch_array($result)) {
-	$row_array['patientid'] = $row['patientid'];
-	$row_array['name'] = $row['name'];
-	$row_array['jointdirection'] = $row['jointdirection'];
-	$row_array['measureTime'] = $row['measureTime'];
-	array_push($return_arr,$row_array);
+   $row_array['patientid'] = $row['patientid'];
+   $row_array['name'] = $row['name'];
+   $row_array['jointdirection'] = $row['jointdirection'];
+   $row_array['measureTime'] = $row['measureTime'];
+   $row_array['yogaCount'] = $row['yogaCount'];
+   array_push($return_arr,$row_array);
 }
 
 echo json_encode($return_arr,JSON_UNESCAPED_UNICODE);
