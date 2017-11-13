@@ -1,0 +1,140 @@
+*{
+	background-color: #232F39;
+	text-shadow: none;
+	color: #c8c6c6;
+}
+
+#ipButton{
+	width: 65px;
+	height: 65px;
+	z-index: 12;
+ 	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+ 	position: fixed;
+ 	bottom: 15px;
+ 	right: 15px;
+ 	border-radius: 50% !important;
+}
+
+body{
+	margin: 20px;
+}
+
+.modal{
+	background-color: rgba(140,140,140,0.4);
+}
+
+.modal-header{
+	border: none;
+}
+
+.modal-footer{
+	border: none;
+	text-align: center;
+}
+
+.modal .control-label{
+	font-size: 15px;
+}
+
+.close{
+	text-shadow: none;
+	color: #dd3c50;
+	opacity: 0.5;
+}
+
+.form-control{
+	border-radius: 4px;
+}
+
+.login_wrapper{
+	margin: 10% auto 0;
+}
+
+input[type="checkbox"].switch_1{
+	font-size: 30px;
+	-webkit-appearance: none;
+	   -moz-appearance: none;
+	        appearance: none;
+	width: 2em;
+	height: 1em;
+	background: #ddd;
+	border-radius: 3em;
+	position: relative;
+	cursor: pointer;
+	outline: none;
+	-webkit-transition: all .2s ease-in-out;
+	transition: all .2s ease-in-out;
+  }
+  
+input[type="checkbox"].switch_1:checked{
+	background: #db4f43;
+  }
+  
+input[type="checkbox"].switch_1:after{
+	position: absolute;
+	content: "";
+	width: 1em;
+	height: 1em;
+	border-radius: 50%;
+	background: #fff;
+	-webkit-box-shadow: 0 0 .25em rgba(0,0,0,.3);
+	        box-shadow: 0 0 .25em rgba(0,0,0,.3);
+	-webkit-transform: scale(.7);
+	        transform: scale(.7);
+	left: 0;
+	-webkit-transition: all .2s ease-in-out;
+	transition: all .2s ease-in-out;
+  }
+  
+input[type="checkbox"].switch_1:checked:after{
+	left: calc(100% - 1em);
+  }
+
+.content{
+  	padding-top: 2%;
+  	padding-bottom: 2%;
+
+  }
+
+.button-group{
+	margin-top: 5%;
+}
+
+.button-group button{
+	background-color: #EB5244;
+	border: none;
+	display: block;
+	width: 100%;
+	margin-bottom: 3%;
+
+	color: #fff;
+}
+
+.button-group button:hover{
+	background-color: #DD3C50;
+	color: #fff;
+}
+
+.button-group button:active{
+	background-color: #DD3C50;
+	color: #fff;
+}
+
+.button-group button:visited{
+	background-color: #DD3C50;
+	color: #fff;
+}
+
+.button-group button:focus{
+	background-color: #DD3C50;
+	color: #fff;
+}
+
+h3{
+	text-align: center;
+	font-weight: bolder;
+}
+
+.result-header{
+	font-size : 1.5em;
+}

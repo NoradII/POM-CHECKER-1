@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
-  <head>
+
+<head>
     <meta http-equiv="Expires" content="Mon, 06 Jan 1990 00:00:01 GMT">
     <!-- Set no-cache -->
     <meta http-equiv="Cache-Control" content="no-cache">
@@ -9,12 +10,85 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-  </head>
-  
-  <body>
-    Hello Shell!
-  </body>
-  <script src="c2m.js"></script>
-  <!-- jQuery -->
-  <script src="../vendor/jquery/dist/jquery.min.js"></script>
+
+    <!-- Bootstrap -->
+    <link href="../vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Custom Theme Style -->
+    <link href="../build/css/custom.min.css" rel="stylesheet">
+    <script>
+        document.write("<link href='c2m.css?version=" + Date.now() + "' rel='stylesheet'");
+    </script>
+</head>
+
+<body>
+    <header>
+        <img src="../image/c2m_logo.png" style="width: 100px; height: 36px">
+    </header>
+
+    <div class="content row">
+
+        <div class="ct-content col-6 col-md-5">
+            <h3>Input CT</h3>
+            <img src="http://via.placeholder.com/750x750" id="ct-image" style="width : 100%">
+        </div>
+
+        <div class="mri-content col-6 col-md-5">
+            <h3>Generated MRI</h3>
+            <img src="http://via.placeholder.com/750x750" id="generated-mri-image" style="width : 100%">
+        </div>
+
+        <div class="result col-6 col-md-2">
+            <h3>RESULT</h3>
+
+            <div class="result-content">
+                <p class="result-header">Processing Time : <span id="processing-time">0.05</span> sec</p>
+
+              <p class="result-header">Confidence Level</p>
+              <p>MRI</p>
+              <div class="progress" style="height : 30px;">
+                  <div class="progress-bar progress-bar-striped active" id="mri-progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%; padding-top:5px;">
+                      0%
+                  </div>
+              </div>
+
+              <p>CT</p>
+              <div class="progress" style="height : 30px;">
+                  <div class="progress-bar progress-bar-striped active" id="ct-progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%; padding-top:5px;">
+                      0%
+                  </div>
+              </div>
+
+              <div class="analysis-result">
+                  <label for="switch_1" style="margin-top:3%; font-size : 1.5em; font-weight : 100">Analysis Result</label>
+                  <input type="checkbox" class="switch_1" id="analysis-result-toggle" style="float : right; margin-bottom: 5%;">
+              </div>
+
+              <div class="button-group">
+                  <input type="file" accept="image/*,.DICOM" class="btn" id="btn-file" onchange="fileUpload(this)" value="Open" style="display : none">
+                  <button type="button" class="btn" id="btn-open" onclick="fileOpen()">Open</button>
+                  <button type="button" class="btn" id="btn-generate">Generate</button>
+                  <button type="button" class="btn" id="btn-save">Save</button>
+              </div>
+              
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row" style="text-align : center;">
+        <p>©2017 <a style="margin-right: 0px" href="http://teamelysium.kr" target="_blank">Team Elysium Inc.</a> All Rights Reserved</p>
+    </div>
+
+
+</body>
+<script>
+    document.write("<script type='text/javascript' src='c2m.js?version=" + Date.now() + "'><\/script>");
+</script>
+<!-- jQuery -->
+<script src="../vendor/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap -->
+<script src="../vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+
 </html>

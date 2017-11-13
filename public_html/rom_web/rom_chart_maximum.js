@@ -1190,6 +1190,15 @@ function setNumberingforJointdirection(jointdirection) {
         case "Windmills":
             jointdirection = '590';
             break;
+        case "Cat pos (Bidalasana)":
+            jointdirection = '700';
+            break;
+        case "Downward dog":
+            jointdirection = '710';
+            break;
+        case "Hands to feet (pada hastasana)":
+            jointdirection = '720';
+            break;
         default:
     }
     return jointdirection;
@@ -1301,6 +1310,16 @@ function setNamingforJointdirection(jointdirection) {
           break;
         case "590":
           jointdirection = 'Windmills';
+          break;
+        case "700":
+          jointdirection = 'Cat pos (Bidalasana)';
+          break;
+        case "710":
+          jointdirection = 'Downward dog';
+          break;
+        case "720":
+          jointdirection = 'Hands to feet (pada hastasana)';
+          break;  
         default:
     }
     return jointdirection;

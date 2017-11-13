@@ -173,7 +173,7 @@ function getCheckDate(clickId) {
           else if(data[i].jointdirection === "201"){
             patientmaxangle.innerHTML = "<b>S.balance : </b>"+ sh_angle + "°, <b>P.balance : </b>"+ hh_angle +"°";
           }
-          else if(data[i].jointdirection === "500" || data[i].jointdirection === "501"){
+          else if(parseInt((parseInt(jointdirection)/100))==="5" || parseInt((parseInt(jointdirection)/100))==="7"){
             patientmaxangle.innerHTML = "<b>횟수 : </b>" + data[i].count;
           }
           else{
@@ -291,20 +291,29 @@ function registerMeasurement(){
     if (selected_type === "posture" || selected_type === "exercise") { // Posture 또는 Side Posture인 경우
       document.getElementById('modal-direction').style.display = 'none';
       document.getElementById('modal-time').style.display = 'block';
+       document.getElementById('modal-count').style.display = 'none';
     }
     else if (selected_type === "moire"){
       document.getElementById('modal-direction').style.display = 'none';
       document.getElementById('modal-time').style.display = 'none';
+      document.getElementById('modal-count').style.display = 'none';
+    }
+    else if(selected_type === "yoga"){
+      document.getElementById('modal-direction').style.display = 'none';
+      document.getElementById('modal-time').style.display = 'block';
+      document.getElementById('modal-count').style.display = 'block';
     }
     else if(selectedJointdirection === "100"){
       document.getElementById('modal-direction').style.display = 'block';
       document.getElementById('modal-time').style.display = 'none';
+      document.getElementById('modal-count').style.display = 'none';
       $("label[for*='test3']").html("Up(Extension)");
       $("label[for*='test4']").html("Down(Flexion)");
     }
     else{
       document.getElementById('modal-direction').style.display = 'block';
       document.getElementById('modal-time').style.display = 'none';
+      document.getElementById('modal-count').style.display = 'none';
       $("label[for*='test3']").html("Left");
       $("label[for*='test4']").html("Right");
     }
@@ -332,7 +341,7 @@ function startMeasurement(){
     }
 
     // 측정 방향에 대한 예외처리
-    if (selected_type === "posture" || selected_type === "exercise" || selected_jointdirection === '400') {
+    if (selected_type === "posture" || selected_type === "exercise" || selected_type === "yoga" || selected_jointdirection === '400') {
     }
     else{
       if ((left.checked === false) && (right.checked === false)) {
@@ -346,7 +355,7 @@ function startMeasurement(){
     }
 
     //측정 시간에 대한 예외처리
-    if(selected_type === "posture" || selected_type === "exercise"){
+    if(selected_type === "posture" || selected_type === "exercise" || selected_type === "yoga"){
       measureTime = document.getElementById("measureTime").value;
     }
     else{
@@ -425,7 +434,7 @@ function viewBeforeMeasurementList()
         row_div.appendChild(close_container);
         row_div.appendChild(patientjointdirection);
 
-        if(jointdirection === "201" || jointdirection === "300" || parseInt((parseInt(jointdirection)/100)) === 5){
+        if(jointdirection === "201" || jointdirection === "300" || parseInt((parseInt(jointdirection)/100)) === 5 || parseInt((parseInt(jointdirection)/100)) === 7){
           patientjointdirection.setAttribute("class", "col-md-6 col-sm-6 col-xs-6 baseinfo");
 
           var patienttime = document.createElement("div");
@@ -501,8 +510,8 @@ function viewMeasuring()
       row_div.appendChild(close_container);
       row_div.appendChild(patientjointdirection);
 
-      if(jointdirection === "201" || jointdirection ==="300" || parseInt((parseInt(jointdirection)/100))==="5"){
-          patientjointdirection.setAttribute("class", "col-md-6 col-sm-6 col-xs-6 baseinfo");
+      if(jointdirection === "201" || jointdirection ==="300" || parseInt((parseInt(jointdirection)/100)) === 5 || parseInt((parseInt(jointdirection)/100)) === 7){
+          patientjointdirection.setAttribute("class", "col-md-6 col-sm-6 col-xs-6 baseinfo"); 
 
           var patienttime = document.createElement("div");
           patienttime.setAttribute("class", "col-md-6 col-sm-6 col-xs-6 baseinfo");
@@ -595,7 +604,7 @@ function viewAfterMeasurementList()
         row_div.appendChild(patient_id);
         row_div.appendChild(patientjointdirection);
 
-        if(jointdirection === "201" || jointdirection ==="300" || parseInt((parseInt(jointdirection)/100))==="5"){
+        if(jointdirection === "201" || jointdirection ==="300" || parseInt((parseInt(jointdirection)/100))==="5" || parseInt((parseInt(jointdirection)/100))==="7"){
           patientjointdirection.setAttribute("class", "col-md-6 col-sm-6 col-xs-6 baseinfo");
 
           var patienttime = document.createElement("div");
@@ -831,6 +840,15 @@ function setNamingforJointdirection(jointdirection) {
       break;
     case "590":
       jointdirection = 'Windmills';
+      break;
+    case "700":
+      jointdirection = 'Cat pos (Bidalasana)';
+      break;
+    case "710":
+      jointdirection = 'Downward dog';
+      break;
+    case "720":
+      jointdirection = 'Hands to feet (pada hastasana)';
       break;
     default:
   }
