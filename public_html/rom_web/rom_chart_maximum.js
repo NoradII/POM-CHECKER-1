@@ -499,6 +499,7 @@ function setJointDirection() {
         getScreenshot();
         getMovie();
         getImage();
+        $("#image-box").show();
         $("#rom-data-chart").hide();
         $("#rom-data-table").hide();
     }
