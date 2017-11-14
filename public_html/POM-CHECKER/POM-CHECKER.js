@@ -167,13 +167,17 @@ function getCheckDate(clickId) {
           var patientmaxangle = document.createElement("div");
           patientmaxangle.setAttribute("class", "col-md-12 col-sm-6 col-xs-6 baseinfo");
 
-          if(data[i].jointdirection === "300"){
+          //JointDirection에 따른 분류
+          if(jointdirection === "300"){ //side posture
             patientmaxangle.innerHTML = "<b>각도 : </b>"+ side_angle + "°";
           }
-          else if(data[i].jointdirection === "201"){
+          else if(jointdirection === "201"){ //posture
             patientmaxangle.innerHTML = "<b>S.balance : </b>"+ sh_angle + "°, <b>P.balance : </b>"+ hh_angle +"°";
           }
-          else if(parseInt((parseInt(jointdirection)/100))==="5" || parseInt((parseInt(jointdirection)/100))==="7"){
+          else if(jointdirection === "400"){ //moire
+            patientmaxangle.innerHTML = " ";
+          }
+          else if(parseInt((parseInt(jointdirection)/100))==="5" || parseInt((parseInt(jointdirection)/100))==="7"){ //exercise, yoga
             patientmaxangle.innerHTML = "<b>횟수 : </b>" + data[i].count;
           }
           else{
@@ -328,6 +332,7 @@ function startMeasurement(){
   var selected_jointdirection = select_jointdirection.options[select_jointdirection.selectedIndex].value;
   var selected_type = select_jointdirection.options[select_jointdirection.selectedIndex].getAttribute("data-type");
   var measureTime;
+  var yogaCount;
 
   if(typeof selectedId === 'undefined') { // 환자를 선택하지 않았을 경우
     $('#checkupModal').modal('hide');
@@ -341,7 +346,7 @@ function startMeasurement(){
     }
 
     // 측정 방향에 대한 예외처리
-    if (selected_type === "posture" || selected_type === "exercise" || selected_type === "yoga" || selected_jointdirection === '400') {
+    if (selected_type === "posture" || selected_type === "exercise" || selected_type === "yoga" || selected_type === "moire") {
     }
     else{
       if ((left.checked === false) && (right.checked === false)) {
@@ -354,16 +359,21 @@ function startMeasurement(){
         }
     }
 
-    //측정 시간에 대한 예외처리
+    //측정 시간, 목표 갯수에 대한 예외처리
     if(selected_type === "posture" || selected_type === "exercise" || selected_type === "yoga"){
       measureTime = document.getElementById("measureTime").value;
+      yogaCount = null;
+      if(selected_type === "yoga"){
+        yogaCount = document.getElementById("yogaCount").value;
+      }
     }
     else{
       measureTime = null;
+      yogaCount = null;
     }
 
     var kinectid = createHash();
-    var data = {kinectid : kinectid, patientid : selectedId, jointdirection : selected_jointdirection, measureTime : measureTime};
+    var data = {kinectid : kinectid, patientid : selectedId, jointdirection : selected_jointdirection, measureTime : measureTime, yogaCount : yogaCount};
 
     $.ajax({
       url: "http://" + ip + "/php/rom_server_php/fronttokinect.php",
@@ -433,7 +443,8 @@ function viewBeforeMeasurementList()
         row_div.appendChild(patient_id);
         row_div.appendChild(close_container);
         row_div.appendChild(patientjointdirection);
-
+        
+        //posture, sideposture, exercise, yoga
         if(jointdirection === "201" || jointdirection === "300" || parseInt((parseInt(jointdirection)/100)) === 5 || parseInt((parseInt(jointdirection)/100)) === 7){
           patientjointdirection.setAttribute("class", "col-md-6 col-sm-6 col-xs-6 baseinfo");
 

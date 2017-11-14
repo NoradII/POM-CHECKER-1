@@ -406,3 +406,41 @@ height: auto !important;
     display: none;
   }
 }
+
+/*--exercise calendar--*/
+.calendar-toolbar {
+  margin-bottom: 10px;
+}
+
+.calendar-month-row {
+  height: 5px;
+  background-color: #e2e2e2;
+  font-weight: bold;
+}
+
+.calendar-prior-months-date {
+  color: #7a7979;
+}
+
+.calendar-current-date {
+  text-align: center;
+  display: inline-block;
+  width: 100px;
+}
+
+.calendar-day-row{
+  height: 80px;
+} 
+
+.calendar-day-row td{
+  width: 14%;
+} 
+
+.activity-log{
+  background-color: #232F39;
+  color : #fff;
+  height: 25px;
+  border-radius: 5px;
+  padding: 3px;
+}
+/*----------------------*/
