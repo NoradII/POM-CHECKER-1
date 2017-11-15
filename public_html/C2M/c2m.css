@@ -1,7 +1,16 @@
-*{
+body{
 	background-color: #232F39;
 	text-shadow: none;
 	color: #c8c6c6;
+}
+
+.login{
+	background-color: #232F39;
+	color: #c8c6c6;
+}
+
+.login p{
+	text-shadow: none;
 }
 
 #ipButton{
@@ -14,11 +23,6 @@
  	right: 15px;
  	border-radius: 50% !important;
 }
-
-body{
-	margin: 20px;
-}
-
 .modal{
 	background-color: rgba(140,140,140,0.4);
 }
@@ -89,13 +93,6 @@ input[type="checkbox"].switch_1:after{
 input[type="checkbox"].switch_1:checked:after{
 	left: calc(100% - 1em);
   }
-
-.content{
-  	padding-top: 2%;
-  	padding-bottom: 2%;
-
-  }
-
 .button-group{
 	margin-top: 5%;
 }
@@ -103,10 +100,6 @@ input[type="checkbox"].switch_1:checked:after{
 .button-group button{
 	background-color: #EB5244;
 	border: none;
-	display: block;
-	width: 100%;
-	margin-bottom: 3%;
-
 	color: #fff;
 }
 
@@ -137,4 +130,46 @@ h3{
 
 .result-header{
 	font-size : 1.5em;
+}
+
+.content{
+	height: 100vh;
+	overflow: hidden;
+}
+
+#ct-image, #generated-mri-image{
+	width: 100%;
+	overflow: hidden;
+}
+
+.ct-content{
+	padding-left: 50px;
+}
+
+.mri-content{
+	padding-right: 50px;
+}
+
+.logo{
+	height: 60px;
+	width: 100vw;
+	background-color: #EB5244;
+	padding: 11px;
+}
+
+.logo img{
+	display: block;
+	margin: 0 auto;
+	width: 100px;
+	height: 36px;
+
+}
+
+.content-header{
+	height: 60px;
+	padding: 18px;
+}
+
+.content-header h3{
+	margin: 0;
 }

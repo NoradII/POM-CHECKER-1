@@ -385,6 +385,7 @@ function removeData(chart) {
     chart.update();
 }
 
+var calendar_status;
 function getPatientJonintDirection() {
     var select_name = document.getElementById('drop1');
     var selected_name = select_name.options[select_name.selectedIndex].text;
@@ -392,7 +393,7 @@ function getPatientJonintDirection() {
     getPatientInfo(selected_name.split('(')[0], selected_patientid);
     var post_data = "name=" + selected_name.split('(')[0] + "&patientid=" + selected_patientid;
     console.log("patient_name=누구: " + post_data);
-
+    calendar_status = 0;
     if (selected_name === "--- Patient --") {
     } else {
         var jointdirectionList = [];
@@ -416,6 +417,7 @@ function getPatientJonintDirection() {
               $('#drop2-wrapper > span').css("text-align", "center");
               $('#drop2-wrapper > select').css("height", "38px");
 
+              calendar_status++;
               setJointDirection();
 
             },
@@ -517,7 +519,9 @@ function setJointDirection() {
              //$("#rom-data-table").hide();
              document.getElementById('calendar').style.display = 'block';
              document.getElementById('rom-data-chart').style.height = '800px';
-             $('#calendar').calendar();
+             if(calendar_status !== 0){
+                $('#calendar').calendar();
+             }
              $('.calendar-day-row td').empty();
              //document.getElementById("rom-data-chart").setAttribute("class", "col-md-12 col-sm-12 col-xs-12");
         }
@@ -1494,6 +1498,8 @@ function setNamingforJointdirection(jointdirection) {
       case 'month':
         this.options.datetime.endOf('month').add(1, 'day');
         this.render();
+        calendar_status = 0;
+        setJointDirection();
         break;
       default:
         break;
@@ -1509,6 +1515,8 @@ function setNamingforJointdirection(jointdirection) {
       case 'month':
         this.options.datetime.startOf('month').subtract(1, 'day');
         this.render();
+        calendar_status = 0;
+         setJointDirection();
         break;
       default:
         break;

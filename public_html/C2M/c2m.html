@@ -23,56 +23,68 @@
 </head>
 
 <body>
-    <header>
-        <img src="../image/c2m_logo.png" style="width: 100px; height: 36px">
-    </header>
+   <div class="logo">
+        <img src="../image/c2m_logo.png">
+    </div>
+    <div class="content">
+        <div class="row image-container">
+          <div class="ct-content col-md-6 col-sm-12 col-xs-12">
+            <div class="content-header">
+              <h3 >INPUT CT</h3>
+            </div>
+              
+              <img src="http://via.placeholder.com/600x600" id="ct-image">
+          </div>
 
-    <div class="content row">
-
-        <div class="ct-content col-md-5 col-sm-12 col-xs-12">
-            <h3>Input CT</h3>
-            <img src="http://via.placeholder.com/750x750" id="ct-image" style="width : 100%">
+          <div class="mri-content col-md-6 col-sm-12 col-xs-12">
+            <div class="content-header">
+              <h3>GENERATED MRI</h3>
+            </div>
+              <img src="http://via.placeholder.com/750x750" id="generated-mri-image">
+          </div>
+          
         </div>
 
-        <div class="mri-content col-md-5 col-sm-12 col-xs-12">
-            <h3>Generated MRI</h3>
-            <img src="http://via.placeholder.com/750x750" id="generated-mri-image" style="width : 100%">
-        </div>
+        <div class="row result-container">
+          <div class="result col-md-12 col-sm-12 col-xs-12 row">
+              <h3 class="col-md-2 col-sm-12 col-xs-12">RESULT</h3>
 
-        <div class="result col-md-2 col-sm-12 col-xs-12">
-            <h3>RESULT</h3>
-
-            <div class="result-content">
+              <div class="processing-time col-md-3 col-sm-12 col-xs-12">
                 <p class="result-header">Processing Time : <span id="processing-time">0.05</span> sec</p>
-
-              <p class="result-header">Confidence Level</p>
-              <p>MRI</p>
-              <div class="progress" style="height : 30px;">
-                  <div class="progress-bar progress-bar-striped active" id="mri-progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%; padding-top:5px;">
-                      0%
-                  </div>
-              </div>
-
-              <p>CT</p>
-              <div class="progress" style="height : 30px;">
-                  <div class="progress-bar progress-bar-striped active" id="ct-progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%; padding-top:5px;">
-                      0%
-                  </div>
-              </div>
-
-              <div class="analysis-result">
-                  <label for="switch_1" style="margin-top:3%; font-size : 1.5em; font-weight : 100">Analysis Result</label>
-                  <input type="checkbox" class="switch_1" id="analysis-result-toggle" style="float : right; margin-bottom: 5%;">
-              </div>
-
-              <div class="button-group">
-                  <input type="file" accept="image/*,.DICOM" class="btn" id="btn-file" onchange="fileUpload(this)" value="Open" style="display : none">
-                  <button type="button" class="btn" id="btn-open" onclick="fileOpen()">Open</button>
-                  <button type="button" class="btn" id="btn-generate">Generate</button>
-                  <button type="button" class="btn" id="btn-save">Save</button>
               </div>
               
-            </div>
+              <div class="confidence-level col-md-3 col-sm-12 col-xs-12">
+                <p class="result-header">Confidence Level</p>
+                <p>MRI</p>
+                <div class="progress" style="height : 30px;">
+                    <div class="progress-bar progress-bar-striped active" id="mri-progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%; padding-top:5px;">
+                        0%
+                    </div>
+                </div>
+
+                <p>CT</p>
+                <div class="progress" style="height : 30px;">
+                    <div class="progress-bar progress-bar-striped active" id="ct-progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%; padding-top:5px;">
+                        0%
+                    </div>
+                </div>
+              </div>                 
+
+                <div class="analysis-result col-md-3 col-sm-12 col-xs-12">
+                    <label for="switch_1" style="margin-top:3%; font-size : 1.5em; font-weight : 100">Analysis Result</label>
+                    <input type="checkbox" class="switch_1" id="analysis-result-toggle" style="float : right; margin-bottom: 5%;">
+
+                    <div class="button-group">
+                      <input type="file" accept="image/*,.DICOM" class="btn" id="btn-file" onchange="fileUpload(this)" value="Open" style="display : none">
+                      <button type="button" class="btn" id="btn-open" onclick="fileOpen()">Open</button>
+                      <button type="button" class="btn" id="btn-generate">Generate</button>
+                      <button type="button" class="btn" id="btn-save">Save</button>
+                  </div>
+                </div>
+
+                
+
+          </div>
         </div>
 
     </div>
