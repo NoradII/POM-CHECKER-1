@@ -4,6 +4,9 @@ window.onload = function() {
   move(ct_progress_bar, 20);
   move(mri_progress_bar, 80);
 
+  document.getElementById("ct-image").style.height = document.getElementById("ct-image").offsetWidth;
+  document.getElementById("generated-mri-image").style.height = document.getElementById("generated-mri-image").offsetWidth;
+
   $.ajax({
     url: "http://127.0.0.1/php/c2m_php/c2m.php",
     dataType: 'html',
