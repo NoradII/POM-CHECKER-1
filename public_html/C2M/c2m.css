@@ -1,8 +1,10 @@
 body{
 	background-color: #232F39;
 	text-shadow: none;
-	color: #c8c6c6;
+	color: #fff;
 }
+
+/*****************LOGIN.HTML************************/
 
 .login{
 	background-color: #232F39;
@@ -11,6 +13,10 @@ body{
 
 .login p{
 	text-shadow: none;
+}
+
+.login .modal-content{
+	background-color: #232F39;
 }
 
 #ipButton{
@@ -23,6 +29,7 @@ body{
  	right: 15px;
  	border-radius: 50% !important;
 }
+
 .modal{
 	background-color: rgba(140,140,140,0.4);
 }
@@ -54,53 +61,70 @@ body{
 	margin: 10% auto 0;
 }
 
+
+/********************C2M.HTML**************************/
+
+
+/*-toggle button-*/
+
 input[type="checkbox"].switch_1{
 	font-size: 30px;
 	-webkit-appearance: none;
 	   -moz-appearance: none;
 	        appearance: none;
-	width: 2em;
-	height: 1em;
-	background: #ddd;
+	width: 1.7em;
+	height: 0.75em;
+	background: #151d23;
 	border-radius: 3em;
 	position: relative;
 	cursor: pointer;
 	outline: none;
 	-webkit-transition: all .2s ease-in-out;
 	transition: all .2s ease-in-out;
+	margin: 0;
   }
   
 input[type="checkbox"].switch_1:checked{
-	background: #db4f43;
+	background: #dd3c50;
   }
   
 input[type="checkbox"].switch_1:after{
 	position: absolute;
 	content: "";
-	width: 1em;
-	height: 1em;
+	width: 0.75em;
+	height: 0.75em;
 	border-radius: 50%;
-	background: #fff;
+	background: #dd3c50;
 	-webkit-box-shadow: 0 0 .25em rgba(0,0,0,.3);
 	        box-shadow: 0 0 .25em rgba(0,0,0,.3);
-	-webkit-transform: scale(.7);
-	        transform: scale(.7);
+	-webkit-transform: scale(.75);
+	        transform: scale(.75);
 	left: 0;
 	-webkit-transition: all .2s ease-in-out;
 	transition: all .2s ease-in-out;
   }
   
 input[type="checkbox"].switch_1:checked:after{
-	left: calc(100% - 1em);
-  }
+	-webkit-transform: scale(.85);
+	        transform: scale(.85);
+	left: calc(100% - 0.79em);
+	background: #151d23;
+ }
+
+ /*----------------*/
+
 .button-group{
-	margin-top: 5%;
+	margin-top: 7%;
+	margin-left: 10%;
 }
 
 .button-group button{
 	background-color: #EB5244;
 	border: none;
 	color: #fff;
+	font-size: 1em;
+	border-radius: 0;
+	height: 50%;
 }
 
 .button-group button:hover{
@@ -122,36 +146,32 @@ input[type="checkbox"].switch_1:checked:after{
 	background-color: #DD3C50;
 	color: #fff;
 }
-
-h3{
-	text-align: center;
-	font-weight: bolder;
-}
-
-.result-header{
-	font-size : 1.5em;
-}
-
-.content{
-	height: 100vh;
-}
-
 #ct-image, #generated-mri-image{
-	width: 100%;
-	overflow: hidden;
+	width: 70%;
+	text-align: center;
+}
+
+.image-container{
+	border-top: solid 1.4px #000012;
+	background-color: #000;
 }
 
 .ct-content{
 	padding-left: 50px;
+	text-align: center;
+	border: solid 1.3px #38444e;
 }
 
 .mri-content{
 	padding-right: 50px;
+	text-align: center;
+	border: solid 1.3px #38444e;
+	border-left: none;
 }
 
 .logo{
 	height: 60px;
-	width: 100vw;
+	width: 100vw; 	
 	background-color: #EB5244;
 	padding: 11px;
 }
@@ -161,31 +181,96 @@ h3{
 	margin: 0 auto;
 	width: 100px;
 	height: 36px;
-
 }
 
 .content-header{
-	height: 60px;
-	padding: 18px;
+	height: 52px;
+	padding: 10px;
 }
 
 .content-header h3{
 	margin: 0;
+	font-size: 2.5em;
+	text-align: center;
+	font-weight: bolder;
+	letter-spacing: 2px;
 }
 
-.progressBar {
-	width: 50px;
+.sperator-ct{
+	margin-top: 8px;
+	margin-bottom: 8px;
+	border-right: solid 1.3px #000012;
+}
+
+.sperator-mri{
+	margin-top: 8px;
+	margin-bottom: 8px;
+	border-left: solid 1.3px #38444e;
+}
+
+/*******--RESULT-**********/
+.result-container{
+	border-bottom: solid 1.2px #38444e;
+}
+
+.result{	
+	border-bottom: solid 1.2px #000012;
+}
+
+.result div{
+	height: 80px;
+}
+
+.sperator-result{
+	margin-top: 8px;
+	margin-bottom: 8px;
+	border-right: solid 1.3px #000012;
+	border-left: solid 1.3px #38444e;
+}
+
+.sperator-result h3{
+	padding-top: 13px;
+}
+.analysis-result{
+	border-right: none;
+}
+
+.triangle-icon{
+	display: inline;
+	width: 10px;
 	height: 10px;
+}
+
+.result-header{
+	font-size : 1.6em;
+	margin: 0;	
+	line-height: 120%;
+	letter-spacing: 1px;
+	font-weight: 300;
+}
+.result-header-container{
+	padding-left: 10%;
+	padding-top: 15px;
+}
+#processing-time{
+	font-size: 4em;
+	font-weight: 600;
+	margin-left: 6%;
+}
+
+
+.progressBar {
+	width: 80px;
 }
 
 #mr-progress-bar-text, #ct-progress-bar-text {
 	position: absolute;
-	color: "#555e64";
+	color: #555e64;
 	left: 50%;
-    top: 50%;
+    top: 77%;
     padding: 0px;
     margin: 25px 0px 0px;
     transform: translate(-50%, -50%);
     font-size: 1rem;
-    font-weight: bold;
+    font-weight: 700;
 }

@@ -1,12 +1,16 @@
-
-
 window.onload = function() {
+  
+  document.getElementById("ct-content").setAttribute("style", "height:"+parseInt(document.getElementById("ct-content").offsetWidth)*0.7 +"px");
+  document.getElementById("mri-content").setAttribute("style", "height:"+parseInt(document.getElementById("ct-content").offsetWidth)*0.7 +"px");
+  document.getElementById("ct-image").style.height = document.getElementById("ct-image").offsetWidth;
+  document.getElementById("generated-mri-image").style.height = document.getElementById("generated-mri-image").offsetWidth;
+
   var ctProgressbar = new ProgressBar.Circle('#ct-progress-bar', {
       color: '#EB5244',
       trailColor: '#151D23',
       duration: 1500,
       easing: 'easeInOut',
-      strokeWidth: 20,
+      strokeWidth: 20, //두께
       text: {
         className: 'progressbar_ct_label',
         autoStyleContainer: true
@@ -25,11 +29,11 @@ window.onload = function() {
   var ctProgressBarContainer = document.getElementById('ct-progress-bar');
   var ctProgressBarText = document.createElement('div');
   ctProgressBarText.setAttribute("id", "ct-progress-bar-text");
-  ctProgressBarText.innerHTML = "CT"
+  ctProgressBarText.innerHTML = "CT" //style 
   ctProgressBarContainer.appendChild(ctProgressBarText);
   
-  ctProgressbar.text.style.fontSize= '1rem';
-  ctProgressbar.text.style.marginTop = '15px';
+  ctProgressbar.text.style.fontSize= '2.6rem'; //숫자 폰트 크기
+  ctProgressbar.text.style.marginTop = '17px';
   ctProgressbar.text.style.fontWeight = 'bold';
   var ctPercent = 80
   ctProgressbar.animate(ctPercent/100);
@@ -64,13 +68,10 @@ window.onload = function() {
   mrProgressBarContainer.appendChild(mrProgressBarText);
   
   var mrPercent = 40;
-  mrProgressbar.text.style.fontSize= '1rem';
+  mrProgressbar.text.style.fontSize= '2.6rem';
   mrProgressbar.text.style.fontWeight = 'bold';
-  mrProgressbar.text.style.marginTop = '15px';
+  mrProgressbar.text.style.marginTop = '17px';
   mrProgressbar.animate(mrPercent/100);
-
-  document.getElementById("ct-image").style.height = document.getElementById("ct-image").offsetWidth;
-  document.getElementById("generated-mri-image").style.height = document.getElementById("generated-mri-image").offsetWidth;
 
   $.ajax({
     url: "http://127.0.0.1/php/c2m_php/c2m.php",
@@ -84,20 +85,7 @@ window.onload = function() {
   });
 }
 
-function move(elem, maxwidth) {
-    var width = 0;
-    var id = setInterval(frame, 10);
-    function frame() {
-        if (width >= maxwidth) {
-            clearInterval(id);
-        } else {
-            width++; 
-            elem.style.width = width * 1 + '%'; 
-            elem.innerHTML = width * 1 + '%';
-            elem.setAttribute("aria-valuenow", width * 1);
-        }
-    }
-}
+
 
 function fileOpen(){
   document.getElementById("btn-file").click();
