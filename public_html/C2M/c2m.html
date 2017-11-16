@@ -10,7 +10,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <title>Team Elysium - C2M</title>
     <!-- Bootstrap -->
     <link href="../vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
@@ -23,71 +23,112 @@
 </head>
 
 <body>
-   <div class="logo">
+    <div class="logo">
         <img src="../image/c2m_logo.png">
     </div>
     <div class="content">
-        <div class="row image-container">
-          <div class="ct-content col-md-6 col-sm-12 col-xs-12">
-            <div class="content-header">
-              <h3 >INPUT CT</h3>
-            </div>
-              
-              <img src="http://via.placeholder.com/600x600" id="ct-image">
-          </div>
 
-          <div class="mri-content col-md-6 col-sm-12 col-xs-12">
-            <div class="content-header">
-              <h3>GENERATED MRI</h3>
+        <div class="row image-header-container">
+            <div class="sperator-ct col-md-6 col-sm-12 col-xs-12">
+                <div class="content-header">
+                    <h3>INPUT CT</h3>
+                </div>
             </div>
-              <img src="http://via.placeholder.com/750x750" id="generated-mri-image">
-          </div>
-          
+            <div class="sperator-mri col-md-6 col-sm-12 col-xs-12">
+                <div class="content-header">
+                    <h3>GENERATED MRI</h3>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row image-container">
+            <div class="ct-content col-md-6 col-sm-12 col-xs-12" id="ct-content">
+                <img src=" " id="ct-image">
+            </div>
+            <div class="mri-content col-md-6 col-sm-12 col-xs-12" id="mri-content">
+                <img src=" " id="generated-mri-image">
+            </div>
+
         </div>
 
         <div class="row result-container">
-          <div class="result col-md-12 col-sm-12 col-xs-12 row">
-              <h3 class="col-md-2 col-sm-12 col-xs-12">RESULT</h3>
-
-              <div class="processing-time col-md-3 col-sm-12 col-xs-12">
-                <p class="result-header">Processing Time : <span id="processing-time">0.05</span> sec</p>
-              </div>
-              
-              <div class="confidence-level col-md-3 col-sm-12 col-xs-12">
-                <p class="result-header">Confidence Level</p>
-                <div class="row">
-                    <div class="col-md-6 text-center">
-                        <div class="progressBar" id="mr-progress-bar" style="margin: 0 auto"></div>
-                    </div>
-                    <div class="col-md-6 text-center">
-                        <div class="progressBar" id="ct-progress-bar" style="margin: 0 auto"></div>
-                    </div>
-                
+            <div class="result col-md-12 col-sm-12 col-xs-12 row">
+                <div class="sperator-result content-header col-md-2 col-sm-12 col-xs-12">
+                    <h3>RESULT</h3>
                 </div>
-              </div>                 
 
-                <div class="analysis-result col-md-3 col-sm-12 col-xs-12">
-                    <label for="switch_1" style="margin-top:3%; font-size : 1.5em; font-weight : 100">Analysis Result</label>
-                    <input type="checkbox" class="switch_1" id="analysis-result-toggle" style="float : right; margin-bottom: 5%;">
 
-                    <div class="button-group">
-                      <input type="file" accept="image/*,.DICOM" class="btn" id="btn-file" onchange="fileUpload(this)" value="Open" style="display : none">
-                      <button type="button" class="btn" id="btn-open" onclick="fileOpen()">Open</button>
-                      <button type="button" class="btn" id="btn-generate">Generate</button>
-                      <button type="button" class="btn" id="btn-save">Save</button>
+                <div class="row col-md-10 col-sm-12 col-xs-12">
+                  <div class="sperator-result processing-time col-md-4 col-sm-12 col-xs-12">
+                    <div class="row">
+                      <div class="result-header-container col-md-6 col-sm-12 col-xs-12">
+                        <p class="result-header">Processing</p>
+                        <span class="result-header">Time  </span>
+                        <img class="triangle-icon" src="image/triangle.png">
+                      </div>  
+
+                      <div class="col-md-6 col-sm-12 col-xs-12">
+                        <span id="processing-time">0.05</span>
+                        <span>&nbsp;sec</span>
+                      </div> 
+                    </div>
+                      
+                  </div>
+
+                  <div class="sperator-result confidence-level col-md-4 col-sm-12 col-xs-12">
+                    <div class="row">
+                      <div class="result-header-container col-md-5 col-sm-12 col-xs-12">
+                        <p class="result-header">Confidence</p>
+                        <span class="result-header">Level  </span>
+                        <img class="triangle-icon" src="image/triangle.png">
+                      </div>  
+
+                      <div class="col-md-7 col-sm-12 col-xs-12">
+                        <div class="row">
+                          <div class="col-md-6 text-center">
+                              <div class="progressBar" id="mr-progress-bar" style="margin: 0 auto"></div>
+                          </div>
+                          <div class="col-md-6 text-center">
+                              <div class="progressBar" id="ct-progress-bar" style="margin: 0 auto"></div>
+                          </div>                      
+                       </div>
+                      </div> 
+                    </div>
+                  </div>
+
+                  <div class="sperator-result analysis-result col-md-4 col-sm-12 col-xs-12">
+                      <div class="row">
+                        <div class="result-header-container col-md-5 col-sm-12 col-xs-12">
+                          <p class="result-header">Analysis</p>
+                          <span class="result-header">Result  </span>
+                          <img class="triangle-icon" src="image/triangle.png">
+
+                          <input type="checkbox" class="switch_1" id="analysis-result-toggle" style="display:block; float:right">
+                        </div>  
+
+                        <div class="col-md-7 col-sm-12 col-xs-12">
+                            <div class="button-group">
+                              <input type="file" accept="image/*,.DICOM" class="btn" id="btn-file" onchange="fileUpload(this)" value="Open" style="display : none">
+                              <button type="button" class="btn" id="btn-open" onclick="fileOpen()">OPEN</button>
+                              <button type="button" class="btn" id="btn-generate">GENRATE</button>
+                              <button type="button" class="btn" id="btn-save">SAVE</button>
+                          </div>
+                        </div> 
+                    </div>
+
                   </div>
                 </div>
-
                 
-
-          </div>
+            </div>
         </div>
 
+        <div class="row" style="text-align : center; margin-top: 10px;">
+          <p>©2017 <a style="margin-right: 0px; color: #eb5244;" href="http://teamelysium.kr" target="_blank">Team Elysium Inc.</a> All Rights Reserved</p>
+      </div>
+
     </div>
 
-    <div class="row" style="text-align : center;">
-        <p>©2017 <a style="margin-right: 0px" href="http://teamelysium.kr" target="_blank">Team Elysium Inc.</a> All Rights Reserved</p>
-    </div>
 
 
 </body>
