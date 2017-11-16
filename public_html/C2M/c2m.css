@@ -134,7 +134,6 @@ h3{
 
 .content{
 	height: 100vh;
-	overflow: hidden;
 }
 
 #ct-image, #generated-mri-image{
@@ -172,4 +171,21 @@ h3{
 
 .content-header h3{
 	margin: 0;
+}
+
+.progressBar {
+	width: 50px;
+	height: 10px;
+}
+
+#mr-progress-bar-text, #ct-progress-bar-text {
+	position: absolute;
+	color: "#555e64";
+	left: 50%;
+    top: 50%;
+    padding: 0px;
+    margin: 25px 0px 0px;
+    transform: translate(-50%, -50%);
+    font-size: 1rem;
+    font-weight: bold;
 }
