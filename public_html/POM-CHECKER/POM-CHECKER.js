@@ -879,25 +879,16 @@ function setNamingforJointdirection(jointdirection) {
             jointdirection = 'Hip Extension';
             break;
         case "530":
-            jointdirection = 'Opposite Arm & Leg Extension';
-            break;
-        case "540":
             jointdirection = 'Side Lunge';
             break;
-        case "550":
-            jointdirection = 'Cat Pose Yoga';
-            break;
-        case "560":
-            jointdirection = 'Downward Facing Dog';
-            break;
-        case "570":
+        case "540":
             jointdirection = 'Slopes Towards';
             break;
-        case "580":
-            jointdirection = 'Hands To Feet Yoga';
-            break;
-        case "590":
+        case "550":
             jointdirection = 'Windmills';
+            break;
+        case "560":
+            jointdirection = 'Opposite Arm & Leg Extension';
             break;
         case "700":
             jointdirection = 'Cat pos (Bidalasana)';
