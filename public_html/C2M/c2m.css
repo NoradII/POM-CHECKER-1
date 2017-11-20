@@ -274,3 +274,22 @@ input[type="checkbox"].switch_1:checked:after{
     font-size: 1rem;
     font-weight: 700;
 }
+
+#loadingImage{
+	position: fixed;
+	left: 0;
+	bottom : 0;
+	right: 0;
+	top:0;
+	z-index: 100;
+	background-color: rgba(140,140,140,0.4);
+}
+
+#loadingImage img{
+	left: 46.6%;
+	top:50%;
+	width: 100px;
+	height : 100px;
+	z-index: 101;
+	position: absolute;
+}

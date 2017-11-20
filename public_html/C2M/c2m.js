@@ -73,16 +73,6 @@ window.onload = function() {
   mrProgressbar.text.style.marginTop = '17px';
   mrProgressbar.animate(mrPercent/100);
 
-  $.ajax({
-    url: "http://127.0.0.1/php/c2m_php/c2m.php",
-    dataType: 'html',
-    success: function(data){
-      console.log("Run Python \n" + data);
-    },
-    error: function(request, status, error){
-      console.log(request, status, error);
-    },
-  });
 }
 
 
@@ -93,6 +83,36 @@ function fileOpen(){
 
 function fileUpload(id){
   var ct_image = document.getElementById("ct-image");
-  ct_image.setAttribute("src", "image/" + id.files[0].name);
-   console.log(id.files[0].name);
+  var ct_image_path = "Image/" + id.files[0].name;
+  ct_image.setAttribute("src", ct_image_path);
+
+  ct_image_path = "./" + ct_image_path;
+  var data = {ct_image_path : ct_image_path};
+
+  document.getElementById("loadingImage").style.display = "block";
+
+  $.ajax({
+    url: "http://127.0.0.1/C2M/c2m.php",
+    type: 'POST',
+    data: data,
+    dataType: 'html',
+    success: function(data){
+      document.getElementById("loadingImage").style.display = "none";
+      var data_array = data.split("\n");
+      var result_image_path = data_array[0];
+      var processing_time = data_array[1];
+      document.getElementById("processing-time").innerHTML = processing_time;
+      document.getElementById("btn-generate").addEventListener("click", function(){
+        fileGenerate(result_image_path);
+      });
+    },
+    error: function(request, status, error){
+      console.log("Error " + error);
+    },
+  });
+}
+
+function fileGenerate(result_image_path){
+  var mri_image = document.getElementById("generated-mri-image");
+  mri_image.setAttribute("src", result_image_path);
 }
