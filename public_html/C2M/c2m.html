@@ -66,13 +66,13 @@
                 <div class="row col-md-10 col-sm-12 col-xs-12">
                   <div class="sperator-result processing-time col-md-4 col-sm-12 col-xs-12">
                     <div class="row">
-                      <div class="result-header-container col-md-6 col-sm-12 col-xs-12">
+                      <div class="result-header-container col-md-6 col-sm-6 col-xs-6">
                         <p class="result-header">Processing</p>
                         <span class="result-header">Time  </span>
                         <img class="triangle-icon" src="Image/triangle.png">
                       </div>  
 
-                      <div class="col-md-6 col-sm-12 col-xs-12">
+                      <div class="col-md-6 col-sm-6 col-xs-6">
                         <span id="processing-time">0.00</span>
                         <span>&nbsp;sec</span>
                       </div> 
@@ -82,13 +82,13 @@
 
                   <div class="sperator-result confidence-level col-md-4 col-sm-12 col-xs-12">
                     <div class="row">
-                      <div class="result-header-container col-md-5 col-sm-12 col-xs-12">
+                      <div class="result-header-container col-md-5 col-sm-6 col-xs-6">
                         <p class="result-header">Confidence</p>
                         <span class="result-header">Level  </span>
                         <img class="triangle-icon" src="Image/triangle.png">
                       </div>  
 
-                      <div class="col-md-7 col-sm-12 col-xs-12">
+                      <div class="col-md-7 col-sm-6 col-xs-6">
                         <div class="row">
                           <div class="col-md-6 text-center">
                               <div class="progressBar" id="mr-progress-bar" style="margin: 0 auto"></div>
@@ -103,20 +103,21 @@
 
                   <div class="sperator-result analysis-result col-md-4 col-sm-12 col-xs-12">
                       <div class="row">
-                        <div class="result-header-container col-md-5 col-sm-12 col-xs-12">
+                        <div class="result-header-container col-md-6 col-sm-6 col-xs-6">
                           <p class="result-header">Analysis</p>
                           <span class="result-header">Result  </span>
                           <img class="triangle-icon" src="Image/triangle.png">
-
-                          <input type="checkbox" class="switch_1" id="analysis-result-toggle" style="display:block; float:right">
+                            <input type="checkbox" class="switch_1" id="analysis-result-toggle" style="display:block; float:right">
                         </div>  
 
-                        <div class="col-md-7 col-sm-12 col-xs-12">
-                            <div class="button-group">
+                        <div class="button-container col-md-6 col-sm-6 col-xs-6">                        
+                            <div class="button-group row">
+              
+
                               <input type="file" accept="image/*,.DICOM" class="btn" id="btn-file" onchange="fileUpload(this)" value="Open" style="display : none">
-                              <button type="button" class="btn" id="btn-open" onclick="fileOpen()">OPEN</button>
-                              <button type="button" class="btn" id="btn-generate">GENRATE</button>
-                              <button type="button" class="btn" id="btn-save">SAVE</button>
+                              <button type="button" class="btn col-md-3 col-sm-3 col-xs-4" id="btn-open" onclick="fileOpen()">OPEN</button>
+                              <button type="button" class="btn col-md-4 col-sm-4 col-xs-4" id="btn-generate">GENRATE</button>
+                              <button type="button" class="btn col-md-3 col-sm-4 col-xs-4" id="btn-save">SAVE</button>
                           </div>
                         </div> 
                     </div>

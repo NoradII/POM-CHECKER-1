@@ -114,17 +114,22 @@ input[type="checkbox"].switch_1:checked:after{
  /*----------------*/
 
 .button-group{
-	margin-top: 7%;
-	margin-left: 10%;
+	margin-top: 8%;
+	margin-left: 5%;
+}
+
+.button-container{
+	padding: 0;
 }
 
 .button-group button{
 	background-color: #EB5244;
 	border: none;
 	color: #fff;
-	font-size: 1em;
+	font-size: 0.8vw;
 	border-radius: 0;
 	height: 50%;
+	padding: 1px;
 }
 
 .button-group button:hover{
@@ -149,6 +154,7 @@ input[type="checkbox"].switch_1:checked:after{
 #ct-image, #generated-mri-image{
 	width: 70%;
 	text-align: center;
+	margin-top: 10px;
 }
 
 .image-container{

@@ -1,7 +1,7 @@
 window.onload = function() {
   
   document.getElementById("ct-content").setAttribute("style", "height:"+parseInt(document.getElementById("ct-content").offsetWidth)*0.7 +"px");
-  document.getElementById("mri-content").setAttribute("style", "height:"+parseInt(document.getElementById("ct-content").offsetWidth)*0.7 +"px");
+  document.getElementById("mri-content").setAttribute("style", "height:"+document.getElementById("ct-content").style.height);
   document.getElementById("ct-image").style.height = document.getElementById("ct-image").offsetWidth;
   document.getElementById("generated-mri-image").style.height = document.getElementById("generated-mri-image").offsetWidth;
 
