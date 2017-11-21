@@ -75,8 +75,6 @@ window.onload = function() {
 
 }
 
-
-
 function fileOpen(){
   document.getElementById("btn-file").click();
 }
