@@ -1183,7 +1183,7 @@ function setNumberingforJointdirection(jointdirection) {
         case "Posture":
             jointdirection = '201';
             break;
-		    case "Side Posture":
+		case "Side Posture":
             jointdirection = '300';
             break;
         case "Moiré":
