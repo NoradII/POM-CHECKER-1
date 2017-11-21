@@ -1,3 +1,4 @@
+"use strict"
 window.onload = function() {
   
   document.getElementById("ct-content").setAttribute("style", "height:"+parseInt(document.getElementById("ct-content").offsetWidth)*0.7 +"px");
