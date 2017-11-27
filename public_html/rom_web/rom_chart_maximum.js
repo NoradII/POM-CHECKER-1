@@ -403,11 +403,23 @@ function getPatientJonintDirection() {
             data: post_data,
             dataType: 'json',
             success: function(data) {
+                var count = 0;
               $.each(data, function (i, itemData) {
                   var patientJointdirection = itemData.jointdirection;
-                  patientJointdirection = setNamingforJointdirection(patientJointdirection);
-                  var data = {"id" : patientJointdirection, "text" : patientJointdirection};
-                  jointdirectionList.push(data);
+                  if(parseInt((parseInt(patientJointdirection)/100)) === 5){
+                    if(count === 0){
+                        patientJointdirection = 'Exercise';
+                        var data = {"id" : patientJointdirection, "text" : patientJointdirection};
+                        jointdirectionList.push(data);
+                    }
+                    count++;
+                  }
+                  else{
+                    patientJointdirection = setNamingforJointdirection(patientJointdirection);
+                    var data = {"id" : patientJointdirection, "text" : patientJointdirection};
+                    jointdirectionList.push(data);
+                }              
+                 
               });
 
               $("#drop2").select2({
@@ -512,18 +524,22 @@ function setJointDirection() {
         
         document.getElementById("rom-data-chart").setAttribute("class", "col-md-6 col-sm-12 col-xs-12");
         document.getElementById('calendar').style.display = 'none';
+        document.getElementById('minicalendar').style.display = 'none';
         document.getElementById('rom-data-chart').style.height = '600px';
 
         //exercise calendar
         if(parseInt((parseInt(selected_jointdirection)/100)) === 5){
-             //$("#rom-data-table").hide();
+             $("#rom-data-table").hide();
              document.getElementById('calendar').style.display = 'block';
-             document.getElementById('rom-data-chart').style.height = '800px';
+             document.getElementById('minicalendar').style.display = 'block';
+              document.getElementById('minicalendar').style.height = '400px';
+             document.getElementById('rom-data-chart').style.height = '900px';
              if(calendar_status !== 0){
+                $('#minicalendar').calendar();
                 $('#calendar').calendar();
              }
              $('.calendar-day-row td').empty();
-             //document.getElementById("rom-data-chart").setAttribute("class", "col-md-12 col-sm-12 col-xs-12");
+             document.getElementById("rom-data-chart").setAttribute("class", "col-md-12 col-sm-12 col-xs-12");
         }
 
         $.ajax({
@@ -613,6 +629,7 @@ function setJointDirection() {
                     var rate = 0;
                     var angle = 0;
 
+
                     if (i === 0) {
                         rate = 0;
                     }
@@ -644,17 +661,22 @@ function setJointDirection() {
                     }
                     //exercise
                     else if(parseInt((parseInt(jointdirection)/100)) === 5){
+                        var colorchart = ['#00cafb', '#ff5130', '#3841ee', '#ee3863', '#237100', '#ffa200', '#5338cb'];
+                        var color = parseInt(data[i].jointdirection)/10 - 50;
+
                         var datetime = data[i].datetime;
                         var id = datetime.substring(2,4)+datetime.substring(5,7)+datetime.substring(8,10);
 
                         var div_container = document.createElement('div');
                         div_container.setAttribute("class", "activity-log");
-
-                        var p_tag = document.createElement("p");
-                        p_tag.innerHTML = data[i].count+"회";
-                        p_tag.style["text-align"] = "center";
-
-                        div_container.appendChild(p_tag);
+                        div_container.style['background-color'] = colorchart[color];
+                        var span_tag = document.createElement("span");
+                        span_tag.innerHTML = setNamingforJointdirection(data[i].jointdirection);
+                        var span_tag2 = document.createElement("span");
+                        span_tag2.innerHTML += data[i].count;
+                        span_tag2.style["float"] = "right";
+                        div_container.appendChild(span_tag);
+                        div_container.appendChild(span_tag2);
                         document.getElementById(id).appendChild(div_container);                      
                     }
 
@@ -1219,6 +1241,9 @@ function setNumberingforJointdirection(jointdirection) {
         case "Hands to feet (pada hastasana)":
             jointdirection = '720';
             break;
+        case "Exercise":
+            jointdirection = '500';
+            break;
         default:
     }
     return jointdirection;
@@ -1337,7 +1362,6 @@ function setNamingforJointdirection(jointdirection) {
 }
 
 (function($){
-  
   var Calendar = function (elem, options) {
     this.elem = elem;
     this.options = $.extend({}, Calendar.DEFAULTS, options);
@@ -1404,59 +1428,83 @@ function setNamingforJointdirection(jointdirection) {
     switch (this.options.view) {
       case 'day': this.renderDayView(); break;
       case 'week': this.renderWeekView(); break;
-      case 'month': this.renderMonthView(); break;
+      case 'month': this.renderMonthView();break;
       befault: this.renderMonth();
     }
   }
   
   Calendar.prototype.renderMonthView = function () {
-    
+    if(this.elem.id === 'minicalendar'){
+        this.options.datetime.startOf('month').subtract(1, 'day');
+    }
     var datetime = this.options.datetime.clone(),
         month = datetime.month();
     datetime.startOf('month').startOf('week');
     
+    var today = moment().format('YYMMDD');
     var $view = $(this.view),
         table = document.createElement('table'),
         tbody = document.createElement('tbody');
     
     $view.html('');
     table.appendChild(tbody);
-    table.className = 'table table-bordered';
+    table.className = 'table';
+
     
+    var dayofweek = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
     var week = 0, i;
-    while (week < 6) {
+    while (week < 7) {
       var tr = document.createElement('tr');
       tr.className = 'calendar-month-row';
+
       for (i = 0; i < 7; i++) {
         var td = document.createElement('td');
-        td.appendChild(document.createTextNode(datetime.format('D')));
-        if (month !== datetime.month()) {
-          td.className = 'calendar-prior-months-date';
+        if(week === 0){
+            tr.className = 'calendar-row';
+            td.appendChild(document.createTextNode(dayofweek[i]));
+            if(i==0){                
+                td.className = 'calendar-sun calendar-day';
+            }
+            else if(i==6){
+                td.className = 'calendar-sat calendar-day'
+            }
+            else{
+                td.className = 'calendar-day';
+            }  
         }
+        else{
+           td.appendChild(document.createTextNode(datetime.format('D')));
+            
+
+            if(i==0){
+                td.className = 'calendar-sun';
+            }
+            else if(i==6){
+                td.className = 'calendar-sat';
+            }
+
+            if (month !== datetime.month()) {
+              td.className = 'calendar-prior-months-date';
+            }
+            else{
+                var div = document.createElement('div');
+                div.setAttribute("id",datetime.format('YYMMDD'));
+                td.appendChild(div); 
+            }
+
+            if(datetime.format('YYMMDD') === today){
+                td.className += 'calendar-today';
+            }
+
+            datetime.add(1, 'day');
+        }                
         tr.appendChild(td);
-        datetime.add(1, 'day');
-      }
-      tbody.appendChild(tr);
-
-      datetime.subtract(7, 'day'); 
-      tr = document.createElement('tr');
-      tr.className = 'calendar-day-row';
-      for (i = 0; i < 7; i++) {
-        var td = document.createElement('td');
-
-        td.setAttribute("id",datetime.format('YYMMDD'));
-
         
-        if (month !== datetime.month()) {
-          td.className = 'calendar-prior-months-date';
-        }
-        tr.appendChild(td);
-        datetime.add(1, 'day');
       }
       tbody.appendChild(tr);
       week++;
     }
-    
+   
     $view[0].appendChild(table);
     
     if (this.currentDate) {
@@ -1470,12 +1518,8 @@ function setNamingforJointdirection(jointdirection) {
   Calendar.prototype.next = function () {
     switch (this.options.view) {
       case 'day':
-        this.options.datetime.add(1, 'day');
-        this.render();
         break;
       case 'week':
-        this.options.datetime.endOf('week').add(1, 'day');
-        this.render();
         break;
       case 'month':
         this.options.datetime.endOf('month').add(1, 'day');
@@ -1487,7 +1531,7 @@ function setNamingforJointdirection(jointdirection) {
         break;
     }
   }
-  
+
   Calendar.prototype.prev = function () {
     switch (this.options.view) {
       case 'day':
@@ -1498,16 +1542,11 @@ function setNamingforJointdirection(jointdirection) {
         this.options.datetime.startOf('month').subtract(1, 'day');
         this.render();
         calendar_status = 0;
-         setJointDirection();
+        setJointDirection();
         break;
       default:
         break;
     }
-  }
-  
-  Calendar.prototype.today = function () {
-    this.options.datetime = moment();
-    this.render();
   }
 
   function Plugin(option) {
@@ -1555,5 +1594,6 @@ function setNamingforJointdirection(jointdirection) {
       $elem.calendar(action);
     }
   });
+
   
 })(jQuery);

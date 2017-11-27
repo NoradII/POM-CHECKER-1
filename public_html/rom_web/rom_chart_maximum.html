@@ -352,29 +352,37 @@
                 <canvas id="myChart2" style="display: none" height="180px"></canvas>
                 <canvas id="myChart3" style="display: none" height="180px"></canvas>
 
-                <div class="calendar" id="calendar" style="display:none">
-                  <!-- Calendar toolbar -->
-                  <div class="calendar-toolbar">                  
-                    <!-- Calendar "today" button -->
-                    <button data-toggle="calendar" data-action="today" class="btn btn-default">
-                      Today
-                    </button>                  
-                    <!-- Calendar "prev" button -->
-                    <button data-toggle="calendar" data-action="prev" class="btn btn-default">
-                      <i class="fa fa-chevron-left"></i>
-                    </button>                  
-                    <!-- Calendar "date-indicator" span -->
-                    <div class="calendar-current-date"
-                          data-day-format="MM/DD/YYYY"
-                          data-week-format="MM/DD/YYYY"
-                          data-month-format="MMMM, YYYY">
-                    </div>                  
-                    <!-- Calendar "next" button -->
-                    <button data-toggle="calendar" data-action="next" class="btn btn-default">
-                      <i class="fa fa-chevron-right"></i>
-                    </button>                  
+                <div class="row" id="calendarcontainer">
+                  <div class="calendar col-md-3 col-sm-12 col-xs-12" id="minicalendar" style="display:none;">
+                    <!-- Calendar toolbar -->
+                    <div class="calendar-toolbar">
+                      <!-- Calendar "date-indicator" span -->
+                      <div class="calendar-current-date" style="font-size : 1.5em; color : #232f39; font-weight : bold;"
+                            data-month-format="YYYY.MM">
+                      </div>                                           
+                    </div>
+                  </div>
+
+                  <div class="calendar col-md-9 col-sm-12 col-xs-12" id="calendar" style="display:none">
+                    <!-- Calendar toolbar -->
+                    <div class="calendar-toolbar" style="text-align : center;">
+                      <!-- Calendar "date-indicator" span -->
+                      <div class="calendar-current-date" style="font-size : 2em; color : #232f39; font-weight : bold;" 
+                            data-month-format="YYYY.MM">
+                      </div>                               
+                      <!-- Calendar "prev" button -->
+                      <button data-toggle="calendar" data-action="prev" class="btn btn-default calendar-btn">
+                        <img src="../image/calendar_down.png" width="80%">
+                      </button>                                 
+                      <!-- Calendar "next" button -->
+                      <button data-toggle="calendar" data-action="next" class="btn btn-default calendar-btn">
+                        <img src="../image/calendar_up.png" width="80%">
+                      </button>                  
+                    </div>
                   </div>
                 </div>
+
+                
               </div>
             </div>
           </div>
