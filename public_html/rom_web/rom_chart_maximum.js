@@ -869,6 +869,10 @@ function makeScreenshotFolder(fileInfo, fileDate, data) {
     var div_container = document.createElement("div");
     var img_tag = document.createElement("img");
     var span_tag = document.createElement("span");
+    var input_check = document.createElement("input");
+
+    input_check.setAttribute("type", "checkbox");
+    input_check.setAttribute("class", "screenshot_check");
 
     img_tag.setAttribute("class", "img-responsive col-md-12 col-sm-12 col-xs-12");
     img_tag.setAttribute("width", "100%");
@@ -880,6 +884,10 @@ function makeScreenshotFolder(fileInfo, fileDate, data) {
     (function() {
         var filtered = data.filter(screenshotDateFilter, fileInfo[2]);
         var date = fileDate[2] + "년 " + fileDate[0] + "월 " + fileDate[1] + "일";
+
+        input_check.setAttribute("data-filtered" , filtered);
+        input_check.setAttribute("data-date", date);
+
         img_tag.onclick = function() {
             viewPaintModal(filtered, date);
         };
@@ -894,6 +902,7 @@ function makeScreenshotFolder(fileInfo, fileDate, data) {
     div_container.setAttribute("class", "div_container col-md-1 col-sm-2 col-xs-1");
 
     screenshot_container.appendChild(div_container);
+    div_container.appendChild(input_check);
     div_container.appendChild(img_tag);
     div_container.appendChild(span_tag);
 }
@@ -902,6 +911,22 @@ function screenshotDateFilter(value){
     value = value.split("_");
     var valueDate = value[2];
     return valueDate == this;
+}
+
+function screenshotCompare(){
+    var count = document.querySelectorAll('.screenshot_check:checked').length;
+    if(count > 2 || count < 2){
+        alert("두 개의 폴더를 선택해주세요");
+    }
+    else{
+        var check1 = document.querySelectorAll('.screenshot_check:checked')[0];
+        var check2 = document.querySelectorAll('.screenshot_check:checked')[1];
+        var data = check1.getAttribute("data-filtered").split(",");
+        var date = check1.getAttribute("data-date");
+        var data2 = check2.getAttribute("data-filtered").split(",");
+        var date2 = check2.getAttribute("data-date");
+        viewPaintModalCompare(data,date,data2,date2);
+    }
 }
 
 function getMovie() {
@@ -1065,43 +1090,99 @@ function viewPaintModal(data, date){
     option.setAttribute("id",data[i]);
     select_tag.add(option);
   }
-  paintOnImage();
+  paintOnImage(0);
+   $('#paintingModal').modal('show');
 }
 
-function paintOnImage(){
-  var selectedImgId = $("#paintingModalSelect option:selected").attr("id");
-  var selectedImageSrc = "http://" + ip + "/screenshot/"+selectedImgId;
-  var selectedImageHudSrc = selectedImageSrc.replace("normal","hud");
-  var selectedImageSkeletonSrc = selectedImageSrc.replace("normal","");
-  var canvas = document.getElementById('imageCanvas');
-  paper.setup(canvas);
-  paper.install(window);
+function viewPaintModalCompare(data, date, data2, date2){
+  var select_tag = document.getElementById("paintingModalSelect1");
+  $('#paintingModalSelect1').find('option').remove().end();
+  document.getElementById("paintingModalTitle1").innerHTML = date;
 
-  var raster = new Raster();
+  var select_tag2 = document.getElementById("paintingModalSelect2");
+  $('#paintingModalSelect2').find('option').remove().end();
+  document.getElementById("paintingModalTitle2").innerHTML = date2;
 
-  document.getElementById("hudImg").setAttribute("src", selectedImageHudSrc);
-  document.getElementById("normalImg").setAttribute("src", selectedImageSrc);
-  document.getElementById("skeletonImg").setAttribute("src", selectedImageSkeletonSrc);
-  $('#paintingModal').modal('show');
+  //XUGTFTI_11_10-10-2017_16-20-01_normal.png
+  for(var i in data){
+    var option = document.createElement("option");
+    var filename = data[i].split("_");
+    var filetime = filename[3].split("-");
+    option.text = filetime[0]+"시 "+filetime[1]+"분 "+filetime[2]+"초";
+    option.setAttribute("id",data[i]);
+    select_tag.add(option);
+  }
+
+  for(var i in data2){
+    var option = document.createElement("option");
+    var filename = data2[i].split("_");
+    var filetime = filename[3].split("-");
+    option.text = filetime[0]+"시 "+filetime[1]+"분 "+filetime[2]+"초";
+    option.setAttribute("id",data2[i]);
+    select_tag2.add(option);
+  }
+  paintOnImage(1);
+  paintOnImage(2);
+  $("#paintingCompareModal").modal('show');
+}
+
+function paintOnImage(type){
+    var changeString = "";
+    if(type === 1){
+        changeString = "1";
+    }
+    else if(type === 2){
+        changeString = "2";
+    }
+
+    var selectedImgId = $("#paintingModalSelect"+changeString+" option:selected").attr("id");
+    var selectedImageSrc = "http://" + ip + "/screenshot/"+selectedImgId;
+    var selectedImageHudSrc = selectedImageSrc.replace("normal","hud");
+    var selectedImageSkeletonSrc = selectedImageSrc.replace("normal","");
+    var canvas = document.getElementById('imageCanvas'+changeString);
+    paper.setup(canvas);
+    paper.install(window);
+
+    var raster = new Raster();
+
+    document.getElementById("hudImg"+changeString).setAttribute("src", selectedImageHudSrc);
+    document.getElementById("normalImg"+changeString).setAttribute("src", selectedImageSrc);
+    document.getElementById("skeletonImg"+changeString).setAttribute("src", selectedImageSkeletonSrc);
 }
 
 $("#paintingModalSelect").change(function(){
-   paintOnImage();
+   paintOnImage(0);
 });
 
-$(".paintImgbtn").click(function() {
-  var canvas = document.getElementById('imageCanvas');
-  paper.setup(canvas);
-  paper.install(window);
-  var selectedtype = $(this).text();
-  var selectedSrc = document.getElementById(selectedtype+"Img").getAttribute("src");
-  var selectedWidth = $("."+selectedtype+"Img").width();
-  var selectedHeight = $("."+selectedtype+"Img").height();
-  var raster = new Raster(selectedSrc);
-  raster.width = canvas.width;
-  raster.height = (raster.width*651)/1159;
-  raster.position = view.center;
+$("#paintingModalSelect1").change(function(){
+   paintOnImage(1);
 });
+
+$("#paintingModalSelect2").change(function(){
+   paintOnImage(2);
+});
+
+function screenshotCanvasChange(type, item) {
+    var changeString = "";
+    if (type === 1) {
+        changeString = "1";
+    } else if (type === 2) {
+        changeString = "2";
+    }
+
+    var canvas = document.getElementById('imageCanvas' + changeString);
+    paper.setup(canvas);
+    paper.install(window);
+    var selectedtype = item.innerHTML;
+    var selectedSrc = document.getElementById(selectedtype + "Img" + changeString).getAttribute("src");
+    var selectedWidth = $("." + selectedtype + "Img").width();
+    var selectedHeight = $("." + selectedtype + "Img").height();
+    var raster = new Raster(selectedSrc);
+    raster.width = canvas.width;
+    raster.height = (raster.width * 651) / 1159;
+    raster.position = view.center;
+}
+
 
 function romPrint() {
     document.getElementById('myChart').style.width = "95%";
