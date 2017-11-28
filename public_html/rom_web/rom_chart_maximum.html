@@ -25,7 +25,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
 
     <!-- Title image -->
-
+    <link rel="shortcut icon" href="../image/webicon.png" />
     <!-- Custom Theme Style -->
     <link href="./build/css/custom.min.css" rel="stylesheet">
     <script>document.write("<link href='./rom_chart_maximum.css?version=" + Date.now() + "' rel='stylesheet'");</script>
@@ -359,7 +359,15 @@
                       <!-- Calendar "date-indicator" span -->
                       <div class="calendar-current-date" style="font-size : 1.5em; color : #232f39; font-weight : bold;"
                             data-month-format="YYYY.MM">
-                      </div>                                           
+                      </div>
+                      <!-- Calendar "prev" button -->
+                      <button data-toggle="calendar" data-action="prev" class="btn btn-default calendar-btn">
+                        <img src="../image/calendar_down.png" width="50%">
+                      </button>                                 
+                      <!-- Calendar "next" button -->
+                      <button data-toggle="calendar" data-action="next" class="btn btn-default calendar-btn">
+                        <img src="../image/calendar_up.png" width="50%">
+                      </button>                                          
                     </div>
                   </div>
 

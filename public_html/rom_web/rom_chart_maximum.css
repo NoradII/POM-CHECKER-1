@@ -434,6 +434,10 @@ height: auto !important;
   font-weight: bold;
   color: #232f39;
 }
+#calendar .calendar-date{
+  padding-left: 7px;
+}
+
 #minicalendar .calendar-month-row {
   height : 60px;
   color: #232f39;
@@ -445,7 +449,12 @@ height: auto !important;
   border : 1px solid #cecece;
   padding-left: 0;
   padding-right: 0;
+  padding-top: 3px;
   width: 100px;
+}
+
+#minicalendar .calendar-month-row td{
+   padding-top: 3px;
 }
 
 #calendar .calendar-day{
@@ -490,7 +499,7 @@ height: auto !important;
 
 .activity-log{
   color : #fff;
-  height: 25px;
+  height: 27px;
   padding-left: 5px;
   padding-right: 5px;
 }

@@ -535,10 +535,11 @@ function setJointDirection() {
               document.getElementById('minicalendar').style.height = '400px';
              document.getElementById('rom-data-chart').style.height = '900px';
              if(calendar_status !== 0){
-                $('#minicalendar').calendar();
                 $('#calendar').calendar();
+                $('#minicalendar').calendar();
              }
-             $('.calendar-day-row td').empty();
+
+             $('.calendar-month-row td div').empty();
              document.getElementById("rom-data-chart").setAttribute("class", "col-md-12 col-sm-12 col-xs-12");
         }
 
@@ -662,22 +663,32 @@ function setJointDirection() {
                     //exercise
                     else if(parseInt((parseInt(jointdirection)/100)) === 5){
                         var colorchart = ['#00cafb', '#ff5130', '#3841ee', '#ee3863', '#237100', '#ffa200', '#5338cb'];
-                        var color = parseInt(data[i].jointdirection)/10 - 50;
+                        var colorIndex = parseInt(data[i].jointdirection)/10 - 50;
 
                         var datetime = data[i].datetime;
                         var id = datetime.substring(2,4)+datetime.substring(5,7)+datetime.substring(8,10);
 
                         var div_container = document.createElement('div');
                         div_container.setAttribute("class", "activity-log");
-                        div_container.style['background-color'] = colorchart[color];
-                        var span_tag = document.createElement("span");
-                        span_tag.innerHTML = setNamingforJointdirection(data[i].jointdirection);
-                        var span_tag2 = document.createElement("span");
-                        span_tag2.innerHTML += data[i].count;
-                        span_tag2.style["float"] = "right";
-                        div_container.appendChild(span_tag);
-                        div_container.appendChild(span_tag2);
-                        document.getElementById(id).appendChild(div_container);                      
+                        div_container.style['background-color'] = colorchart[colorIndex];
+
+                        var img_icon = document.createElement("img");
+                        img_icon.setAttribute("src", "http://" + ip + "/image/exercise/"+setNamingforJointdirection(data[i].jointdirection)+".png");
+                        
+                        var span_name = document.createElement("span");
+                        span_name.innerHTML = setNamingforJointdirection(data[i].jointdirection);
+                        
+                        var span_count = document.createElement("span");
+                        span_count.innerHTML += data[i].count;                        
+                        span_count.style["float"] = "right";
+
+                        div_container.appendChild(img_icon);
+                        div_container.appendChild(span_name);
+                        div_container.appendChild(span_count);
+
+                        $("#calendar #"+id).append(div_container);
+                        $("#minicalendar #"+id).parent().css("background-color", "#00cafb");
+                        $("#minicalendar #"+id).parent().css("color", "#fff");
                     }
 
                     else {
@@ -1434,9 +1445,7 @@ function setNamingforJointdirection(jointdirection) {
   }
   
   Calendar.prototype.renderMonthView = function () {
-    if(this.elem.id === 'minicalendar'){
-        this.options.datetime.startOf('month').subtract(1, 'day');
-    }
+
     var datetime = this.options.datetime.clone(),
         month = datetime.month();
     datetime.startOf('month').startOf('week');
@@ -1473,7 +1482,10 @@ function setNamingforJointdirection(jointdirection) {
             }  
         }
         else{
-           td.appendChild(document.createTextNode(datetime.format('D')));
+            var span_tag = document.createElement('span');
+            span_tag.innerHTML = datetime.format('D');
+            span_tag.className = 'calendar-date';
+           td.appendChild(span_tag);
             
 
             if(i==0){
