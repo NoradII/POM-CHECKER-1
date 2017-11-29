@@ -7,26 +7,26 @@
 
 	include '../include/Config.php';
 
-	if(isset($_POST['patientid']) && isset($_POST['name']) && isset($_POST['sex']) && isset($_POST['birth']) && isset($_POST['phone']))
+	if(isset($_POST['patientid']) && isset($_POST['name']) && isset($_POST['sex']) && isset($_POST['birth']))
 	{
 		$patientid = $_POST['patientid'];
 		$name = $_POST['name'];
 		$sex = $_POST['sex'];
 		$birth = $_POST['birth'];
 		$number = $_POST['number'];
-		$phone = $_POST['phone'];
+		//$phone = $_POST['phone'];
 
 		$connection = mysqli_connect(DB_HOST,DB_USER,DB_PASSWORD,DB_DATABASE);
 
 		$return_arr = Array();
 
 		$result = mysqli_query($connection,
-			"INSERT INTO rom_patient(patientid, name, sex, birth, number, phone, lastupdate)
-			values('".$patientid."', '".$name."', '".$sex."', '".$birth."', '".$number."', '".$phone."', now())");
+			"INSERT INTO rom_patient(patientid, name, sex, birth, number, lastupdate)
+			values('".$patientid."', '".$name."', '".$sex."', '".$birth."', '".$number."', now())");
 	}
 	else
 	{
-		echo "check patientid, name, sex, birth, phone.";
+		echo "check patientid, name, sex, birth";
 	}
 
 ?>
