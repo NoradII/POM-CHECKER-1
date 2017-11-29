@@ -6,6 +6,6 @@
   
 	$ct_image_path = $_POST['ct_image_path'];
 
-  echo shell_exec('C:\Users\Eunsik\Anaconda3\python inference.py --input '.$ct_image_path);
+  echo shell_exec('C:\Users\Eunsik\Anaconda3\python inference2.py --input '.$ct_image_path);
   
 ?>

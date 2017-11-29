@@ -94,6 +94,19 @@ function registerForAdmin(){
       console.log(request, status, error);
     },
   });
+
+  $.ajax({
+    url: "https://teamelysium.azurewebsites.net/php/rom_server_php/register.php",
+    type: 'POST',
+    data: data,
+    dataType: 'html',
+    success: function(data){
+      console.log("Azure :  " + data);
+    },
+    error: function(request, status, error){
+      console.log(request, status, error);
+    },
+  });
 }
 
 function loginForAdmin() {
@@ -126,7 +139,7 @@ function loginForAdmin() {
     dataType: 'html',
     success: function(data){
       var parsedData = JSON.parse(data);
-      console.log("loginForAdmin " + parsedData.error_msg);
+      
       console.log("uid " + parsedData.uid);
       if(parsedData.error_msg === "Login credentials are wrong. Please try again!"){
         alert("ID와 비밀번호를 다시 확인해주세요!");

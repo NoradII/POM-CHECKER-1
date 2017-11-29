@@ -403,23 +403,11 @@ function getPatientJonintDirection() {
             data: post_data,
             dataType: 'json',
             success: function(data) {
-                var count = 0;
               $.each(data, function (i, itemData) {
                   var patientJointdirection = itemData.jointdirection;
-                  if(parseInt((parseInt(patientJointdirection)/100)) === 5){
-                    if(count === 0){
-                        patientJointdirection = 'Exercise';
-                        var data = {"id" : patientJointdirection, "text" : patientJointdirection};
-                        jointdirectionList.push(data);
-                    }
-                    count++;
-                  }
-                  else{
-                    patientJointdirection = setNamingforJointdirection(patientJointdirection);
-                    var data = {"id" : patientJointdirection, "text" : patientJointdirection};
-                    jointdirectionList.push(data);
-                }              
-                 
+                  patientJointdirection = setNamingforJointdirection(patientJointdirection);
+                  var data = {"id" : patientJointdirection, "text" : patientJointdirection};
+                  jointdirectionList.push(data);
               });
 
               $("#drop2").select2({
@@ -524,23 +512,18 @@ function setJointDirection() {
         
         document.getElementById("rom-data-chart").setAttribute("class", "col-md-6 col-sm-12 col-xs-12");
         document.getElementById('calendar').style.display = 'none';
-        document.getElementById('minicalendar').style.display = 'none';
         document.getElementById('rom-data-chart').style.height = '600px';
 
         //exercise calendar
         if(parseInt((parseInt(selected_jointdirection)/100)) === 5){
-             $("#rom-data-table").hide();
+             //$("#rom-data-table").hide();
              document.getElementById('calendar').style.display = 'block';
-             document.getElementById('minicalendar').style.display = 'block';
-              document.getElementById('minicalendar').style.height = '400px';
-             document.getElementById('rom-data-chart').style.height = '900px';
+             document.getElementById('rom-data-chart').style.height = '800px';
              if(calendar_status !== 0){
                 $('#calendar').calendar();
-                $('#minicalendar').calendar();
              }
-
-             $('.calendar-month-row td div').empty();
-             document.getElementById("rom-data-chart").setAttribute("class", "col-md-12 col-sm-12 col-xs-12");
+             $('.calendar-day-row td').empty();
+             //document.getElementById("rom-data-chart").setAttribute("class", "col-md-12 col-sm-12 col-xs-12");
         }
 
         $.ajax({
@@ -630,7 +613,6 @@ function setJointDirection() {
                     var rate = 0;
                     var angle = 0;
 
-
                     if (i === 0) {
                         rate = 0;
                     }
@@ -662,33 +644,18 @@ function setJointDirection() {
                     }
                     //exercise
                     else if(parseInt((parseInt(jointdirection)/100)) === 5){
-                        var colorchart = ['#00cafb', '#ff5130', '#3841ee', '#ee3863', '#237100', '#ffa200', '#5338cb'];
-                        var colorIndex = parseInt(data[i].jointdirection)/10 - 50;
-
                         var datetime = data[i].datetime;
                         var id = datetime.substring(2,4)+datetime.substring(5,7)+datetime.substring(8,10);
 
                         var div_container = document.createElement('div');
                         div_container.setAttribute("class", "activity-log");
-                        div_container.style['background-color'] = colorchart[colorIndex];
 
-                        var img_icon = document.createElement("img");
-                        img_icon.setAttribute("src", "http://" + ip + "/image/exercise/"+setNamingforJointdirection(data[i].jointdirection)+".png");
-                        
-                        var span_name = document.createElement("span");
-                        span_name.innerHTML = setNamingforJointdirection(data[i].jointdirection);
-                        
-                        var span_count = document.createElement("span");
-                        span_count.innerHTML += data[i].count;                        
-                        span_count.style["float"] = "right";
+                        var p_tag = document.createElement("p");
+                        p_tag.innerHTML = data[i].count+"회";
+                        p_tag.style["text-align"] = "center";
 
-                        div_container.appendChild(img_icon);
-                        div_container.appendChild(span_name);
-                        div_container.appendChild(span_count);
-
-                        $("#calendar #"+id).append(div_container);
-                        $("#minicalendar #"+id).parent().css("background-color", "#00cafb");
-                        $("#minicalendar #"+id).parent().css("color", "#fff");
+                        div_container.appendChild(p_tag);
+                        document.getElementById(id).appendChild(div_container);                      
                     }
 
                     else {
@@ -869,10 +836,6 @@ function makeScreenshotFolder(fileInfo, fileDate, data) {
     var div_container = document.createElement("div");
     var img_tag = document.createElement("img");
     var span_tag = document.createElement("span");
-    var input_check = document.createElement("input");
-
-    input_check.setAttribute("type", "checkbox");
-    input_check.setAttribute("class", "screenshot_check");
 
     img_tag.setAttribute("class", "img-responsive col-md-12 col-sm-12 col-xs-12");
     img_tag.setAttribute("width", "100%");
@@ -884,10 +847,6 @@ function makeScreenshotFolder(fileInfo, fileDate, data) {
     (function() {
         var filtered = data.filter(screenshotDateFilter, fileInfo[2]);
         var date = fileDate[2] + "년 " + fileDate[0] + "월 " + fileDate[1] + "일";
-
-        input_check.setAttribute("data-filtered" , filtered);
-        input_check.setAttribute("data-date", date);
-
         img_tag.onclick = function() {
             viewPaintModal(filtered, date);
         };
@@ -902,7 +861,6 @@ function makeScreenshotFolder(fileInfo, fileDate, data) {
     div_container.setAttribute("class", "div_container col-md-1 col-sm-2 col-xs-1");
 
     screenshot_container.appendChild(div_container);
-    div_container.appendChild(input_check);
     div_container.appendChild(img_tag);
     div_container.appendChild(span_tag);
 }
@@ -911,22 +869,6 @@ function screenshotDateFilter(value){
     value = value.split("_");
     var valueDate = value[2];
     return valueDate == this;
-}
-
-function screenshotCompare(){
-    var count = document.querySelectorAll('.screenshot_check:checked').length;
-    if(count > 2 || count < 2){
-        alert("두 개의 폴더를 선택해주세요");
-    }
-    else{
-        var check1 = document.querySelectorAll('.screenshot_check:checked')[0];
-        var check2 = document.querySelectorAll('.screenshot_check:checked')[1];
-        var data = check1.getAttribute("data-filtered").split(",");
-        var date = check1.getAttribute("data-date");
-        var data2 = check2.getAttribute("data-filtered").split(",");
-        var date2 = check2.getAttribute("data-date");
-        viewPaintModalCompare(data,date,data2,date2);
-    }
 }
 
 function getMovie() {
@@ -1090,99 +1032,43 @@ function viewPaintModal(data, date){
     option.setAttribute("id",data[i]);
     select_tag.add(option);
   }
-  paintOnImage(0);
-   $('#paintingModal').modal('show');
+  paintOnImage();
 }
 
-function viewPaintModalCompare(data, date, data2, date2){
-  var select_tag = document.getElementById("paintingModalSelect1");
-  $('#paintingModalSelect1').find('option').remove().end();
-  document.getElementById("paintingModalTitle1").innerHTML = date;
+function paintOnImage(){
+  var selectedImgId = $("#paintingModalSelect option:selected").attr("id");
+  var selectedImageSrc = "http://" + ip + "/screenshot/"+selectedImgId;
+  var selectedImageHudSrc = selectedImageSrc.replace("normal","hud");
+  var selectedImageSkeletonSrc = selectedImageSrc.replace("normal","");
+  var canvas = document.getElementById('imageCanvas');
+  paper.setup(canvas);
+  paper.install(window);
 
-  var select_tag2 = document.getElementById("paintingModalSelect2");
-  $('#paintingModalSelect2').find('option').remove().end();
-  document.getElementById("paintingModalTitle2").innerHTML = date2;
+  var raster = new Raster();
 
-  //XUGTFTI_11_10-10-2017_16-20-01_normal.png
-  for(var i in data){
-    var option = document.createElement("option");
-    var filename = data[i].split("_");
-    var filetime = filename[3].split("-");
-    option.text = filetime[0]+"시 "+filetime[1]+"분 "+filetime[2]+"초";
-    option.setAttribute("id",data[i]);
-    select_tag.add(option);
-  }
-
-  for(var i in data2){
-    var option = document.createElement("option");
-    var filename = data2[i].split("_");
-    var filetime = filename[3].split("-");
-    option.text = filetime[0]+"시 "+filetime[1]+"분 "+filetime[2]+"초";
-    option.setAttribute("id",data2[i]);
-    select_tag2.add(option);
-  }
-  paintOnImage(1);
-  paintOnImage(2);
-  $("#paintingCompareModal").modal('show');
-}
-
-function paintOnImage(type){
-    var changeString = "";
-    if(type === 1){
-        changeString = "1";
-    }
-    else if(type === 2){
-        changeString = "2";
-    }
-
-    var selectedImgId = $("#paintingModalSelect"+changeString+" option:selected").attr("id");
-    var selectedImageSrc = "http://" + ip + "/screenshot/"+selectedImgId;
-    var selectedImageHudSrc = selectedImageSrc.replace("normal","hud");
-    var selectedImageSkeletonSrc = selectedImageSrc.replace("normal","");
-    var canvas = document.getElementById('imageCanvas'+changeString);
-    paper.setup(canvas);
-    paper.install(window);
-
-    var raster = new Raster();
-
-    document.getElementById("hudImg"+changeString).setAttribute("src", selectedImageHudSrc);
-    document.getElementById("normalImg"+changeString).setAttribute("src", selectedImageSrc);
-    document.getElementById("skeletonImg"+changeString).setAttribute("src", selectedImageSkeletonSrc);
+  document.getElementById("hudImg").setAttribute("src", selectedImageHudSrc);
+  document.getElementById("normalImg").setAttribute("src", selectedImageSrc);
+  document.getElementById("skeletonImg").setAttribute("src", selectedImageSkeletonSrc);
+  $('#paintingModal').modal('show');
 }
 
 $("#paintingModalSelect").change(function(){
-   paintOnImage(0);
+   paintOnImage();
 });
 
-$("#paintingModalSelect1").change(function(){
-   paintOnImage(1);
+$(".paintImgbtn").click(function() {
+  var canvas = document.getElementById('imageCanvas');
+  paper.setup(canvas);
+  paper.install(window);
+  var selectedtype = $(this).text();
+  var selectedSrc = document.getElementById(selectedtype+"Img").getAttribute("src");
+  var selectedWidth = $("."+selectedtype+"Img").width();
+  var selectedHeight = $("."+selectedtype+"Img").height();
+  var raster = new Raster(selectedSrc);
+  raster.width = canvas.width;
+  raster.height = (raster.width*651)/1159;
+  raster.position = view.center;
 });
-
-$("#paintingModalSelect2").change(function(){
-   paintOnImage(2);
-});
-
-function screenshotCanvasChange(type, item) {
-    var changeString = "";
-    if (type === 1) {
-        changeString = "1";
-    } else if (type === 2) {
-        changeString = "2";
-    }
-
-    var canvas = document.getElementById('imageCanvas' + changeString);
-    paper.setup(canvas);
-    paper.install(window);
-    var selectedtype = item.innerHTML;
-    var selectedSrc = document.getElementById(selectedtype + "Img" + changeString).getAttribute("src");
-    var selectedWidth = $("." + selectedtype + "Img").width();
-    var selectedHeight = $("." + selectedtype + "Img").height();
-    var raster = new Raster(selectedSrc);
-    raster.width = canvas.width;
-    raster.height = (raster.width * 651) / 1159;
-    raster.position = view.center;
-}
-
 
 function romPrint() {
     document.getElementById('myChart').style.width = "95%";
@@ -1333,9 +1219,6 @@ function setNumberingforJointdirection(jointdirection) {
         case "Hands to feet (pada hastasana)":
             jointdirection = '720';
             break;
-        case "Exercise":
-            jointdirection = '500';
-            break;
         default:
     }
     return jointdirection;
@@ -1454,6 +1337,7 @@ function setNamingforJointdirection(jointdirection) {
 }
 
 (function($){
+  
   var Calendar = function (elem, options) {
     this.elem = elem;
     this.options = $.extend({}, Calendar.DEFAULTS, options);
@@ -1520,84 +1404,59 @@ function setNamingforJointdirection(jointdirection) {
     switch (this.options.view) {
       case 'day': this.renderDayView(); break;
       case 'week': this.renderWeekView(); break;
-      case 'month': this.renderMonthView();break;
+      case 'month': this.renderMonthView(); break;
       befault: this.renderMonth();
     }
   }
   
   Calendar.prototype.renderMonthView = function () {
-
+    
     var datetime = this.options.datetime.clone(),
         month = datetime.month();
     datetime.startOf('month').startOf('week');
     
-    var today = moment().format('YYMMDD');
     var $view = $(this.view),
         table = document.createElement('table'),
         tbody = document.createElement('tbody');
     
     $view.html('');
     table.appendChild(tbody);
-    table.className = 'table';
-
+    table.className = 'table table-bordered';
     
-    var dayofweek = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
     var week = 0, i;
-    while (week < 7) {
+    while (week < 6) {
       var tr = document.createElement('tr');
       tr.className = 'calendar-month-row';
-
       for (i = 0; i < 7; i++) {
         var td = document.createElement('td');
-        if(week === 0){
-            tr.className = 'calendar-row';
-            td.appendChild(document.createTextNode(dayofweek[i]));
-            if(i==0){                
-                td.className = 'calendar-sun calendar-day';
-            }
-            else if(i==6){
-                td.className = 'calendar-sat calendar-day'
-            }
-            else{
-                td.className = 'calendar-day';
-            }  
+        td.appendChild(document.createTextNode(datetime.format('D')));
+        if (month !== datetime.month()) {
+          td.className = 'calendar-prior-months-date';
         }
-        else{
-            var span_tag = document.createElement('span');
-            span_tag.innerHTML = datetime.format('D');
-            span_tag.className = 'calendar-date';
-           td.appendChild(span_tag);
-            
-
-            if(i==0){
-                td.className = 'calendar-sun';
-            }
-            else if(i==6){
-                td.className = 'calendar-sat';
-            }
-
-            if (month !== datetime.month()) {
-              td.className = 'calendar-prior-months-date';
-            }
-            else{
-                var div = document.createElement('div');
-                div.setAttribute("id",datetime.format('YYMMDD'));
-                td.appendChild(div); 
-            }
-
-            if(datetime.format('YYMMDD') === today){
-                td.className += 'calendar-today';
-            }
-
-            datetime.add(1, 'day');
-        }                
         tr.appendChild(td);
+        datetime.add(1, 'day');
+      }
+      tbody.appendChild(tr);
+
+      datetime.subtract(7, 'day'); 
+      tr = document.createElement('tr');
+      tr.className = 'calendar-day-row';
+      for (i = 0; i < 7; i++) {
+        var td = document.createElement('td');
+
+        td.setAttribute("id",datetime.format('YYMMDD'));
+
         
+        if (month !== datetime.month()) {
+          td.className = 'calendar-prior-months-date';
+        }
+        tr.appendChild(td);
+        datetime.add(1, 'day');
       }
       tbody.appendChild(tr);
       week++;
     }
-   
+    
     $view[0].appendChild(table);
     
     if (this.currentDate) {
@@ -1611,8 +1470,12 @@ function setNamingforJointdirection(jointdirection) {
   Calendar.prototype.next = function () {
     switch (this.options.view) {
       case 'day':
+        this.options.datetime.add(1, 'day');
+        this.render();
         break;
       case 'week':
+        this.options.datetime.endOf('week').add(1, 'day');
+        this.render();
         break;
       case 'month':
         this.options.datetime.endOf('month').add(1, 'day');
@@ -1624,7 +1487,7 @@ function setNamingforJointdirection(jointdirection) {
         break;
     }
   }
-
+  
   Calendar.prototype.prev = function () {
     switch (this.options.view) {
       case 'day':
@@ -1635,11 +1498,16 @@ function setNamingforJointdirection(jointdirection) {
         this.options.datetime.startOf('month').subtract(1, 'day');
         this.render();
         calendar_status = 0;
-        setJointDirection();
+         setJointDirection();
         break;
       default:
         break;
     }
+  }
+  
+  Calendar.prototype.today = function () {
+    this.options.datetime = moment();
+    this.render();
   }
 
   function Plugin(option) {
@@ -1687,6 +1555,5 @@ function setNamingforJointdirection(jointdirection) {
       $elem.calendar(action);
     }
   });
-
   
 })(jQuery);

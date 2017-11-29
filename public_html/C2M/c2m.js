@@ -1,15 +1,22 @@
 "use strict"
-window.onload = function() {
-  
+
+var ctPercent = 0;
+var mrPercent = 0;
+var ctProgressbar;
+var mrProgressbar;
+var saveAnalysisImage;
+var saveResultImage;
+
+window.onload = function() {  
   document.getElementById("ct-content").setAttribute("style", "height:"+parseInt(document.getElementById("ct-content").offsetWidth)*0.7 +"px");
   document.getElementById("mri-content").setAttribute("style", "height:"+document.getElementById("ct-content").style.height);
   document.getElementById("ct-image").style.height = document.getElementById("ct-image").offsetWidth;
   document.getElementById("generated-mri-image").style.height = document.getElementById("generated-mri-image").offsetWidth;
 
-  var ctProgressbar = new ProgressBar.Circle('#ct-progress-bar', {
+  ctProgressbar = new ProgressBar.Circle('#ct-progress-bar', {
       color: '#EB5244',
       trailColor: '#151D23',
-      duration: 1500,
+      duration: 3000,
       easing: 'easeInOut',
       strokeWidth: 20, //두께
       text: {
@@ -26,7 +33,7 @@ window.onload = function() {
       },
       warnings: false
   });
-  
+
   var ctProgressBarContainer = document.getElementById('ct-progress-bar');
   var ctProgressBarText = document.createElement('div');
   ctProgressBarText.setAttribute("id", "ct-progress-bar-text");
@@ -36,13 +43,12 @@ window.onload = function() {
   ctProgressbar.text.style.fontSize= '2.6rem'; //숫자 폰트 크기
   ctProgressbar.text.style.marginTop = '17px';
   ctProgressbar.text.style.fontWeight = 'bold';
-  var ctPercent = 80
   ctProgressbar.animate(ctPercent/100);
 
-  var mrProgressbar = new ProgressBar.Circle('#mr-progress-bar', {
+  mrProgressbar = new ProgressBar.Circle('#mr-progress-bar', {
       color: '#EB5244',
       trailColor: '#151D23',
-      duration: 1500,
+      duration: 3000,
       easing: 'easeInOut',
       strokeWidth: 20,
       text: {
@@ -62,18 +68,17 @@ window.onload = function() {
       
   });
   
+  
   var mrProgressBarContainer = document.getElementById('mr-progress-bar');
   var mrProgressBarText = document.createElement('div');
   mrProgressBarText.setAttribute("id", "mr-progress-bar-text");
   mrProgressBarText.innerHTML = "MRI"
   mrProgressBarContainer.appendChild(mrProgressBarText);
   
-  var mrPercent = 40;
   mrProgressbar.text.style.fontSize= '2.6rem';
   mrProgressbar.text.style.fontWeight = 'bold';
   mrProgressbar.text.style.marginTop = '17px';
   mrProgressbar.animate(mrPercent/100);
-
 }
 
 function fileOpen(){
@@ -106,17 +111,44 @@ function fileGenerate(){
 
         var data_array = data.split("\n");
         var result_image_path = data_array[0];
-        var processing_time = data_array[1];
+        var ct_confidence = data_array[1];
+        var mr_confidence = data_array[2];
+        var analysis_image_path = data_array[3];
+        var processing_time = data_array[4];
+        ctPercent = ct_confidence * 100;
+        mrPercent = mr_confidence * 100;
+        console.log("result_image_path : " + result_image_path);
+        console.log("processing_time : " + processing_time);
+        console.log("ctPercent : " + ctPercent);
+        console.log("mrPercent : " + mrPercent);
+        console.log("analysis_image_path : " + analysis_image_path);
         
+        ctProgressbar.animate(ctPercent/100);
+        mrProgressbar.animate(mrPercent/100);
+
         document.getElementById("processing-time").innerHTML = processing_time;
         
         var mri_image = document.getElementById("generated-mri-image");
         mri_image.setAttribute("src", result_image_path);
+
+        saveResultImage = result_image_path;
+        saveAnalysisImage = analysis_image_path;
       },
       error: function(request, status, error){
         console.log("Error " + error);
       },
     });
+  } 
+}
+
+function controlToogleButton() {
+  var toogle = document.getElementById('analysis-result-toggle');
+  var mrImageContainer = document.getElementById('generated-mri-image');
+  if(!toogle.checked){
+    mrImageContainer.setAttribute("src", saveResultImage);
+    console.log(saveResultImage);
+  }else { 
+    mrImageContainer.setAttribute("src", saveAnalysisImage);
+    console.log(saveAnalysisImage);
   }
-  
 }
