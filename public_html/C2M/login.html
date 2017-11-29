@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
   <head>
     <meta http-equiv="Expires" content="Mon, 06 Jan 1990 00:00:01 GMT">
@@ -18,7 +18,7 @@
     <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <!-- Custom Theme Style -->
     <link href="../build/css/custom.min.css" rel="stylesheet">
-    <script>document.write("<link href='POM-CHECKER.css?version=" + Date.now() + "' rel='stylesheet'");</script>
+    <script>document.write("<link href='c2m.css?version=" + Date.now() + "' rel='stylesheet'");</script>    
   </head>
 
   <body class="login">
@@ -57,7 +57,7 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary" onclick="registerForAdmin()">회원가입 하기</button>
+            <button type="button" class="btn btn-danger" onclick="registerForAdmin()">회원가입 하기</button>
           </div>
 
         </div>
@@ -81,7 +81,7 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary" onclick="registerForIP()">등록하기</button>
+            <button type="button" class="btn btn-danger" onclick="registerForIP()">등록하기</button>
           </div>
         </div>
       </div>
@@ -89,12 +89,10 @@
     <!-- end of modal content -->
     <div class="login_wrapper">
       <div class="animate form login_form">
-      <!--<h1 class="text-center" style="margin-right: 5px" id="fh5co-logo"><a href="#"><img src="images/logo2.png" alt="Moonlight" width="250px"></a></h1>-->
-        <h1 class="text-center" style="margin-right: 5px;" id="fh5co-logo"><img src="../image/logo.png" style="width: 200px;height: 100px" /></h1>
-        <p style="text-align : center">ver 1.2.3</p>
+        <h1 class="text-center" style="" id="fh5co-logo"><img src="image/c2m_logo.png" style="width: 200px;height: 72px" /></h1>
+        <p style="text-align : center">ver 1.2.0</p>
           <section class="login_content">
             <form>
-              <h1>로그인</h1>
               <div>
                 <input id="adminID" type="text" class="form-control" placeholder="아이디" />
               </div>
@@ -105,21 +103,12 @@
               <div>
                 <div class="row">
                   <div class="col-sm-12 col-xs-12 col-sm-12">
-                    <button id="login-form" class="btn btn-md btn-primary btn-block" onclick="loginForAdmin()">로그인</button>
+                    <button id="login-form" class="btn btn-md btn-danger btn-block" onclick="loginForAdmin()">로그인</button>
                   </div>
                 </div>
-              <div class="row" style="margin-top: 15px">
-                <div class="col-sm-6 col-xs-6 col-sm-6">
-                  <img src="../image/theme/wku.jpg" style="margin-top: 5px"/>
-                </div>
-                <div class="col-sm-6 col-xs-6 col-sm-6">
-                  <img src="../image/theme/logo.png"/>
-                </div>
-              </div>
-
               <div class="clearfix"></div>
 
-              <div class="separator">
+              <div style="margin-top : 10px;">
                 <p class="change_link"> 처음 방문하셨습니까?
                   <b><a href="#signup" class="to_register"  data-toggle="modal" data-target="#registerModal" type="button" class="btn btn-primary"> 회원가입 </a></b>
                 </p>
@@ -130,7 +119,6 @@
                 <br/>
 
                 <div class="row">
-                  <!-- <h1 id="fh5co-logo"><a href="#"><img src="images/logo.png" alt="Team Elysium Logo" width="250px"></a></h1> -->
                   <p>©2017 <a style="margin-right: 0px" href="http://teamelysium.kr" target="_blank">Team Elysium Inc.</a> All Rights Reserved</p>
                 </div>
               </div>
@@ -139,7 +127,7 @@
         </div>
       </div>
       <div class="row">
-        <button id="ipButton" data-toggle="modal" data-target="#registerIPModal" class="btn btn-primary text-center">IP 등록</button>
+        <button id="ipButton" data-toggle="modal" data-target="#registerIPModal" class="btn btn-danger text-center">IP 등록</button>
       </div>
     </div>
 
@@ -147,7 +135,6 @@
     <script src="../vendor/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap -->
     <script src="../vendor/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script>document.write("<script type='text/javascript' src='login.js?version=" + Date.now() + "'><\/script>");</script>
 
     <!-- Custom Theme Scripts -->
     <script src="../build/js/custom.min.js"></script>

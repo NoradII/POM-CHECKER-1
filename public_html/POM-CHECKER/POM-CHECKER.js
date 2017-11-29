@@ -17,7 +17,7 @@ window.onload = function() {
         document.getElementById("nav-user-name").innerHTML = localStorage.getItem("name");
     }
 
-    $('#inputPatientPhone').keyup(function(event) {
+    $('#inputPatientBirth').keyup(function(event) {
         if (event.keyCode === 13) {
             registerFirstMeasurement();
         }
@@ -213,7 +213,6 @@ function registerFirstMeasurement() {
     var man = document.getElementById('test1');
     var woman = document.getElementById('test2');
     var gender;
-    var phone = document.getElementById('inputPatientPhone');
 
     if (name.value === "") {
         alert("이름란을 입력해주세요.");
@@ -253,23 +252,13 @@ function registerFirstMeasurement() {
         birth = birth.value;
     }
 
-    if (phone.value === "" || (phone.value.length !== 11)) {
-        alert("핸드폰 번호란을 정확히 입력해주세요.");
-        document.getElementById('form-group-phone').setAttribute('class', 'form-group has-error has-feedback');
-        phone.focus();
-        return;
-    } else {
-        phone = phone.value;
-    }
-
     var patientid = createHash();
     var data = {
         patientid: patientid,
         name: name,
         sex: gender,
         birth: birth,
-        number: number,
-        phone: phone
+        number: number
     };
 
     $.ajax({
@@ -280,19 +269,6 @@ function registerFirstMeasurement() {
         success: function(data) {
             $('#registerModal').modal('hide');
             getPatientName();
-        },
-        error: function(request, status, error) {
-            console.log(request, status, error);
-        },
-    });
-
-    $.ajax({
-        url: "https://teamelysium.azurewebsites.net/php/rom_server_php/patientadd.php",
-        type: 'POST',
-        data: data,
-        dataType: 'html',
-        success: function(data) {
-            console.log("success");
         },
         error: function(request, status, error) {
             console.log(request, status, error);

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta http-equiv="Expires" content="Mon, 06 Jan 1990 00:00:01 GMT">
+    <!-- Set no-cache -->
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Team Elysium - C2M</title>
+    <!-- Bootstrap -->
+    <link href="../vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Custom Theme Style -->
+    <link href="../build/css/custom.min.css" rel="stylesheet">
+    <script>
+        document.write("<link href='c2m.css?version=" + Date.now() + "' rel='stylesheet'");
+    </script>
+</head>
+
+<body>
+    <div id="loadingImage" style="display:none;">
+        <img src="loading.gif"/>
+    </div>
+
+    <div class="logo">
+        <img src="../image/c2m_logo.png">
+    </div>
+    <div class="content">
+
+        <div class="row image-header-container">
+            <div class="sperator-ct col-md-6 col-sm-12 col-xs-12">
+                <div class="content-header">
+                    <h3>INPUT CT</h3>
+                </div>
+            </div>
+            <div class="sperator-mri col-md-6 col-sm-12 col-xs-12">
+                <div class="content-header">
+                    <h3>GENERATED MRI</h3>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row image-container">
+            <div class="ct-content col-md-6 col-sm-12 col-xs-12" id="ct-content">
+                <img src=" " id="ct-image">
+            </div>
+            <div class="mri-content col-md-6 col-sm-12 col-xs-12" id="mri-content">
+                <img src=" " id="generated-mri-image">
+            </div>
+
+        </div>
+
+        <div class="row result-container">
+            <div class="result col-md-12 col-sm-12 col-xs-12 row">
+                <div class="sperator-result content-header col-md-2 col-sm-12 col-xs-12">
+                    <h3>RESULT</h3>
+                </div>
+
+
+                <div class="row col-md-10 col-sm-12 col-xs-12">
+                  <div class="sperator-result processing-time col-md-4 col-sm-12 col-xs-12">
+                    <div class="row">
+                      <div class="result-header-container col-md-6 col-sm-6 col-xs-6">
+                        <p class="result-header">Processing</p>
+                        <span class="result-header">Time  </span>
+                        <img class="triangle-icon" src="Image/triangle.png">
+                      </div>  
+
+                      <div class="col-md-6 col-sm-6 col-xs-6">
+                        <span id="processing-time">0.00</span>
+                        <span>&nbsp;sec</span>
+                      </div> 
+                    </div>
+                      
+                  </div>
+
+                  <div class="sperator-result confidence-level col-md-4 col-sm-12 col-xs-12">
+                    <div class="row">
+                      <div class="result-header-container col-md-5 col-sm-6 col-xs-6">
+                        <p class="result-header">Confidence</p>
+                        <span class="result-header">Level  </span>
+                        <img class="triangle-icon" src="Image/triangle.png">
+                      </div>  
+
+                      <div class="col-md-7 col-sm-6 col-xs-6">
+                        <div class="row">
+                          <div class="col-md-6 text-center">
+                              <div class="progressBar" id="mr-progress-bar" style="margin: 0 auto"></div>
+                          </div>
+                          <div class="col-md-6 text-center">
+                              <div class="progressBar" id="ct-progress-bar" style="margin: 0 auto"></div>
+                          </div>                      
+                       </div>
+                      </div> 
+                    </div>
+                  </div>
+
+                  <div class="sperator-result analysis-result col-md-4 col-sm-12 col-xs-12">
+                      <div class="row">
+                        <div class="result-header-container col-md-6 col-sm-6 col-xs-6">
+                          <p class="result-header">Analysis</p>
+                          <span class="result-header">Result  </span>
+                          <img class="triangle-icon" src="Image/triangle.png">
+                            <input type="checkbox" class="switch_1" id="analysis-result-toggle" style="display:block; float:right">
+                        </div>  
+
+                        <div class="button-container col-md-6 col-sm-6 col-xs-6">                        
+                            <div class="button-group row">
+              
+
+                              <input type="file" accept="image/*,.DICOM" class="btn" id="btn-file" onchange="fileUpload(this)" value="Open" style="display : none">
+                              <button type="button" class="btn col-md-3 col-sm-3 col-xs-4" id="btn-open" onclick="fileOpen()">OPEN</button>
+                              <button type="button" class="btn col-md-4 col-sm-4 col-xs-4" id="btn-generate" onclick="fileGenerate()">GENRATE</button>
+                              <button type="button" class="btn col-md-3 col-sm-4 col-xs-4" id="btn-save">SAVE</button>
+                          </div>
+                        </div> 
+                    </div>
+
+                  </div>
+                </div>
+                
+            </div>
+        </div>
+
+        <div class="row" style="text-align : center; margin-top: 10px;">
+          <p>©2017 <a style="margin-right: 0px; color: #eb5244;" href="http://teamelysium.kr" target="_blank">Team Elysium Inc.</a> All Rights Reserved</p>
+      </div>
+
+    </div>
+
+
+
+</body>
+<script>
+    document.write("<script type='text/javascript' src='c2m.js?version=" + Date.now() + "'><\/script>");
+</script>
+<!-- jQuery -->
+<script src="../vendor/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap -->
+<script src="../vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- Progress bar -->
+<script src="../node_modules/progressbar.js/dist/progressbar.js"></script>
+
+</html>

@@ -35,6 +35,7 @@ class DB_Functions {
 
         $stmt = $this->conn->prepare("INSERT INTO rom_staff(unique_id, userid, name, grade, encrypted_password, salt, email)
             VALUES('$uuid', '$userid','$name', '$grade', '$encrypted_password', '$salt', '$email')");
+        //$stmt->bind_param($uuid, $name, $email, $educationofficer, $studentnumber, $birth, $encrypted_password, $salt, $school_id, $registration_id);
         $result = $stmt->execute();
         $stmt->close();
 
