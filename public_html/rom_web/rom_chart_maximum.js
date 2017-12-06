@@ -65,14 +65,16 @@ var chart = new Chart(ctx, {
         labels: [],
         datasets: [{
             label: '환자',
-            borderColor: 'rgb(57, 113, 204)',
+            backgroundColor : 'rgb(58, 159, 85)',
+            borderColor: 'rgb(58, 159, 85)',
             pointRadius: 4,
             pointHitRadius: 10,
             data: [],
             fill: false,
         }, {
             label: '정상범위',
-            borderColor: 'rgb(255, 0, 0)',
+            backgroundColor : 'rgb(29, 150, 213)',
+            borderColor: 'rgb(29, 150, 213)',
             pointRadius: 4,
             pointHitRadius: 10,
             data: [],
@@ -81,7 +83,8 @@ var chart = new Chart(ctx, {
         },
         {
             label: 'NRS',
-            borderColor: 'rgb(20, 179, 0)',
+            backgroundColor : 'rgb(228, 0, 127)',
+            borderColor: 'rgb(228, 0, 127)',
             pointRadius: 4,
             pointHitRadius: 10,
             data: [],
@@ -421,7 +424,7 @@ function getPatientJonintDirection() {
                 }              
                  
               });
-
+              $("#drop2 option:gt(0)").remove();
               $("#drop2").select2({
                   data: jointdirectionList
               });
@@ -525,7 +528,7 @@ function setJointDirection() {
         document.getElementById("rom-data-chart").setAttribute("class", "col-md-6 col-sm-12 col-xs-12");
         document.getElementById('calendar').style.display = 'none';
         document.getElementById('minicalendar').style.display = 'none';
-        document.getElementById('rom-data-chart').style.height = '600px';
+        document.getElementById('rom-data-table').style.height = '650px';
 
         //exercise calendar
         if(parseInt((parseInt(selected_jointdirection)/100)) === 5){
@@ -660,7 +663,7 @@ function setJointDirection() {
                         rate = data[i].side_head_length + " °, " + data[i].side_shoulder_length + " °, " + data[i].side_hip_length;
                         document.getElementById('image-box').style.display = 'none';
                     }
-                    //exercise
+                    //exercise calendar
                     else if(parseInt((parseInt(jointdirection)/100)) === 5){
                         var colorchart = ['#00cafb', '#ff5130', '#3841ee', '#ee3863', '#237100', '#ffa200', '#5338cb'];
                         var colorIndex = parseInt(data[i].jointdirection)/10 - 50;
@@ -674,6 +677,7 @@ function setJointDirection() {
 
                         var img_icon = document.createElement("img");
                         img_icon.setAttribute("src", "http://" + ip + "/image/exercise/"+setNamingforJointdirection(data[i].jointdirection)+".png");
+                        img_icon.setAttribute("style", "margin : 0 2px 2px 0;")
                         
                         var span_name = document.createElement("span");
                         span_name.innerHTML = setNamingforJointdirection(data[i].jointdirection);
@@ -703,7 +707,7 @@ function setJointDirection() {
                         }
                     }
 
-                    var nrs = "<button class='btn-primary' style='font-size: 10px; border-radius: 3px' onclick='setNRS(this)' data-status='create' data-toggle='modal' data-target='#NRSModal' data-id='"+data[i].checkdateid+"'> 평가하기 </button>";
+                    var nrs = "<button class='btn' style='font-size: 10px; border-radius: 3px' onclick='setNRS(this)' data-status='create' data-toggle='modal' data-target='#NRSModal' data-id='"+data[i].checkdateid+"'> 평가하기 </button>";
                     if(data[i].nrs !== null){
                       nrs = "<span class='setNRSclick' onclick='setNRS(this)' data-status='modify' data-toggle='modal' data-target='#NRSModal' data-id='"+data[i].checkdateid+"' style='width:"+$('.setNRSclick').parent().width()+"px;' >"+data[i].nrs+"</span>";
                     }
@@ -1197,29 +1201,60 @@ function romPrint() {
 
 /*
 function alimtalk(){
-    var data = [
-    {
-     "userId": "teamelysium",
-     "message_type": "at",
-     "phn": "821051358616",
-     "profile": "722b710c822a43cef05bf53fe67cbc62724bc11b",
-     "tmplId": "1",
-     "msg": "[팀엘리시움]\n한소희님께서 요청하신 이미지를 보내드립니다.\n2017.10.31에 측정하신 이미지는 아래의 링크를 클릭하시면 보실 수 있습니다.\n\n▶이미지 링크 : www.naver.com"
-     }];
-
-   $.ajax({
-       url: "https://alimtalk-api.bizmsg.kr/v1/sender/send",
-       type: 'POST',
-       data: JSON.stringify(data),
-       contentType: "application/json; charset=utf-8",
-       dataType: "json",
-       success: function(data){
-         console.log(data);
-       },
-       error: function(request, status, error){
-         console.log(request, status, error);
-       },
-   });
+   var select_name = document.getElementById('drop1');
+    var selected_name = select_name.options[select_name.selectedIndex].text;
+    selected_name = selected_name.split('(')[0];
+    var selected_patientid = select_name.options[select_name.selectedIndex].value;
+    var select_jointdirection = document.getElementById('drop2');
+    var selected_jointdirection = select_jointdirection.options[select_jointdirection.selectedIndex].value;
+    var selected_jointdirection_id = setNumberingforJointdirection(selected_jointdirection);
+    var select_hospital = document.getElementById('drop_hospital');
+    var selected_hospitalid = select_hospital.options[select_hospital.selectedIndex].value;
+    
+    if(selected_patientid!=="" && selected_hospitalid!== "" && selected_jointdirection !==""){
+       var url = "https://teamelysium.azurewebsites.net/rom_web/rom_chart_capture.html?patientid="+selected_patientid+"&hospitalid="+selected_hospitalid+"&jointdirection="+selected_jointdirection_id;
+       var data = {longUrl: url}; 
+          
+        $.ajax({
+           url: "https://teamelysium.azurewebsites.net/php/rom_admin_php/get_short_url_alimtalk.php",
+           type: 'GET',
+           data: data,
+           contentType: "application/json; charset=utf-8",
+           dataType: "json",
+           success: function(data){
+               console.log(data);
+             var data = [
+                {
+                 "userId": "teamelysium",
+                 "message_type": "at",
+                 "phn": "821051358616",
+                 "profile": "722b710c822a43cef05bf53fe67cbc62724bc11b",
+                 "tmplId": "1",
+                 "msg": "[팀엘리시움]\n"+selected_name+"님께서 요청하신 이미지를 보내드립니다.\n"+selected_jointdirection+"에 측정하신 이미지는 아래의 링크를 클릭하시면 보실 수 있습니다.\n\n▶이미지 링크 : "+data
+                 }];
+            
+               $.ajax({
+                   url: "https://alimtalk-api.bizmsg.kr/v1/sender/send",
+                   type: 'POST',
+                   data: JSON.stringify(data),
+                   contentType: "application/json; charset=utf-8",
+                   dataType: "json",
+                   success: function(data){
+                       console.log(data);
+                   },
+                   error: function(request, status, error){
+                     console.log(request, status, error);
+                   },
+               });
+           },
+           error: function(request, status, error){
+             console.log(request, status, error);
+           },
+       });
+    }
+    else{
+        alert("병원, 환자, 측정 부위 모두 선택해주세요");
+    }
 }
 */
 function goMainPage() {
