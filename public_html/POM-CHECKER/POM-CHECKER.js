@@ -213,6 +213,7 @@ function registerFirstMeasurement() {
     var man = document.getElementById('test1');
     var woman = document.getElementById('test2');
     var gender;
+    var phone = document.getElementById('inputPatientPhone');
 
     if (name.value === "") {
         alert("이름란을 입력해주세요.");
@@ -224,13 +225,32 @@ function registerFirstMeasurement() {
         name = name.value;
     }
 
-    if (number.value === "") {
+    if (number.value === "" || number.value === null) {
         alert("병록번호란을 입력해주세요.");
         document.getElementById('form-group-number').setAttribute('class', 'form-group has-error has-feedback');
         number.focus();
         return;
     } else {
-        number = number.value;
+        $.ajax({
+            url: "http://" + ip + "/php/rom_server_php/checkpatientnumber.php",
+            type: 'POST',
+            data: number.value,
+            dataType: 'html',
+            success: function(data) {
+                if(data.length > 1){
+                    alert("이미 존재하는 병록번호입니다.");
+                    document.getElementById('form-group-number').setAttribute('class', 'form-group has-error has-feedback');
+                    number.focus();
+                    return;
+                } else {
+                    document.getElementById('form-group-number').setAttribute('class', 'form-group has-success has-feedback');
+                    number = number.value;
+                }
+            },
+            error: function(request, status, error) {
+                console.log(request, status, error);
+            },
+        });
     }
 
     if (man.checked === true) {
@@ -249,7 +269,19 @@ function registerFirstMeasurement() {
         birth.focus();
         return;
     } else {
+        document.getElementById('form-group-birth').setAttribute('class', 'form-group has-success has-feedback');
         birth = birth.value;
+    }
+
+    // TODO : 조건 생각해봐야 할듯
+    if (phone.value === "") {
+        alert("핸드폰번호란을 정확히 입력해주세요.");
+        document.getElementById('form-group-phone').setAttribute('class', 'form-group has-error has-feedback');
+        phone.focus();
+        return;
+    } else {
+        document.getElementById('form-group-phone').setAttribute('class', 'form-group has-success has-feedback');
+        phone = phone.value;
     }
 
     var patientid = createHash();
@@ -258,7 +290,8 @@ function registerFirstMeasurement() {
         name: name,
         sex: gender,
         birth: birth,
-        number: number
+        number: number,
+        phone: phone
     };
 
     $.ajax({
@@ -269,6 +302,19 @@ function registerFirstMeasurement() {
         success: function(data) {
             $('#registerModal').modal('hide');
             getPatientName();
+        },
+        error: function(request, status, error) {
+            console.log(request, status, error);
+        },
+    });
+
+    $.ajax({
+        url: "https://elysium.azurewebsites.net/php/rom_server_php/patientadd.php",
+        type: 'POST',
+        data: data,
+        dataType: 'html',
+        success: function(data) {
+            console.log("Save Azure data");
         },
         error: function(request, status, error) {
             console.log(request, status, error);
