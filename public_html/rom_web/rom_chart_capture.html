@@ -33,46 +33,63 @@
   </head>
 
   <body class="html-body" >
-    <div class="container" style='page-break-before:always'>
-      <div class="row">
-        <div class="col-md-12 col-sm-12 col-xs-12">
-            <div class="x_panel">
-              <div class="x_title header">
-                <div class="row">
-                  <div class="col-md-10 col-sm-10 col-xs-10">
-                    <img src="../image/white_logo.png"/ style="width:130px; margin-left : 40px; margin-top : 24px;">
-                  </div>
-                </div>
-                <div class="clearfix"></div>
+    
+    <div id="authcode-container">      
+      <div class="authcode-page">
+        <div class="form">
+          <h4>인증코드입력</h4>
+          <form class="login-form">
+            <label for="InputAuthcode"></label>
+            <input type="text" class="form-control" id="InputAuthcode" aria-describedby="authHelp" placeholder="Enter AuthCode">
+          </form>          
+          <button onclick="checkAuthcode()">확인</button>
+        </div>
+      </div>
+    </div>
+    
+    <div id="view-container" style='page-break-before:always; display:none'>
 
-              </div>
-              <div class="x_content">
-                <div class="row">
-                  <div class="col-md-12 col-sm-12 col-xs-12 profile_details">
-                    <h2 class="brief">환자 정보</h2>
-                    <div class="profile_view info_container" style="padding: 25px 50px 0px 50px;">
-                      <div class="col-md-12 col-sm-12 col-xs-12">
-                        <div class="row">
-                          <div class="col-md-4 col-sm-4 col-xs-4 patient_info">
-                            <div class="row">
-                              <div class="col-md-6 col-sm-6 col-xs-6" >
-                                <p><strong>이름 : </strong><strong id="patient_name"> -- </strong></p>
-                                <p><strong>병록번호 : </strong><strong  id="patient_number">No. </strong></p>
-                              </div>
-                              <div class="col-md-6 col-sm-6 col-xs-6">
-                                <p><strong>성별 : </strong> <strong id="patient_gender"> -- </strong> </p>
-                                <p><strong>생년월일 : </strong> <strong id="patient_birth"> -- </strong>  </p>
-                                <p style="display:none"><strong>hashid</strong> <strong id="patient_id"></strong>  </p>
+       <div class="container" style='page-break-before:always'>
+        <div class="row">
+          <div class="col-md-12 col-sm-12 col-xs-12">
+              <div class="x_panel">
+                <div class="x_title header">
+                  <div class="row">
+                    <div class="col-md-10 col-sm-10 col-xs-10">
+                      <img src="../image/white_logo.png"/ style="width:130px; margin-left : 40px; margin-top : 24px;">
+                    </div>
+                  </div>
+                  <div class="clearfix"></div>
+
+                </div>
+                <div class="x_content">
+                  <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12 profile_details">
+                      <h2 class="brief">환자 정보</h2>
+                      <div class="profile_view info_container" style="padding: 25px 50px 0px 50px;">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                          <div class="row">
+                            <div class="col-md-4 col-sm-4 col-xs-4 patient_info">
+                              <div class="row">
+                                <div class="col-md-6 col-sm-6 col-xs-6" >
+                                  <p><strong>이름 : </strong><strong id="patient_name"> -- </strong></p>
+                                  <p><strong>병록번호 : </strong><strong  id="patient_number">No. </strong></p>
+                                </div>
+                                <div class="col-md-6 col-sm-6 col-xs-6">
+                                  <p><strong>성별 : </strong> <strong id="patient_gender"> -- </strong> </p>
+                                  <p><strong>생년월일 : </strong> <strong id="patient_birth"> -- </strong>  </p>
+                                  <p style="display:none"><strong>hashid</strong> <strong id="patient_id"></strong>  </p>
+                                </div>
                               </div>
                             </div>
-                          </div>
 
-                           <div class="col-md-8 col-sm-8 col-xs-12" id="select_container">
-                            <ul class="nav nav-pills" role="tablist">
-                              <li style="width:20%; text-align : center;"><p id="hospitalid" value="">-</p></li>
-                              <li style="width:20%; text-align : center;"><p id="patientid" value="">-</p></li>
-                              <li style="width:20%; text-align : center;"><p id="jointdirection">-</p></li>
-                            </ul>
+                             <div class="col-md-8 col-sm-8 col-xs-12" id="select_container">
+                              <ul class="nav nav-pills" role="tablist">
+                                <li style="width:20%; text-align : center;"><p id="hospitalid" value="">-</p></li>
+                                <li style="width:20%; text-align : center;"><p id="patientid" value="">-</p></li>
+                                <li style="width:20%; text-align : center;"><p id="jointdirection">-</p></li>
+                              </ul>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -83,9 +100,8 @@
             </div>
           </div>
         </div>
-      </div>
 
-      <div class="container-fluid">
+         <div class="container-fluid">
         <div class="row">
           <!-- .js -->
           <div class="col-md-6 col-sm-12 col-xs-12" id="rom-data-chart">
@@ -168,9 +184,7 @@
               </div>
             </div>
           </div>
-
         </div>
-      </div>
 
       <div class="clearfix"></div>
 
@@ -189,6 +203,8 @@
 
       <div id="savePart"></div>
 
+    </div>
+    
       <!-- jQuery -->
 
       <script src="../cssjs/jquery/dist/jquery.min.js"></script>

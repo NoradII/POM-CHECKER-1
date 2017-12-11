@@ -12,10 +12,11 @@ jQuery(document).bind("keyup keydown", function(e) {
 window.onload = function() {
     var patientid = getParameterByName('patientid');
     var hospitalid = getParameterByName('hospitalid');
-    var jointdirection = getParameterByName('jointdirection');    
+    var jointdirection = getParameterByName('jointdirection'); 
+ 
     console.log("patientid : "+patientid+",hospitalid : "+hospitalid+",jointdirection : "+jointdirection);
     var data = "patientid=" + patientid + "&hospitalid=" + hospitalid;
-   $.ajax({
+    $.ajax({
         url: 'https://elysium.azurewebsites.net/php/rom_admin_php/get_patient_name_alimtalk.php',
         type: 'POST',
         data : data,
@@ -56,6 +57,32 @@ window.onload = function() {
     });
     
 };
+
+
+function checkAuthcode(){
+        var InputAuthcode = document.getElementById('InputAuthcode').value;
+        var patientid = getParameterByName('patientid');
+        var data ="patientid=" + patientid + "&authcode=" + InputAuthcode;
+        $.ajax({
+            url: 'https://elysium.azurewebsites.net/php/rom_admin_php/check_input_authcode.php',
+            type: 'POST',
+            data : data,
+            dataType: 'json',
+            success: function(data) {
+              if(data[0].authcode === InputAuthcode){
+                  alert('인증 성공');
+                  document.getElementById('authcode-container').style.display = 'none';
+                  document.getElementById('view-container').style.display = 'block';
+              }
+              else{
+                  alert('인증 실패');
+              }
+            },
+            error: function(request, status, error) {
+                console.log(request, status, error);
+            },
+        });
+}
 
 function getParameterByName(name) {
     name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
