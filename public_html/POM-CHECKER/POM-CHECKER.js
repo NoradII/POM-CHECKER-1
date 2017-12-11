@@ -231,26 +231,8 @@ function registerFirstMeasurement() {
         number.focus();
         return;
     } else {
-        $.ajax({
-            url: "http://" + ip + "/php/rom_server_php/checkpatientnumber.php",
-            type: 'POST',
-            data: number.value,
-            dataType: 'html',
-            success: function(data) {
-                if(data.length > 1){
-                    alert("이미 존재하는 병록번호입니다.");
-                    document.getElementById('form-group-number').setAttribute('class', 'form-group has-error has-feedback');
-                    number.focus();
-                    return;
-                } else {
-                    document.getElementById('form-group-number').setAttribute('class', 'form-group has-success has-feedback');
-                    number = number.value;
-                }
-            },
-            error: function(request, status, error) {
-                console.log(request, status, error);
-            },
-        });
+         document.getElementById('form-group-number').setAttribute('class', 'form-group has-success has-feedback');
+         number = number.value;
     }
 
     if (man.checked === true) {
@@ -269,8 +251,19 @@ function registerFirstMeasurement() {
         birth.focus();
         return;
     } else {
-        document.getElementById('form-group-birth').setAttribute('class', 'form-group has-success has-feedback');
-        birth = birth.value;
+        //생년월일 정규화식 : 19000101 ~ 20991231
+        var format = /^(19\d{2}|20\d{2})(0[0-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])$/;
+        var bool=format.test(birth.value);
+        if(!bool){
+            alert("생년월일란을 정확히 입력해주세요.");
+            document.getElementById('form-group-birth').setAttribute('class', 'form-group has-error has-feedback');
+            birth.focus();
+            return;
+        }
+        else{
+            document.getElementById('form-group-birth').setAttribute('class', 'form-group has-success has-feedback');
+            birth = birth.value;
+        }        
     }
 
     // TODO : 조건 생각해봐야 할듯
@@ -285,7 +278,7 @@ function registerFirstMeasurement() {
     }
 
     var patientid = createHash();
-    var data = {
+    var insertdata = {
         patientid: patientid,
         name: name,
         sex: gender,
@@ -295,31 +288,53 @@ function registerFirstMeasurement() {
     };
 
     $.ajax({
-        url: "http://" + ip + "/php/rom_server_php/patientadd.php",
+        url: "http://" + ip + "/php/rom_server_php/checkpatientnumber.php",
         type: 'POST',
-        data: data,
+        data: {number : number},
         dataType: 'html',
         success: function(data) {
-            $('#registerModal').modal('hide');
-            getPatientName();
+            if (data.length > 2) {
+                alert("이미 존재하는 병록번호입니다.");
+                document.getElementById('form-group-number').setAttribute('class', 'form-group has-error has-feedback');
+                number = document.getElementById('inputPatientNumber');
+                number.focus();
+                return;
+            } else {
+                $.ajax({
+                    url: "http://" + ip + "/php/rom_server_php/patientadd.php",
+                    type: 'POST',
+                    data: insertdata,
+                    dataType: 'html',
+                    success: function(data) {
+                        $('#registerModal').modal('hide');
+                        getPatientName();
+                    },
+                    error: function(request, status, error) {
+                        console.log(request, status, error);
+                    },
+                });
+
+                $.ajax({
+                    url: "https://elysium.azurewebsites.net/php/rom_server_php/patientadd.php",
+                    type: 'POST',
+                    data: insertdata,
+                    dataType: 'html',
+                    success: function(data) {
+                        console.log("Save Azure data");
+                    },
+                    error: function(request, status, error) {
+                        console.log(request, status, error);
+                    },
+                });
+            }
         },
         error: function(request, status, error) {
             console.log(request, status, error);
         },
     });
 
-    $.ajax({
-        url: "https://elysium.azurewebsites.net/php/rom_server_php/patientadd.php",
-        type: 'POST',
-        data: data,
-        dataType: 'html',
-        success: function(data) {
-            console.log("Save Azure data");
-        },
-        error: function(request, status, error) {
-            console.log(request, status, error);
-        },
-    });
+
+
 }
 
 
