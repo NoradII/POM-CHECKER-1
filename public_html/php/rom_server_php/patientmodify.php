@@ -21,8 +21,8 @@
 		$return_arr = Array();
 
 		$result = mysqli_query($connection,
-			"INSERT INTO rom_patient(patientid, name, sex, birth, number, lastupdate, phone)
-			values('".$patientid."', '".$name."', '".$sex."', '".$birth."', '".$number."', now() , '".$phone."')");
+			"UPDATE teamelysium.rom_patient SET name = '".$name."' , sex = '".$sex."' , birth = '".$birth."' , number = '".$number."' , phone = '".$phone."' , lastupdate = now() WHERE rom_patient.patientid = '".$patientid."'");
+
 	}
 	else
 	{

@@ -24,6 +24,7 @@ if(isset($_POST['patientid']))
 		$row_array['sex'] = $row['sex'];
 		$row_array['birth'] = $row['birth'];
 		$row_array['number'] = $row['number'];
+		$row_array['phone'] = $row['phone'];
 		array_push($return_arr,$row_array);
 	}
 
@@ -40,6 +41,7 @@ else
 		$row_array['birth'] = $row['birth'];
 		$row_array['number'] = $row['number'];
 		$row_array['lastupdate'] = $row['lastupdate'];
+		$row_array['phone'] = $row['phone'];
 		array_push($return_arr,$row_array);
 	}
 
