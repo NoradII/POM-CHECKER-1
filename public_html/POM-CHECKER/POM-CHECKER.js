@@ -100,7 +100,8 @@ function getPatientName() {
                     sex = "남";
                 else
                     sex = "여";
-                createButton(name, birth, number, sex, patientid);
+                var phone = data[i].phone;
+                createButton(name, birth, number, sex, patientid, phone);
             }
         },
         error: function(request, status, error) {
@@ -206,7 +207,7 @@ function getCheckDate(clickId) {
     prevClickId = clickId;
 }
 
-function registerFirstMeasurement() {
+function registerFirstMeasurement(type, modifypatientid) {
     var name = document.getElementById('inputPatientName');
     var birth = document.getElementById('inputPatientBirth');
     var number = document.getElementById('inputPatientNumber');
@@ -231,26 +232,8 @@ function registerFirstMeasurement() {
         number.focus();
         return;
     } else {
-        $.ajax({
-            url: "http://" + ip + "/php/rom_server_php/checkpatientnumber.php",
-            type: 'POST',
-            data: number.value,
-            dataType: 'html',
-            success: function(data) {
-                if(data.length > 1){
-                    alert("이미 존재하는 병록번호입니다.");
-                    document.getElementById('form-group-number').setAttribute('class', 'form-group has-error has-feedback');
-                    number.focus();
-                    return;
-                } else {
-                    document.getElementById('form-group-number').setAttribute('class', 'form-group has-success has-feedback');
-                    number = number.value;
-                }
-            },
-            error: function(request, status, error) {
-                console.log(request, status, error);
-            },
-        });
+         document.getElementById('form-group-number').setAttribute('class', 'form-group has-success has-feedback');
+         number = number.value;
     }
 
     if (man.checked === true) {
@@ -269,8 +252,19 @@ function registerFirstMeasurement() {
         birth.focus();
         return;
     } else {
-        document.getElementById('form-group-birth').setAttribute('class', 'form-group has-success has-feedback');
-        birth = birth.value;
+        //생년월일 정규화식 : 19000101 ~ 20991231
+        var format = /^(19\d{2}|20\d{2})(0[0-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])$/;
+        var bool=format.test(birth.value);
+        if(!bool){
+            alert("생년월일란을 정확히 입력해주세요.");
+            document.getElementById('form-group-birth').setAttribute('class', 'form-group has-error has-feedback');
+            birth.focus();
+            return;
+        }
+        else{
+            document.getElementById('form-group-birth').setAttribute('class', 'form-group has-success has-feedback');
+            birth = birth.value;
+        }        
     }
 
     // TODO : 조건 생각해봐야 할듯
@@ -284,42 +278,103 @@ function registerFirstMeasurement() {
         phone = phone.value;
     }
 
-    var patientid = createHash();
-    var data = {
-        patientid: patientid,
-        name: name,
-        sex: gender,
-        birth: birth,
-        number: number,
-        phone: phone
-    };
+    
+    if(type === 'register'){
+        var patientid = createHash();
+        var insertdata = {
+            patientid: patientid,
+            name: name,
+            sex: gender,
+            birth: birth,
+            number: number,
+            phone: phone
+        };
 
-    $.ajax({
-        url: "http://" + ip + "/php/rom_server_php/patientadd.php",
-        type: 'POST',
-        data: data,
-        dataType: 'html',
-        success: function(data) {
-            $('#registerModal').modal('hide');
-            getPatientName();
-        },
-        error: function(request, status, error) {
-            console.log(request, status, error);
-        },
-    });
+        $.ajax({
+            url: "http://" + ip + "/php/rom_server_php/checkpatientnumber.php",
+            type: 'POST',
+            data: {number : number},
+            dataType: 'html',
+            success: function(data) {
+                if (data.length > 2) {
+                    alert("이미 존재하는 병록번호입니다.");
+                    document.getElementById('form-group-number').setAttribute('class', 'form-group has-error has-feedback');
+                    number = document.getElementById('inputPatientNumber');
+                    number.focus();
+                    return;
+                } else {
+                    $.ajax({
+                        url: "http://" + ip + "/php/rom_server_php/patientadd.php",
+                        type: 'POST',
+                        data: insertdata,
+                        dataType: 'html',
+                        success: function(data) {
+                            $('#registerModal').modal('hide');
+                            getPatientName();
+                        },
+                        error: function(request, status, error) {
+                            console.log(request, status, error);
+                        },
+                    });
 
-    $.ajax({
-        url: "https://elysium.azurewebsites.net/php/rom_server_php/patientadd.php",
-        type: 'POST',
-        data: data,
-        dataType: 'html',
-        success: function(data) {
-            console.log("Save Azure data");
-        },
-        error: function(request, status, error) {
-            console.log(request, status, error);
-        },
-    });
+                    $.ajax({
+                        url: "https://elysium.azurewebsites.net/php/rom_server_php/patientadd.php",
+                        type: 'POST',
+                        data: insertdata,
+                        dataType: 'html',
+                        success: function(data) {
+                            console.log("Save Azure data");
+                        },
+                        error: function(request, status, error) {
+                            console.log(request, status, error);
+                        },
+                    });
+                }
+            },
+            error: function(request, status, error) {
+                console.log(request, status, error);
+            },
+        });
+    }
+
+    else if(type === 'modify'){
+        var data = {
+            patientid: modifypatientid,
+            name: name,
+            sex: gender,
+            birth: birth,
+            number: number,
+            phone: phone
+        };
+
+        $.ajax({
+            url: "http://" + ip + "/php/rom_server_php/patientmodify.php",
+            type: 'POST',
+            data: data,
+            dataType: 'html',
+            success: function(data) {
+                $('#registerModal').modal('hide');
+                getPatientName();
+            },
+            error: function(request, status, error) {
+                console.log(request, status, error);
+            },
+        });
+
+        $.ajax({
+            url: "https://elysium.azurewebsites.net/php/rom_server_php/patientmodify.php",
+            type: 'POST',
+            data: data,
+            dataType: 'html',
+            success: function(data) {
+                console.log("Save Azure data");
+            },
+            error: function(request, status, error) {
+                console.log(request, status, error);
+            },
+        });
+        
+    }
 }
 
 
@@ -779,6 +834,7 @@ function getSearchName() {
                 var birth = data[i].birth;
                 var number = data[i].number;
                 var patientid = data[i].patientid;
+                var phone = data[i].phone;
                 var sex;
                 if (data[i].sex === 1)
                     sex = "남";
@@ -787,7 +843,7 @@ function getSearchName() {
                 var sname = document.getElementById("searchName").value;
                 var namecount = name.search(sname);
                 if (namecount >= 0) {
-                    createButton(name, birth, number, sex, patientid);
+                    createButton(name, birth, number, sex, patientid, phone);
                 }
             }
         },
@@ -797,7 +853,45 @@ function getSearchName() {
     });
 }
 
-function createButton(name, birth, number, sex, patientid) {
+$('#registerModal').on('show.bs.modal', function (e) {
+    var status = e.relatedTarget.dataset.type;
+    var registertitle = document.getElementById('register-title');
+    var registerbtn = document.getElementById('register-btn');
+    if(status === 'modify'){
+        var patientid = e.relatedTarget.dataset.id;
+        registertitle.innerHTML = '환자 정보 수정';
+        registerbtn.innerHTML = '환자 정보 수정';
+        registerbtn.setAttribute("onclick" , "registerFirstMeasurement('modify','"+patientid+"')");
+
+        var patientname = document.getElementById(patientid).children[0].children[0].children[1].innerHTML;
+        var patientnumber = document.getElementById(patientid).children[0].children[1].children[1].innerHTML;
+        var patientsex = document.getElementById(patientid).children[1].children[0].children[1].innerHTML;
+        var patientbirth = document.getElementById(patientid).children[1].children[1].children[1].innerHTML;
+        var patientphone = document.getElementById(patientid).children[1].children[2].children[1].innerHTML;
+
+        document.getElementById('inputPatientName').value = patientname;
+        document.getElementById('inputPatientNumber').value = patientnumber;
+        if(patientsex === '남'){
+            document.getElementById('test1').checked = 'true';
+        }
+        else{
+            document.getElementById('test2').checked = 'true';
+        }
+        document.getElementById('inputPatientBirth').value = patientbirth;
+        document.getElementById('inputPatientPhone').value = patientphone;
+
+        status = 'register';
+    }
+
+    else{
+        registertitle.innerHTML = '초진 등록';
+        registerbtn.innerHTML = '초진환자 등록 및 검진';
+        registerbtn.setAttribute("onclick" , "registerFirstMeasurement('register', '0')");
+    }
+
+});
+
+function createButton(name, birth, number, sex, patientid, phone) {
     var new_patientinfo = document.createElement("div");
     new_patientinfo.setAttribute("class", "btn btn-default btn-group-justified");
     new_patientinfo.setAttribute("onclick", "getCheckDate(this.id)");
@@ -807,28 +901,45 @@ function createButton(name, birth, number, sex, patientid) {
     row_div.setAttribute("class", "row");
 
     var patientname = document.createElement("div");
-    patientname.setAttribute("class", "col-md-6 col-sm-6 col-xs-6 baseinfo");
-    patientname.innerHTML = "<b>이름 : </b>" + name;
+    patientname.setAttribute("class", "col-md-6 col-sm-6 col-xs-6 baseinfo patientname");
+    patientname.innerHTML = "<b>이름 : </b><span>" + name +"</span>";
 
     var patientnumber = document.createElement("div");
-    patientnumber.setAttribute("class", "col-md-6 col-sm-6 col-xs-6 baseinfo");
-    patientnumber.innerHTML = "<b>병록번호 : </b>" + number;
+    patientnumber.setAttribute("class", "col-md-5 col-sm-5 col-xs-5 baseinfo patientnumber");
+    patientnumber.innerHTML = "<b>병록번호 : </b><span>" + number +"</span>";
+
+    var pencilicon = document.createElement("i");
+    pencilicon.setAttribute("class", "col-md-1 col-sm-1 col-xs-1 baseinfo fa fa-pencil");
+    pencilicon.setAttribute("data-toggle", "modal");
+    pencilicon.setAttribute("data-target", "#registerModal");
+    pencilicon.setAttribute("data-type", "modify");
+    pencilicon.setAttribute("data-id", patientid);
+    pencilicon.setAttribute("type", "button");
+    pencilicon.style.textAlign = "right";
+    pencilicon.style.color = "#73879C";
 
     var row_div2 = document.createElement("div");
     row_div2.setAttribute("class", "row");
 
     var patientsex = document.createElement("div");
-    patientsex.setAttribute("class", "col-md-6 col-sm-6 col-xs-6 baseinfo");
-    patientsex.innerHTML = "<b>성별 : </b>" + sex;
+    patientsex.setAttribute("class", "col-md-6 col-sm-6 col-xs-6 baseinfo patientsex");
+    patientsex.innerHTML = "<b>성별 : </b><span>" + sex +"</span>";
 
     var patientbirth = document.createElement("div");
-    patientbirth.setAttribute("class", "col-md-6 col-sm-6 col-xs-6 baseinfo");
-    patientbirth.innerHTML = "<b>생년월일 : </b>" + birth;
+    patientbirth.setAttribute("class", "col-md-6 col-sm-6 col-xs-6 baseinfo patientbirth");
+    patientbirth.innerHTML = "<b>생년월일 : </b><span>" + birth +"</span>";
+
+    var patientphone = document.createElement("div");
+    patientphone.setAttribute("class", "col-md-6 col-sm-6 col-xs-6 baseinfo patientphone");
+    patientphone.innerHTML = "<b>핸드폰번호 : </b><span>" + phone +"</span>";
+    patientphone.style.display = 'none';
 
     row_div.appendChild(patientname);
     row_div.appendChild(patientnumber);
+    row_div.appendChild(pencilicon);
     row_div2.appendChild(patientsex);
     row_div2.appendChild(patientbirth);
+    row_div2.appendChild(patientphone);
 
     new_patientinfo.appendChild(row_div);
     new_patientinfo.appendChild(row_div2);
