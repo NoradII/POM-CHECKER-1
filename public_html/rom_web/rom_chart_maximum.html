@@ -42,10 +42,10 @@
             <div class="x_panel">
               <div class="x_title header">
                 <div class="row">
-                  <div class="col-md-10 col-sm-10 col-xs-10">
+                  <div class="col-md-10 col-sm-10 col-xs-10 ">
                     <img src="../image/white_logo.png"/ style="width:130px; margin-left : 40px; margin-top : 24px;">
                   </div>
-                  <div class="col-md-2 col-sm-2 col-xs-2">
+                  <div class="col-md-2 col-sm-2 col-xs-2 ">
                     <div class="bs-example-popovers pull-right hidden-print">
                       <button type="button" class="custom-btn goMainPage" onclick="goMainPage()" style="">차트보기&nbsp;<img src="../image/chart_icon.png" width="25px"></button>
                     </div>
@@ -222,17 +222,18 @@
 
               <div class="container collapse" id="collapseMovie">
                  <div class="row video_flex">
-                    <div class="col-md-7 ">
+                    <div class="col-md-9 video_container">
                       <div id="video_container">
-                       <video id="video_tag" width="100%" poster="../image/videoposter.png" controls>
+                       <video id="video_tag" width="100%"  controls>
                          <source id="source_tag" type="video/mp4" src=""/>
                        </video>
 
                      </div>
                     </div>
 
-                   <div class="col-md-5 video_select_container">
-                     <div style="vertical-align: middle;">
+                   <div class="col-md-3 video_select_container">
+                     <h4 class="history"><b>HISTORY</b><img src="../image/history.png" style="vertical-align : text-top;"></h4>
+                     <div>
                        <ul class="list-group" id="video_select">
                        </ul>
 
@@ -254,13 +255,13 @@
 
                 <h2 class="title_toggle brief" data-toggle="collapse" href="#collapseScreenshot" aria-expanded="false" aria-controls="collapseScreenshot">
                   스크린샷
-                </h2>
 
+                  <span style="float : right;" id="screenshot_compare_btn" onclick="screenshotCompare()"> <img src="../image/icon1_compare.png" width="18px">비교하기</span>
+                </h2>
 
               <div class="x_content collapse" id="collapseScreenshot">
                 <div class="row col-md-12 col-sm-12 col-xs-12" id="screenshot_container"></div>
-                <button class="btn btn-primary" style="float : right;" id="screenshot_compare_btn" onclick="screenshotCompare()">비교</button>
-              </div>
+               </div>
             </div>
           </div>
         </div>

@@ -851,13 +851,13 @@ function getScreenshot() {
                 var fileDate = fileInfo[2].split("-");
                 //0:month 1:day 2:year
                 if(i==0){
-                   makeScreenshotFolder(fileInfo, fileDate, data);
+                   makeScreenshotFolder(fileInfo, fileDate, data, file);
                 }
                 else{
                     var beforeFile = data[i-1];
                     var beforeFileInfo = beforeFile.split("_");
                     if(fileInfo[2]!=beforeFileInfo[2]){
-                        makeScreenshotFolder(fileInfo, fileDate, data);
+                        makeScreenshotFolder(fileInfo, fileDate, data, file);
                     }
                 }
             }
@@ -868,7 +868,7 @@ function getScreenshot() {
     });
 }
 
-function makeScreenshotFolder(fileInfo, fileDate, data) {
+function makeScreenshotFolder(fileInfo, fileDate, data, file) {
     var screenshot_container = document.getElementById('screenshot_container');
     var div_container = document.createElement("div");
     var img_tag = document.createElement("img");
@@ -880,7 +880,7 @@ function makeScreenshotFolder(fileInfo, fileDate, data) {
 
     img_tag.setAttribute("class", "img-responsive col-md-12 col-sm-12 col-xs-12");
     img_tag.setAttribute("width", "100%");
-    img_tag.setAttribute("src", "../image/screenshotfolder.png");
+    img_tag.setAttribute("src", "../screenshot/"+file);
     img_tag.setAttribute("alt", "There is no image");
     img_tag.setAttribute("id", fileInfo[2]);
     img_tag.style["cursor"] = "pointer";
@@ -897,13 +897,10 @@ function makeScreenshotFolder(fileInfo, fileDate, data) {
         };
     })();
 
-    span_tag.innerHTML = fileDate[2] + "년 " + fileDate[0] + "월 " + fileDate[1] + "일";
-    span_tag.style["display"] = "inline-block"
-    span_tag.style["text-align"] = "center";
-    span_tag.style["width"] = "100%";
-    span_tag.style["margin-top"] = "5px";
+    span_tag.setAttribute("class", "screenshot-date");
+    span_tag.innerHTML = fileDate[2] + "-" + fileDate[0] + "-" + fileDate[1];
 
-    div_container.setAttribute("class", "div_container col-md-1 col-sm-2 col-xs-1");
+    div_container.setAttribute("class", "div_container col-md-3 col-sm-3 col-xs-3");
 
     screenshot_container.appendChild(div_container);
     div_container.appendChild(input_check);
@@ -968,10 +965,15 @@ function getMovie() {
                 li_tag.setAttribute("data-filename", file);
 
                 var p_tag = document.createElement("p");
-                p_tag.setAttribute("class", "mb-1");
-                p_tag.innerHTML = date[2] + '년 ' + date[0] + '월 ' + date[1] + '일 ' + time[0] + '시 ' + time[1] + '분';
+                p_tag.setAttribute("class", "");
+                p_tag.innerHTML = '<span class="history-text">날짜  :&nbsp;&nbsp;</span>'+date[2] + '-' + date[0] + '-' + date[1];
+
+                var p_tag2 = document.createElement("p");
+                p_tag2.setAttribute("class", "");
+                p_tag2.innerHTML = '<span class="history-text">시간  :&nbsp;&nbsp;</span>'+time[0] + ':' + time[1] + ':' + time[2].substr(0,2);
 
                 li_tag.appendChild(p_tag);
+                li_tag.appendChild(p_tag2);
                 video_select_container.appendChild(li_tag);
             }
 
