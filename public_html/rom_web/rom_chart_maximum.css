@@ -460,6 +460,7 @@ span {display:inline-block}
   text-align: center;
   width: 100%;
   padding: 5px 0;
+  margin-bottom: 10px;
   font-size: 0.9em;
   color: #fff;
   background-color: rgba(0,0,0,0.7);
@@ -478,6 +479,35 @@ span {display:inline-block}
 #screenshot_compare_btn img{
   margin-right: 10px;
   padding-bottom: 5px;
+}
+
+.imgcheck{
+    position:relative;
+    display: inline-block;
+}
+.imgcheck input[type="checkbox"]{
+    display:none;
+}
+.imgcheck input[type="checkbox"] + label{
+    cursor:pointer;
+}
+
+.imgcheck input[type="checkbox"]:checked + label{
+    background:#000;
+}
+.imgcheck input[type="checkbox"]:checked + label:before{
+    position:absolute;
+    content:'';
+    top:37%;
+    left:40%;
+    width: 17%;
+    height: 20%;
+    background:url('../image/icon2_selection.png');
+    background-repeat:no-repeat;
+    background-size: 100% 100%;
+}
+.imgcheck input[type="checkbox"]:checked + label img{
+    opacity: 0.3;
 }
 
 /* -----screenshot----- */
@@ -510,6 +540,19 @@ span {display:inline-block}
   width: 51%;
 }
 
+.modal-header{
+  border-bottom: none;
+  padding: 15px 0px 0px 0px;
+}
+
+.modal-title{
+  text-align: center;
+  margin-bottom: 10px;
+  font-weight: bold;
+  font-size: 1.5em;
+}
+
+
 /* -----painting Modal----- */
 
 #paintingModal .modal-dialog{
@@ -517,27 +560,56 @@ span {display:inline-block}
   height: 100%;
 }
 
-#paintingModal .modal-header{
-  border-bottom: none;
+
+#paintingModal .modal-body{
+  padding: 5px 5px 5px 0;
+}
+
+#paintingCompareModal .modal-body{
+  padding: 5px 5px 5px 0;
+}
+
+#paintingModalSelect, #paintingModalSelect1, #paintingModalSelect2{
+  border : none;
+  background-color: #E6E6E6;
+  -webkit-box-shadow: none; 
+  box-shadow: none;
+  text-align-last:center;
+  font-size: 1.2em;
+}
+
+#paintingModalSelect option{
+  text-align-last:center;
+}
+
+.compare1{
+  border-right: 1px solid #fff;
+ /* padding: 0;*/
+}
+
+.compare2{
+  border-left: 1px solid #cccccc;
+  /*padding: 0;*/
 }
 
 /*paint modal button css*/
 .button-images{
   width: 100%;
+  margin: 0;
 }
+
 .button-container {
-position: relative;
-text-align: center;
-padding: 0;
-overflow:hidden;
+  position: relative;
+  text-align: center;
+  padding: 0;
+  overflow:hidden;
 }
 
 .button-container A:before{
   content: '';
   display: inline-block;
   height: 48%;
-
-  }
+}
 
 .button-container a {
   transition: all 1s ease-out;
@@ -545,7 +617,7 @@ overflow:hidden;
   padding:5%;
   color: #FFFFFF;
   position:absolute;
-  font-size: 1.125em;
+  font-size: 1.2em;
   font-weight: 700;
   top: 0;
   left:0;
@@ -556,7 +628,7 @@ overflow:hidden;
   text-decoration: none;
   text-transform:uppercase;
   cursor: pointer;
-
+  letter-spacing: 2px;
 }
 
 .button-container A:hover {
@@ -564,16 +636,19 @@ overflow:hidden;
   border: none;
   opacity:0;
 }
-.button-container img{width:100%; height:auto; display:block}
+
+.button-container img{
+  width:100%; 
+  height:auto; 
+  display:block;
+}
 
 .button-grid {
-width: 25%;
-position: relative;
-margin-right: 12.5%;
-margin-bottom: 2%;
-float: left;
-min-height: 1px;
-height: auto !important;
+  position: relative;
+  float: left;
+  padding: 0 0 0 5px;
+  min-height: 1px;
+  height: auto !important;
 }
 
 .paintImgbtn{
