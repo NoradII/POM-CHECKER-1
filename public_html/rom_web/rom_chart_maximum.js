@@ -872,18 +872,21 @@ function makeScreenshotFolder(fileInfo, fileDate, data, file) {
     var screenshot_container = document.getElementById('screenshot_container');
     var div_container = document.createElement("div");
     var img_tag = document.createElement("img");
-    var span_tag = document.createElement("span");
+    var label_tag = document.createElement("label");
     var input_check = document.createElement("input");
+
+    var span_tag = document.createElement("span");
 
     input_check.setAttribute("type", "checkbox");
     input_check.setAttribute("class", "screenshot_check");
+    input_check.setAttribute("id", fileInfo[2]);
 
-    img_tag.setAttribute("class", "img-responsive col-md-12 col-sm-12 col-xs-12");
-    img_tag.setAttribute("width", "100%");
+    label_tag.setAttribute("for", fileInfo[2]);
+
     img_tag.setAttribute("src", "../screenshot/"+file);
-    img_tag.setAttribute("alt", "There is no image");
     img_tag.setAttribute("id", fileInfo[2]);
-    img_tag.style["cursor"] = "pointer";
+    img_tag.setAttribute("alt", "There is no image");
+    img_tag.setAttribute("class", "img-responsive col-md-12 col-sm-12 col-xs-12");
 
     (function() {
         var filtered = data.filter(screenshotDateFilter, fileInfo[2]);
@@ -892,19 +895,17 @@ function makeScreenshotFolder(fileInfo, fileDate, data, file) {
         input_check.setAttribute("data-filtered" , filtered);
         input_check.setAttribute("data-date", date);
 
-        img_tag.onclick = function() {
-            viewPaintModal(filtered, date);
-        };
     })();
 
     span_tag.setAttribute("class", "screenshot-date");
     span_tag.innerHTML = fileDate[2] + "-" + fileDate[0] + "-" + fileDate[1];
 
-    div_container.setAttribute("class", "div_container col-md-3 col-sm-3 col-xs-3");
+    div_container.setAttribute("class", "imgcheck col-md-3 col-sm-3 col-xs-3");
 
     screenshot_container.appendChild(div_container);
     div_container.appendChild(input_check);
-    div_container.appendChild(img_tag);
+    div_container.appendChild(label_tag);
+    label_tag.appendChild(img_tag);
     div_container.appendChild(span_tag);
 }
 
@@ -916,8 +917,14 @@ function screenshotDateFilter(value){
 
 function screenshotCompare(){
     var count = document.querySelectorAll('.screenshot_check:checked').length;
-    if(count > 2 || count < 2){
-        alert("두 개의 폴더를 선택해주세요");
+    if(count > 2 || count === 0){
+        alert("한 개 혹은 두 개의 폴더를 선택해주세요");
+    }
+    else if(count === 1){
+        var check = document.querySelectorAll('.screenshot_check:checked')[0];
+        var filtered = check.getAttribute("data-filtered").split(",");
+        var date =  check.getAttribute("data-date");
+        viewPaintModal(filtered,date);
     }
     else{
         var check1 = document.querySelectorAll('.screenshot_check:checked')[0];
@@ -1184,6 +1191,7 @@ function screenshotCanvasChange(type, item) {
     var selectedWidth = $("." + selectedtype + "Img").width();
     var selectedHeight = $("." + selectedtype + "Img").height();
     var raster = new Raster(selectedSrc);
+    
     raster.width = canvas.width;
     raster.height = (raster.width * 651) / 1159;
     raster.position = view.center;

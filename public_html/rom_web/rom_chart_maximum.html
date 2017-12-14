@@ -253,10 +253,9 @@
           <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
 
-                <h2 class="title_toggle brief" data-toggle="collapse" href="#collapseScreenshot" aria-expanded="false" aria-controls="collapseScreenshot">
-                  스크린샷
-
-                  <span style="float : right;" id="screenshot_compare_btn" onclick="screenshotCompare()"> <img src="../image/icon1_compare.png" width="18px">비교하기</span>
+                <h2 class="brief row">
+                  <span class="title_toggle col-md-10 col-sm-10 col-xs-10" style="padding-left : 0px;" data-toggle="collapse" href="#collapseScreenshot" aria-expanded="false" aria-controls="collapseScreenshot">스크린샷</span>
+                  <span style="float : right; cursor : pointer;" id="screenshot_compare_btn" onclick="screenshotCompare()"> <img src="../image/icon1_compare.png" width="18px">자세히 보기</span>
                 </h2>
 
               <div class="x_content collapse" id="collapseScreenshot">
@@ -271,8 +270,8 @@
       <div class="modal fade" id="paintingModal" role="dialog">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <div class="modal-header row">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" style="opacity : 1;"><img src="../image/xbt.png" width="20px" style="margin-right : 5px;"></button>
                     <h4 class="modal-title" id="paintingModalTitle">선택한 날짜</h4>
                     <select class="form-control" id="paintingModalSelect">
                     </select>
@@ -288,20 +287,20 @@
                         <div class="info hidden"></div>
                     </div>
 
-                        <div class="button-images">
-                            <div class="button-grid">
+                        <div class="button-images row">
+                            <div class="button-grid col-md-4 col-sm-4 col-xs-4">
                                 <div class="button-container">
                                     <a class="paintImgbtn" onclick="screenshotCanvasChange(0, this)">hud</a>
                                     <img src="" id="hudImg" alt="No Image" onerror='this.src="../image/noimg.png"' />
                                 </div>
                             </div>
-                            <div class="button-grid">
+                            <div class="button-grid col-md-4 col-sm-4 col-xs-4">
                                 <div class="button-container">
                                     <a class="paintImgbtn" onclick="screenshotCanvasChange(0, this)">normal</a>
                                     <img src="" id="normalImg" alt="No Image"/>
                                 </div>
                             </div>
-                            <div class="button-grid" style="margin-right:0">
+                            <div class="button-grid col-md-4 col-sm-4 col-xs-4" style="margin-right : 0">
                                 <div class="button-container">
                                     <a class="paintImgbtn" onclick="screenshotCanvasChange(0, this)">skeleton</a>
                                     <img src="" id="skeletonImg" alt="No Image" onerror='this.src="../image/noimg.png"' />
@@ -309,28 +308,24 @@
                             </div>
                         </div>
 
-                        <canvas id="imageCanvas" style="-webkit-user-drag: none; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); background: #fff; width: 100%;" height="180"></canvas>
+                        <canvas id="imageCanvas" style="-webkit-user-drag: none; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); background: #fff; width: 100%; padding-left : 5px" height="180"></canvas>
 
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" onclick="$('#paintingModal').modal('hide');">확인</button>
-                </div>
-
             </div>
         </div>
       </div>
 
       <!-- page content -->
       <div class="modal fade" id="paintingCompareModal" role="dialog">
-        <div class="modal-dialog modal-lg row" style="width : 1200px;">
+        <div class="modal-dialog modal-lg row" style="width : 90vw;">
           <div class="modal-content">
-            <div class="col-md-6 col-sm-6 col-xs-6">
+            <div class="col-md-6 col-sm-6 col-xs-6 compare1">
                 <div class="modal-header row">
                     <h4 class="modal-title" id="paintingModalTitle1">선택한 날짜</h4>
                     <select class="form-control" id="paintingModalSelect1">
                     </select>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" style="padding: 5px 0px 5px 0">
                     <div class="gui toolbar">
                         <div class="tools">
                             <a class="bu tton canvas-clear icon-trash" title="Clear Canvas"></a>
@@ -341,20 +336,20 @@
                         <div class="info hidden"></div>
                     </div>
 
-                    <div class="button-images">
-                        <div class="button-grid">
+                    <div class="button-images row">
+                        <div class="button-grid col-md-4 col-sm-4 col-xs-4"  style="padding-left:0">
                             <div class="button-container">
                                 <a class="paintImgbtn" onclick="screenshotCanvasChange(1, this)">hud</a>
                                 <img src="" id="hudImg1" alt="No Image" onerror='this.src="../image/noimg.png"' />
                             </div>
                         </div>
-                        <div class="button-grid">
+                        <div class="button-grid col-md-4 col-sm-4 col-xs-4">
                             <div class="button-container">
                                 <a class="paintImgbtn" onclick="screenshotCanvasChange(1, this)">normal</a>
                                 <img src="" id="normalImg1" alt="No Image" />
                             </div>
                         </div>
-                        <div class="button-grid" style="margin-right:0">
+                        <div class="button-grid col-md-4 col-sm-4 col-xs-4" style="margin-right:0">
                             <div class="button-container">
                                 <a class="paintImgbtn" onclick="screenshotCanvasChange(1, this)">skeleton</a>
                                 <img src="" id="skeletonImg1" alt="No Image" onerror='this.src="../image/noimg.png"' />
@@ -362,21 +357,22 @@
                         </div>
                     </div>
 
-                    <canvas id="imageCanvas1" style="-webkit-user-drag: none; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); background: #fff; width: 100%;" height="180"></canvas>
+                    <canvas id="imageCanvas1" style="-webkit-user-drag: none; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); background: #fff; width: 100%; padding-left:5px;" height="180"></canvas>
 
                 </div>
             </div>
 
 
 
-            <div class="col-md-6 col-sm-6 col-xs-6">
+            <div class="col-md-6 col-sm-6 col-xs-6 compare2">
                 <div class="modal-header row">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                      <button type="button" class="close" data-dismiss="modal" style="opacity : 1;"><img src="../image/xbt.png" width="20px" style="margin-right : 5px;"></button>
                     <h4 class="modal-title" id="paintingModalTitle2">선택한 날짜</h4>
+
                     <select class="form-control" id="paintingModalSelect2">
                     </select>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" style="padding: 5px 5px 5px 0px">
                     <div class="gui toolbar">
                         <div class="tools">
                             <a class="bu tton canvas-clear icon-trash" title="Clear Canvas"></a>
@@ -387,20 +383,20 @@
                         <div class="info hidden"></div>
                     </div>
 
-                    <div class="button-images">
-                        <div class="button-grid">
+                    <div class="button-images row">
+                        <div class="button-grid col-md-4 col-sm-4 col-xs-4" style="padding-left:0">
                             <div class="button-container">
                                 <a class="paintImgbtn" onclick="screenshotCanvasChange(2, this)">hud</a>
                                 <img src="" id="hudImg2" alt="No Image" onerror='this.src="../image/noimg.png"' />
                             </div>
                         </div>
-                        <div class="button-grid">
+                        <div class="button-grid col-md-4 col-sm-4 col-xs-4">
                             <div class="button-container">
                                 <a class="paintImgbtn" onclick="screenshotCanvasChange(2, this)">normal</a>
                                 <img src="" id="normalImg2" alt="No Image" />
                             </div>
                         </div>
-                        <div class="button-grid" style="margin-right:0">
+                        <div class="button-grid col-md-4 col-sm-4 col-xs-4" style="margin-right:0">
                             <div class="button-container">
                                 <a class="paintImgbtn" onclick="screenshotCanvasChange(2, this)">skeleton</a>
                                 <img src="" id="skeletonImg2" alt="No Image" onerror='this.src="../image/noimg.png"' />
@@ -408,12 +404,12 @@
                         </div>
                     </div>
 
-                    <canvas id="imageCanvas2" style="-webkit-user-drag: none; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); background: #fff; width: 100%;" height="180"></canvas>
+                    <canvas id="imageCanvas2" style="-webkit-user-drag: none; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); background: #fff; width: 100%; padding-left:5px;" height="180"></canvas>
 
                 </div>
             </div>
                             <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" onclick="$('#paintingModal').modal('hide');">확인</button>
+
                 </div>
           </div>
  
@@ -425,10 +421,10 @@
         <div class="modal-dialog modal-50size">
           <div class="modal-content modal-50size">
             <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <button type="button" class="close" data-dismiss="modal" style="opacity : 1;"><img src="../image/xbt.png" width="20px" style="margin-right : 15px;"></button>
               <h4 class="modal-title">NRS 통증척도</h4>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="margin-top : 30px">
               <div class="range">
                 <input type="range" min="1" max="11" steps="1" value="1" class="slider" id="myRange" />
               </div>
@@ -449,7 +445,7 @@
             </div>
 
             <div class="modal-footer">
-              <button type="button" class="btn btn-primary" onclick="saveNRS()">저장</button>
+              <button type="button" class="btn btn-primary" onclick="saveNRS()" style="background-color : #232f39; border : none;">SAVE</button>
             </div>
 
           </div>
