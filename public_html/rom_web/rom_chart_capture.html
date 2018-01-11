@@ -99,30 +99,41 @@
             <div class="x_panel" id="rom-data-chart-panel" style="">
               <h2 class="brief"> 측정 결과 그래프 </h2>
               <div class="x_content">
-                <div class="chartcontainer">
+                <div id="chartcontainer">
                   <canvas id="myChart" height="180px"></canvas>
                   <canvas id="myChart2" style="display: none" height="180px"></canvas>
                   <canvas id="myChart3" style="display: none" height="180px"></canvas>
                 </div>
                 
                 <div class="row" id="calendarcontainer">
-                  <div class="calendar col-md-3 col-sm-12 col-xs-12" id="minicalendar" style="display:none;">
-                    <!-- Calendar toolbar -->
-                    <div class="calendar-toolbar">
-                      <!-- Calendar "date-indicator" span -->
-                      <div class="calendar-current-date" style="font-size : 1.5em; color : #232f39; font-weight : bold;"
-                            data-month-format="YYYY.MM">
+                  
+                  <div id="mobile-calendar">
+                    <div class="calendar col-md-3 col-sm-12 col-xs-12" id="minicalendar" style="display:none;">
+                      <!-- Calendar toolbar -->
+                      <div class="calendar-toolbar">
+                        <!-- Calendar "date-indicator" span -->
+                        <div class="calendar-current-date" style="font-size : 1.5em; color : #232f39; font-weight : bold;"
+                              data-month-format="YYYY.MM">
+                        </div>
+                        <!-- Calendar "prev" button -->
+                        <button data-toggle="calendar" data-action="prev" class="btn btn-default calendar-btn">
+                          <img src="../image/calendar_down.png" width="50%">
+                        </button>                                 
+                        <!-- Calendar "next" button -->
+                        <button data-toggle="calendar" data-action="next" class="btn btn-default calendar-btn">
+                          <img src="../image/calendar_up.png" width="50%">
+                        </button>                                          
                       </div>
-                      <!-- Calendar "prev" button -->
-                      <button data-toggle="calendar" data-action="prev" class="btn btn-default calendar-btn">
-                        <img src="../image/calendar_down.png" width="50%">
-                      </button>                                 
-                      <!-- Calendar "next" button -->
-                      <button data-toggle="calendar" data-action="next" class="btn btn-default calendar-btn">
-                        <img src="../image/calendar_up.png" width="50%">
-                      </button>                                          
+                    </div>
+                    
+                    <p id="mobile-activity-log-date" style="padding-left : 15px;"></p>
+                    <div id="mobile-activity-log" class="col-sm-12 col-xs-12">
+
                     </div>
                   </div>
+                  
+                  
+                  
 
                   <div class="calendar col-md-9 col-sm-12 col-xs-12" id="calendar" style="display:none">
                     <!-- Calendar toolbar -->
@@ -157,7 +168,7 @@
                   <thead>
                     <tr>
                       <th id="rom-table-thead-date">Date</th>
-                      <th id="rom-table-thead-angle">Max Angle</th>
+                      <th id="rom-table-thead-angle">Angle</th>
                       <th id="rom-table-thead-variation">Variation</th>
                       <th id="rom-table-thead-number">Pain</th>
                     </tr>
