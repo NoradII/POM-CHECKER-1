@@ -51,6 +51,7 @@ window.onload = function() {
         dom: 'rt<"bottom"ip><"clear">',
 
     });
+
     getPatientJonintDirection();
 };
 
@@ -1156,7 +1157,7 @@ function paintOnImage(type){
     paper.setup(canvas);
     paper.install(window);
 
-    var raster = new Raster();
+    var raster = new Raster("../screenshot/screenshot_modal_default.png");
 
     document.getElementById("hudImg"+changeString).setAttribute("src", selectedImageHudSrc);
     document.getElementById("normalImg"+changeString).setAttribute("src", selectedImageSrc);
@@ -1175,28 +1176,53 @@ $("#paintingModalSelect2").change(function(){
    paintOnImage(2);
 });
 
+
+$("#imageCanvas1").mousedown(function() {
+    for (var i in paper.projects) {
+        if (paper.projects[i]._view._id === "imageCanvas1") {
+            paper.project = paper.projects[i];
+        }
+    }
+
+});
+
+$("#imageCanvas2").mousedown(function() {
+    for (var i in paper.projects) {
+        if (paper.projects[i]._view._id === "imageCanvas2") {
+            paper.project = paper.projects[i];
+        }
+    }
+});
+
 function screenshotCanvasChange(type, item) {
+
     var changeString = "";
-    if (type === 1) {
-        changeString = "1";
+
+    if (type === 1) {   
+        changeString = "1";        
     } else if (type === 2) {
         changeString = "2";
+    } else{ //0
+
     }
 
     var canvas = document.getElementById('imageCanvas' + changeString);
-    paper.setup(canvas);
     paper.install(window);
+    paper.setup(canvas);
+
     var selectedtype = item.innerHTML;
     var selectedSrc = document.getElementById(selectedtype + "Img" + changeString).getAttribute("src");
     var selectedWidth = $("." + selectedtype + "Img").width();
     var selectedHeight = $("." + selectedtype + "Img").height();
     var raster = new Raster(selectedSrc);
-    
+
+    canvas.height = (canvas.width / 100) * 60;
     raster.width = canvas.width;
     raster.height = (raster.width * 651) / 1159;
     raster.position = view.center;
-}
 
+   
+}
 
 function romPrint() {
     document.getElementById('myChart').style.width = "95%";

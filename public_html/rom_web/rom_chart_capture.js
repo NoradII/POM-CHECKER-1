@@ -497,14 +497,11 @@ function setJointDirection() {
 
     //moire
     if(selected_jointdirection === '400'){
-
         $("#rom-data-chart").hide();
         $("#rom-data-table").hide();
-
     }
     //yoga
     else if(parseInt((parseInt(selected_jointdirection)/100)) === 7){
-
         $("#rom-data-chart").hide();
         $("#rom-data-table").hide();
     }
@@ -518,19 +515,27 @@ function setJointDirection() {
         //document.getElementById('rom-data-table').style.height = '650px';
 
         //exercise calendar
-        if(parseInt((parseInt(selected_jointdirection)/100)) === 5){
-             $("#rom-data-table").hide();
-             document.getElementById('calendar').style.display = 'block';
-             document.getElementById('minicalendar').style.display = 'block';
-             document.getElementById('minicalendar').style.height = '400px';
-             document.getElementById('rom-data-chart').style.height = '900px';
-             if(calendar_status !== 0){
+        if (parseInt((parseInt(selected_jointdirection) / 100)) === 5) {
+            $("#rom-data-table").hide();
+            document.getElementById('chartcontainer').style.display = 'none';
+            document.getElementById('calendar').style.display = 'block';
+            document.getElementById('minicalendar').style.display = 'block';
+            document.getElementById('minicalendar').style.height = '400px';
+            document.getElementById('rom-data-chart').style.height = '900px';
+            const mediaquery = window.matchMedia("(max-width: 768px)");
+            if (mediaquery.matches) {
+                document.getElementById('rom-data-chart').style.height = '680px';
+                document.getElementById('calendar').style.display = 'none';
+                document.getElementById('minicalendar').style.height = '370px';        
+            }
+            
+            if (calendar_status !== 0) {
                 $('#calendar').calendar();
                 $('#minicalendar').calendar();
-             }
-
-             $('.calendar-month-row td div').empty();
-             document.getElementById("rom-data-chart").setAttribute("class", "col-md-12 col-sm-12 col-xs-12");
+            }
+        
+            $('.calendar-month-row td div').empty();
+            document.getElementById("rom-data-chart").setAttribute("class", "col-md-12 col-sm-12 col-xs-12");
         }
 
         $.ajax({
@@ -539,8 +544,29 @@ function setJointDirection() {
             dataType: 'json',
             data: post_data,
             success: function(data) {
+                var jointdirection = selected_jointdirection;
+                if (parseInt((parseInt(jointdirection) / 100)) === 5) {
+                    const mediaquery = window.matchMedia("(max-width: 768px)");
+                    if (mediaquery.matches) {
+                         document.getElementById('mobile-activity-log').style.display = 'block';
+                        $("#minicalendar .calendar-month-row").on("click", "td", function() {
+                            $('#mobile-activity-log').empty();
+                            $(".calendar-month-row td").css("border", "none");
+                            $(this).css("border", "2px solid #232f39");
+                            $('#minicalendar .calendar-month-row').animate({height: "45px"}, "slow");
+                            document.getElementById("minicalendar").style["border-bottom"] = "1px solid #cccccc";
+                            
+                            var clickdate = $(this).context.id;
+                            clickdate = clickdate.replace("mobile", "");
+                            
+                           mobileActivityLog(data, clickdate);
+                           document.getElementById("mobile-activity-log-date").innerHTML = clickdate.substring(2, 4) + "월 " + clickdate.substring(4,6) + "일";
+                        });
+                    }
+                }
+                   
                 for (var i = 0; i < data.length; i++) {
-                    var jointdirection = selected_jointdirection;
+                    
                     switch (jointdirection) {
                         case "11":
                             data2.push("170");
@@ -636,8 +662,6 @@ function setJointDirection() {
                                 Math.floor(data[i].hh_angle.toFixed(2) - data[i - 1].hh_angle.toFixed(2));
                         }
 
-                        document.getElementById('image-box').style.display = 'none';
-
                     }
                     else if(jointdirection === "Side Posture"){
                         document.getElementById('rom-table-thead-angle').innerHTML = "Angle";
@@ -648,10 +672,10 @@ function setJointDirection() {
                         data[i].side_angle *= 1;
                         angle = data[i].side_angle+" °";
                         rate = data[i].side_head_length + " °, " + data[i].side_shoulder_length + " °, " + data[i].side_hip_length;
-                        document.getElementById('image-box').style.display = 'none';
                     }
                     //exercise calendar
                     else if(parseInt((parseInt(jointdirection)/100)) === 5){
+                                                      
                         var colorchart = ['#00cafb', '#ff5130', '#3841ee', '#ee3863', '#237100', '#ffa200', '#5338cb'];
                         var colorIndex = parseInt(data[i].jointdirection)/10 - 50;
 
@@ -663,7 +687,7 @@ function setJointDirection() {
                         div_container.style['background-color'] = colorchart[colorIndex];
 
                         var img_icon = document.createElement("img");
-                        img_icon.setAttribute("src", "http://" + ip + "/image/exercise/"+setNamingforJointdirection(data[i].jointdirection)+".png");
+                        img_icon.setAttribute("src", "https://elysium.azurewebsites.net/image/exercise/"+setNamingforJointdirection(data[i].jointdirection).replace(/ /g,"")+".png");
                         img_icon.setAttribute("style", "margin : 0 2px 2px 0;")
                         
                         var span_name = document.createElement("span");
@@ -672,21 +696,23 @@ function setJointDirection() {
                         var span_count = document.createElement("span");
                         span_count.innerHTML += data[i].count;                        
                         span_count.style["float"] = "right";
+                        span_count.style["line-height"] = "27px";
 
                         div_container.appendChild(img_icon);
                         div_container.appendChild(span_name);
                         div_container.appendChild(span_count);
-
+                        
+                        
                         $("#calendar #"+id).append(div_container);
                         $("#minicalendar #"+id).parent().css("background-color", "#00cafb");
                         $("#minicalendar #"+id).parent().css("color", "#fff");
                     }
 
                     else {
-                        document.getElementById('rom-table-thead-angle').innerHTML = "Max Angle";
+                        document.getElementById('rom-table-thead-angle').innerHTML = "Angle";
                         document.getElementById('rom-table-thead-variation').innerHTML = "Variation";
                         data[i].maxangle *= 1;
-                        angle = data[i].maxangle.toFixed(2) + " °";
+                        angle = parseInt(data[i].maxangle) + " °";
                         if (i >= 1) {
                             data[i - 1].maxangle *= 1;
                             rate = Math.floor(data[i].maxangle.toFixed(2) - data[i - 1].maxangle.toFixed(2));
@@ -699,7 +725,7 @@ function setJointDirection() {
                     }
 
                     table.row.add([
-                        info + data[i].datetime,
+                        info + data[i].datetime.split(" ")[0],
                         info + angle,
                         info + rate + " °",
                         info + nrs,
@@ -764,6 +790,60 @@ function setJointDirection() {
         });
     }
 
+}
+
+function mobileActivityLog(data, clickdate){
+    var mobile_activity_log = document.getElementById('mobile-activity-log');
+    var idCheckCount = 0;
+    for (var i in data) {
+        var datetime = data[i].datetime;
+        var id = datetime.substring(2, 4) + datetime.substring(5, 7) + datetime.substring(8, 10);
+        if(clickdate === id){
+            idCheckCount++;
+            var colorchart = ['#00cafb', '#ff5130', '#3841ee', '#ee3863', '#237100', '#ffa200', '#5338cb'];
+            var colorIndex = parseInt(data[i].jointdirection) / 10 - 50;
+                    
+            var div_container = document.createElement('div');
+            div_container.setAttribute("class", "activity-log");
+            div_container.style['background-color'] = colorchart[colorIndex];
+            div_container.style['height'] = '30px';
+            div_container.style['margin-bottom'] = '3px';
+        
+            var img_icon = document.createElement("img");
+            img_icon.setAttribute("src", "https://elysium.azurewebsites.net/image/exercise/" + setNamingforJointdirection(data[i].jointdirection).replace(/ /g, "") + ".png");
+            img_icon.setAttribute("style", "margin : 0 10px 0px 10px;")
+        
+            var span_name = document.createElement("span");
+            span_name.innerHTML = setNamingforJointdirection(data[i].jointdirection);
+            span_name.style["line-height"] = "30px";
+        
+            var span_count = document.createElement("span");
+            span_count.innerHTML += data[i].count;
+            span_count.style["float"] = "right";
+            span_count.style["line-height"] = "30px";
+            span_count.style["margin-right"] = "10px";
+        
+            div_container.appendChild(img_icon);
+            div_container.appendChild(span_name);
+            div_container.appendChild(span_count);           
+            
+            mobile_activity_log.style["display"] = 'block';
+            mobile_activity_log.style["align-items"] = 'inherit';
+            mobile_activity_log.style["justify-content"] = 'inherit';
+            mobile_activity_log.appendChild(div_container);
+        }
+    }
+
+    if(idCheckCount === 0){
+        var nohistory = document.createElement('p');
+        nohistory.innerHTML = '이용내역 없음';
+        nohistory.style["text-align"] = 'center';
+        mobile_activity_log.style["display"] = 'flex';
+        mobile_activity_log.style["align-items"] = 'center';
+        mobile_activity_log.style["justify-content"] = 'center';
+        mobile_activity_log.appendChild(nohistory);
+        
+    }
 }
 
 
@@ -1094,6 +1174,7 @@ function setNamingforJointdirection(jointdirection) {
         if(week === 0){
             tr.className = 'calendar-row';
             td.appendChild(document.createTextNode(dayofweek[i]));
+            
             if(i==0){                
                 td.className = 'calendar-sun calendar-day';
             }
@@ -1108,9 +1189,8 @@ function setNamingforJointdirection(jointdirection) {
             var span_tag = document.createElement('span');
             span_tag.innerHTML = datetime.format('D');
             span_tag.className = 'calendar-date';
-           td.appendChild(span_tag);
-            
-
+            td.appendChild(span_tag);
+            td.setAttribute("id","mobile"+datetime.format('YYMMDD'));
             if(i==0){
                 td.className = 'calendar-sun';
             }
@@ -1124,6 +1204,7 @@ function setNamingforJointdirection(jointdirection) {
             else{
                 var div = document.createElement('div');
                 div.setAttribute("id",datetime.format('YYMMDD'));
+                div.setAttribute("class", "calendar-exerciselog-box");
                 td.appendChild(div); 
             }
 
@@ -1160,6 +1241,7 @@ function setNamingforJointdirection(jointdirection) {
         this.options.datetime.endOf('month').add(1, 'day');
         this.render();
         calendar_status = 0;
+        $('#mobile-activity-log').empty();
         setJointDirection();
         break;
       default:
@@ -1177,6 +1259,7 @@ function setNamingforJointdirection(jointdirection) {
         this.options.datetime.startOf('month').subtract(1, 'day');
         this.render();
         calendar_status = 0;
+        $('#mobile-activity-log').empty();
         setJointDirection();
         break;
       default:

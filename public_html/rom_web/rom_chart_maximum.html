@@ -24,6 +24,10 @@
     <!-- html2Canvas -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
 
+    <script type="text/paperscript" src="canvas.js" canvas="imageCanvas"></script>
+    <script type="text/paperscript" src="canvas.js" canvas="imageCanvas1"></script>
+    <script type="text/paperscript" src="canvas.js" canvas="imageCanvas2"></script>
+
     <!-- Title image -->
     <link rel="shortcut icon" href="../image/webicon.png" />
     <!-- Custom Theme Style -->
@@ -31,9 +35,7 @@
     <script>document.write("<link href='./rom_chart_maximum.css?version=" + Date.now() + "' rel='stylesheet'");</script>
 
   </head>
-  <script type="text/paperscript" src="canvas.js" canvas="imageCanvas"></script>
-  <script type="text/paperscript" src="canvas.js" canvas="imageCanvas2"></script>
-  <script type="text/paperscript" src="canvas.js" canvas="imageCanvas1"></script>
+
 
   <body class="html-body" >
     <div class="container" style='page-break-before:always'>
@@ -474,11 +476,13 @@
       <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
       <!-- Bootstrap -->
       <script src="../vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+       <!-- Paper.js -->
+      <script src="../node_modules/paper/dist/paper-full.js"></script>
       <!-- Chart.js -->
       <script src="../vendor/Chart.js/dist/Chart.min.js"></script>
       <script>document.write("<script type='text/javascript' src='./rom_chart_maximum.js?version=" + Date.now() + "'><\/script>");</script>
-      <!-- Paper.js -->
-      <script src="../node_modules/paper/dist/paper-full.js"></script>
+     
+
       <!-- Datatables -->
       <script src="../vendor/datatables.net/js/jquery.dataTables.min.js"></script>
       <script src="../vendor/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
