@@ -12,7 +12,7 @@ window.onload = function(){
     dataType: 'json',
     success: function(data){
       if(data[0].web !== version){
-        alert('최신버전으로 업데이트가 필요합니다.');
+        $('#versionCheckModal').modal('show');
       }
     },
     error: function(request, status, error){
@@ -140,7 +140,7 @@ function loginForAdmin() {
   var time = setInterval(function(){ myTimer() }, 2000);
   function myTimer(){
     clearInterval(time);
-    alert('IP를 정확하게 입력해주세요');
+    $('#ipCheckModal').modal('show');
   }
 
   $.ajax({
