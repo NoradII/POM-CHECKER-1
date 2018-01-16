@@ -398,7 +398,7 @@ function registerMeasurement() {
     } else {
         document.getElementById("Modaltitle").innerHTML = "검진 등록";
         document.getElementById("ModalPatientName").innerHTML = "<b>이름 : </b>" + name + " / <b>병록번호 : </b>" + patientNumber;
-        document.getElementById("ModalPatientName").setAttribute('style', 'color: #73879C; font-size: 15px; margin-top: 10px');
+        document.getElementById("ModalPatientName").setAttribute('style', 'font-size: 15px; margin-top: 10px; font-weight:bold;');
         document.getElementById("ModalFooter").innerHTML = "검진 시작하기";
         $('#modal-body').show();
 
@@ -538,7 +538,7 @@ function viewBeforeMeasurementList() {
                 close_container.innerHTML = "x";
 
                 if (i === 1) {
-                    new_kinectscList.style["border"] = "3px solid #ff3f3f";
+                    new_kinectscList.style["border"] = "3px solid #eb5244";
                 }
 
                 var patient_id = document.createElement("div");
@@ -557,7 +557,7 @@ function viewBeforeMeasurementList() {
 
                     var patientcount = document.createElement("div");
                     patientcount.setAttribute("class", "col-md-5 col-sm-6 col-xs-6 baseinfo");
-                    patientcount.innerHTML = "<b>묙표갯수 : </b>" + yogaCount + "회";
+                    patientcount.innerHTML = "<b>목표갯수 : </b>" + yogaCount + "회";
 
                     row_div.appendChild(patientcount);
                 }
@@ -737,13 +737,13 @@ function viewAfterMeasurementList() {
 
                 var patient_id = document.createElement("div");
                 patient_id.setAttribute("class", "col-md-12 col-sm-6 col-xs-6");
-                patient_id.style.color = "#73879C";
+                patient_id.style.color = "#878787";
                 patient_id.style.fontSize = "13px";
                 patient_id.innerHTML = "<b>이름 : </b>" + name;
 
                 var patientjointdirection = document.createElement("div");
                 patientjointdirection.setAttribute("class", "col-md-12 col-sm-6 col-xs-6");
-                patientjointdirection.style.color = "#73879C";
+                patientjointdirection.style.color = "#878787";
                 patientjointdirection.style.fontSize = "13px";
                 patientjointdirection.innerHTML = "<b>부위 : </b>" + jointdirectionName;
 
@@ -756,7 +756,7 @@ function viewAfterMeasurementList() {
 
                     var patientcount = document.createElement("div");
                     patientcount.setAttribute("class", "col-md-6 col-sm-6 col-xs-6 baseinfo");
-                    patientcount.innerHTML = "<b>묙표갯수 : </b>" + yogaCount + "회";
+                    patientcount.innerHTML = "<b>목표갯수 : </b>" + yogaCount + "회";
 
                     row_div.appendChild(patientcount);
                 }
@@ -916,7 +916,7 @@ function createButton(name, birth, number, sex, patientid, phone) {
     pencilicon.setAttribute("data-id", patientid);
     pencilicon.setAttribute("type", "button");
     pencilicon.style.textAlign = "right";
-    pencilicon.style.color = "#73879C";
+    pencilicon.style.color = "#222e38";
 
     var row_div2 = document.createElement("div");
     row_div2.setAttribute("class", "row");
