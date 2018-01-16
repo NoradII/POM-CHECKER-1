@@ -68,17 +68,17 @@
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">IP & HTTP 등록</h4>
+            <h4 class="modal-title">IP 등록</h4>
           </div>
           <div class="modal-body">
             <div class="form-group" id="form-group-name">
               <label class="control-label" for="inputLocalIP">IP</label>
               <input type="text" class="form-control" id="inputLocalIP" placeholder="IP 주소를 입력해주세요.">
             </div>
-            <div class="form-group" style="margin-top: 20px;">
+<!--             <div class="form-group" style="margin-top: 20px;">
               <label class="control-label" for="inputLocalHttp" id="form-group-number">HTTP</label>
               <input type="text" class="form-control" id="inputLocalHttp" placeholder="Http">
-            </div>
+            </div> -->
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-primary" onclick="registerForIP()">등록하기</button>
@@ -91,10 +91,9 @@
       <div class="animate form login_form">
       <!--<h1 class="text-center" style="margin-right: 5px" id="fh5co-logo"><a href="#"><img src="images/logo2.png" alt="Moonlight" width="250px"></a></h1>-->
         <h1 class="text-center" style="margin-right: 5px;" id="fh5co-logo"><img src="../image/logo.png" style="width: 200px;height: 100px" /></h1>
-        <p style="text-align : center">ver 1.2.3</p>
+        <p style="text-align : center">ver <span id="version">2.0</span></p>
           <section class="login_content">
             <form>
-              <h1>로그인</h1>
               <div>
                 <input id="adminID" type="text" class="form-control" placeholder="아이디" />
               </div>
@@ -105,15 +104,15 @@
               <div>
                 <div class="row">
                   <div class="col-sm-12 col-xs-12 col-sm-12">
-                    <button id="login-form" class="btn btn-md btn-primary btn-block" onclick="loginForAdmin()">로그인</button>
+                    <button id="login-form" class="btn btn-md btn-main-color btn-block" onclick="loginForAdmin()">로그인</button>
                   </div>
                 </div>
               <div class="row" style="margin-top: 15px">
                 <div class="col-sm-6 col-xs-6 col-sm-6">
-                  <img src="../image/theme/wku.jpg" style="margin-top: 5px"/>
+                  <img src="../image/theme/wku.jpg" class="loginimg" style="margin-top: 5px"/>
                 </div>
                 <div class="col-sm-6 col-xs-6 col-sm-6">
-                  <img src="../image/theme/logo.png"/>
+                  <img src="../image/theme/logo.png" class="loginimg">
                 </div>
               </div>
 
@@ -139,7 +138,7 @@
         </div>
       </div>
       <div class="row">
-        <button id="ipButton" data-toggle="modal" data-target="#registerIPModal" class="btn btn-primary text-center">IP 등록</button>
+        <button id="ipButton" data-toggle="modal" data-target="#registerIPModal" class="btn btn-main-color text-center">IP 등록</button>
       </div>
     </div>
 

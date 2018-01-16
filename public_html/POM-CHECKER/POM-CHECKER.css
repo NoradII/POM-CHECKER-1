@@ -1,6 +1,7 @@
 /*
 - Colors
 main color : #222e38;
+point color : #eb5244;
 title background color : #E6E6E6;
 title font color : #333333;
 border : #b3b3b3;
@@ -24,7 +25,7 @@ body{
 }
 
 .pl-0{
-  padding-left: 0;
+  padding-left: 0;ㅡㅎ
 }
 
 .pl-5{
@@ -135,6 +136,7 @@ body{
   background-color: #222e38;
   color : #fff;
 }
+
 
 .btn-main-color:focus, .btn-main-color:hover{
   background-color: #222e38;
@@ -377,6 +379,11 @@ optgroup option{
 
 .MeasuringCloseBtn{
   cursor: pointer;
+}
+
+.loginimg{
+  width: 130px;
+  height: 50px;
 }
 
 
