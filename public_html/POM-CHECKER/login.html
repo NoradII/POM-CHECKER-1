@@ -22,12 +22,45 @@
   </head>
 
   <body class="login">
-    <!-- modal content -->
+
+    <!-- ipCheckModal -->
+    <div class="modal fade" id="ipCheckModal" role="dialog">
+      <div class="modal-dialog modal-mid">
+        <div class="modal-content">
+          <div class="modal-header">
+             <button type="button" class="close" data-dismiss="modal" style="opacity : 1;"><img src="../image/xbt.png" width="20px" style="margin-right : 5px;"></button>
+            <h4 class="modal-title">POM CHECKER</h4>
+          </div>
+          <div class="modal-body" style="margin-bottom : 10px;">
+            <p style="text-align : center; font-size : 1.2em;"><b>IP</b>를 정확하게 입력해주세요</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /ipCheckModal -->
+
+    <!-- versionCheckModal -->
+    <div class="modal fade" id="versionCheckModal" role="dialog">
+      <div class="modal-dialog modal-mid">
+        <div class="modal-content">
+          <div class="modal-header">
+             <button type="button" class="close" data-dismiss="modal" style="opacity : 1;"><img src="../image/xbt.png" width="20px" style="margin-right : 5px;"></button>
+            <h4 class="modal-title">POM CHECKER</h4>
+          </div>
+          <div class="modal-body" style="margin-bottom : 10px;">
+            <p style="text-align : center; font-size : 1.2em;">최신버전으로 <b>업데이트</b>가 필요합니다</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /versionCheckModal -->
+
+    <!-- registerModal -->
     <div class="modal fade" id="registerModal" role="dialog">
       <div class="modal-dialog modal-mid">
         <div class="modal-content">
           <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
+             <button type="button" class="close" data-dismiss="modal" style="opacity : 1;"><img src="../image/xbt.png" width="20px" style="margin-right : 5px;"></button>
             <h4 class="modal-title">관리자 등록</h4>
           </div>
           <div class="modal-body">
@@ -57,44 +90,48 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary" onclick="registerForAdmin()">회원가입 하기</button>
+            <button type="button" class="btn btn-main-color" onclick="registerForAdmin()">회원가입 하기</button>
           </div>
-
         </div>
       </div>
     </div>
+    <!-- /registerModal -->
+
+    <!-- registerIPModal -->
     <div class="modal fade" id="registerIPModal" role="dialog">
       <div class="modal-dialog modal-sm">
         <div class="modal-content">
           <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">IP & HTTP 등록</h4>
+             <button type="button" class="close" data-dismiss="modal" style="opacity : 1;"><img src="../image/xbt.png" width="20px" style="margin-right : 5px;"></button>
+            <h4 class="modal-title">IP 등록</h4>
           </div>
           <div class="modal-body">
             <div class="form-group" id="form-group-name">
               <label class="control-label" for="inputLocalIP">IP</label>
               <input type="text" class="form-control" id="inputLocalIP" placeholder="IP 주소를 입력해주세요.">
             </div>
-            <div class="form-group" style="margin-top: 20px;">
+            <!--<div class="form-group" style="margin-top: 20px;">
               <label class="control-label" for="inputLocalHttp" id="form-group-number">HTTP</label>
               <input type="text" class="form-control" id="inputLocalHttp" placeholder="Http">
-            </div>
+            </div> -->
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary" onclick="registerForIP()">등록하기</button>
+            <button type="button" class="btn btn-main-color" onclick="registerForIP()">등록하기</button>
           </div>
         </div>
       </div>
     </div>
-    <!-- end of modal content -->
+    <!-- /registerIPModal -->
+
+
+    <!-- Login Container -->
     <div class="login_wrapper">
       <div class="animate form login_form">
       <!--<h1 class="text-center" style="margin-right: 5px" id="fh5co-logo"><a href="#"><img src="images/logo2.png" alt="Moonlight" width="250px"></a></h1>-->
         <h1 class="text-center" style="margin-right: 5px;" id="fh5co-logo"><img src="../image/logo.png" style="width: 200px;height: 100px" /></h1>
-        <p style="text-align : center">ver 1.2.3</p>
+        <p style="text-align : center;">ver <span id="version">2.0</span></p>
           <section class="login_content">
             <form>
-              <h1>로그인</h1>
               <div>
                 <input id="adminID" type="text" class="form-control" placeholder="아이디" />
               </div>
@@ -105,15 +142,15 @@
               <div>
                 <div class="row">
                   <div class="col-sm-12 col-xs-12 col-sm-12">
-                    <button id="login-form" class="btn btn-md btn-primary btn-block" onclick="loginForAdmin()">로그인</button>
+                    <button id="login-form" class="btn btn-md btn-main-color btn-block" onclick="loginForAdmin()">로그인</button>
                   </div>
                 </div>
               <div class="row" style="margin-top: 15px">
                 <div class="col-sm-6 col-xs-6 col-sm-6">
-                  <img src="../image/theme/wku.jpg" style="margin-top: 5px"/>
+                  <img src="../image/theme/wku.jpg" class="loginimg" style="margin-top: 5px"/>
                 </div>
                 <div class="col-sm-6 col-xs-6 col-sm-6">
-                  <img src="../image/theme/logo.png"/>
+                  <img src="../image/theme/logo.png" class="loginimg">
                 </div>
               </div>
 
@@ -138,8 +175,10 @@
           </section>
         </div>
       </div>
+      <!-- /Login Container -->
+
       <div class="row">
-        <button id="ipButton" data-toggle="modal" data-target="#registerIPModal" class="btn btn-primary text-center">IP 등록</button>
+        <button id="ipButton" data-toggle="modal" data-target="#registerIPModal" class="btn btn-main-color text-center">IP 등록</button>
       </div>
     </div>
 

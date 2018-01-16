@@ -1,6 +1,7 @@
 /*
 - Colors
 main color : #222e38;
+point color : #eb5244;
 title background color : #E6E6E6;
 title font color : #333333;
 border : #b3b3b3;
@@ -9,6 +10,31 @@ footer point color : #00ffff;
 patient list border color : #999999;
 
 */
+
+/*------------------------------------*\
+  login.html
+\*------------------------------------*/
+
+.loginimg{
+  width: 130px;
+  height: 50px;
+}
+
+#ipButton{
+  width: 65px;
+  height: 65px;
+  z-index: 12;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+  position: fixed;
+  bottom: 15px;
+  right: 15px;
+  border-radius: 50% !important;
+
+}
+
+/*------------------------------------*\
+  login.html
+\*------------------------------------*/
 
 /*------------------------------------*\
   Common / Spacing
@@ -24,7 +50,7 @@ body{
 }
 
 .pl-0{
-  padding-left: 0;
+  padding-left: 0;ㅡㅎ
 }
 
 .pl-5{
@@ -58,6 +84,11 @@ body{
 .pr-25{
   padding-right: 25px;
 }
+
+.margin-span {
+  white-space: normal;
+}
+
 /*------------------------------------*\
   Common
 \*------------------------------------*/
@@ -95,8 +126,8 @@ body{
     background-color: #222e38;
       opacity: 0.8;
 }
-
 /*--/drop down menu--*/
+
 /*------------------------------------*\
   top navigation
 \*------------------------------------*/
@@ -118,7 +149,6 @@ body{
   font-weight: bold;
   margin
 }
-
 /*--/title section--*/
 
 /*--Content Common--*/
@@ -136,158 +166,14 @@ body{
   color : #fff;
 }
 
+
 .btn-main-color:focus, .btn-main-color:hover{
   background-color: #222e38;
   opacity: 0.8;
   color : #fff;
 }
 
-/*--/Content Common--*/
 
-/*--patientListContainer--*/
-#patientListContainer{
-  padding-right: 0;
-  border-right : 1px solid #b3b3b3;
-}
-
-#searchName{
-  border-radius: 4px; 
-  border: 1px solid #b3b3b3;
-}
-/*--/patientListContainer--*/
-
-/*--historyContainer--*/
-#historyContainer{
-  padding-left: 0;
-  padding-right: 0;
-  border-right:  1px solid #b3b3b3;
-}
-
-/*--/historyContainer--*/
-
-/*--measurementContainer--*/
-.title-section-border-top{
-  border-top : 1px solid #b3b3b3;
-}
-
-/*--BeforeMeasurement--*/
-#BeforeMeasurement{
-  max-height: 300px; 
-  height: 300px; 
-  overflow-y: scroll; 
-  padding-left : 5px;
-}
-
-/*--/BeforeMeasurement--*/
-
-/*--AfterMeasurement--*/
-#AfterMeasurement{
-  max-height: 300px; 
-  height: 300px; 
-  overflow-y: scroll; 
-  padding-left : 5px;
-}
-/*--/AfterMeasurement--*/
-
-/*--/measurementContainer--*/
-
-/*------------------------------------*\
-  Contents
-\*------------------------------------*/
-
-/*------------------------------------*\
-  Modal
-\*------------------------------------*/
-
-.modal-header{
-  border-bottom: none;
-  padding: 15px 0px 0px 0px;
-}
-
-.modal-title{
-  margin-left: 10px;
-  margin-bottom: 10px;
-  font-weight: bold;
-  font-size: 1.5em;
-}
-
-/*------------------------------------*\
-  Modal
-\*------------------------------------*/
-
-/*------------------------------------*\
-  Footer
-\*------------------------------------*/
-
-footer {
-  border-top : 1px solid #b3b3b3;
-}
-
-#footer-info{
-  color : #b3b3b3;
-  font-weight: bold;
-  text-align: center;
-  font-size: 0.8em;
-  margin-bottom: 0;
-}
-
-#footer-info a{
-  color: #00ffff;
-}
-
-/*------------------------------------*\
-  Footer
-\*------------------------------------*/
-
-
-.crebtn
-{
-	background-color: white;
-	font-family:sans-serif;
-	border-radius: 4px;
-	box-shadow: 0 1px 1px 0 rgba(0,0,0,.14), 0 3px 1px -2px rgba(0,0,0,.2), 0 1px 5px 0 rgba(0,0,0,.12);
-}
-
-.panel-min
-{
-	min-height: 826px;
-	max-height: 826px;
-}
-
-.style-2::-webkit-scrollbar
-{
-	width: 12px;
-	background-color: #E6E6E6;
-}
-
-.style-2::-webkit-scrollbar-thumb
-{
-	background-color: #b3b3b3;
-}
-
-.modal-mid{
-	width: 400px;
-}
-
-.modal-footer{
-	text-align: center;
-}
-
-.modal .control-label{
-	font-size: 15px;
-}
-
-.wating{
-	color: #ccc;
-}
-
-optgroup {
-	color: black;
-}
-
-optgroup option{
-	color: #333333;
-}
 
 [type="radio"]:checked,
 [type="radio"]:not(:checked) {
@@ -299,11 +185,11 @@ optgroup option{
 [type="radio"]:not(:checked) + label
 {
     position: relative;
-  	padding-left: 28px;
+    padding-left: 28px;
     cursor: pointer;
     line-height: 20px;
     display: inline-block;
-		font-size: 14px;
+    font-size: 14px;
 }
 
 [type="radio"]:checked + label:before,
@@ -345,20 +231,57 @@ optgroup option{
     transform: scale(1);
 }
 
-.margin-span {
-	white-space: normal;
+.style-2::-webkit-scrollbar
+{
+  width: 12px;
+  background-color: #E6E6E6;
 }
 
-#ipButton{
-	width: 65px;
-	height: 65px;
-	z-index: 12;
- 	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
- 	position: fixed;
- 	bottom: 15px;
- 	right: 15px;
- 	border-radius: 50% !important;
+.style-2::-webkit-scrollbar-thumb
+{
+  background-color: #b3b3b3;
+}
 
+.panel-min
+{
+  min-height: 826px;
+  max-height: 826px;
+}
+
+/*--/Content Common--*/
+
+/*--patientListContainer--*/
+#patientListContainer{
+  padding-right: 0;
+  border-right : 1px solid #b3b3b3;
+}
+
+#searchName{
+  border-radius: 4px; 
+  border: 1px solid #b3b3b3;
+}
+/*--/patientListContainer--*/
+
+/*--historyContainer--*/
+#historyContainer{
+  padding-left: 0;
+  padding-right: 0;
+  border-right:  1px solid #b3b3b3;
+}
+
+/*--/historyContainer--*/
+
+/*--measurementContainer--*/
+.title-section-border-top{
+  border-top : 1px solid #b3b3b3;
+}
+
+/*--BeforeMeasurement--*/
+#BeforeMeasurement{
+  max-height: 300px; 
+  height: 300px; 
+  overflow-y: scroll; 
+  padding-left : 5px;
 }
 
 [draggable] {
@@ -372,11 +295,115 @@ optgroup option{
 }
 
 .dragColumn{
-	cursor: pointer;
+  cursor: pointer;
 }
 
+/*--/BeforeMeasurement--*/
+
+/*-- Measuring --*/
 .MeasuringCloseBtn{
   cursor: pointer;
 }
+
+/*-- /Measuring --*/
+
+/*--AfterMeasurement--*/
+#AfterMeasurement{
+  max-height: 300px; 
+  height: 300px; 
+  overflow-y: scroll; 
+  padding-left : 5px;
+}
+/*--/AfterMeasurement--*/
+
+/*--/measurementContainer--*/
+/*------------------------------------*\
+  Contents
+\*------------------------------------*/
+
+/*------------------------------------*\
+  Modal
+\*------------------------------------*/
+
+.modal-header{
+  border-bottom: none;
+  padding: 15px 0px 0px 0px;
+}
+
+.modal-title{
+  margin-left: 10px;
+  margin-bottom: 10px;
+  font-weight: bold;
+  font-size: 1.5em;
+}
+
+.modal-mid{
+  width: 400px;
+}
+
+.modal-footer{
+  text-align: center;
+}
+
+.modal .control-label{
+  font-size: 15px;
+}
+
+/*--checkUpModal--*/
+optgroup {
+  color: black;
+}
+
+optgroup option{
+  color: #333333;
+}
+
+.wating{
+  color: #ccc;
+}
+/*--/checkUpModal--*/
+/*------------------------------------*\
+  Modal
+\*------------------------------------*/
+
+/*------------------------------------*\
+  Footer
+\*------------------------------------*/
+
+footer {
+  border-top : 1px solid #b3b3b3;
+}
+
+#footer-info{
+  color : #b3b3b3;
+  font-weight: bold;
+  text-align: center;
+  font-size: 0.8em;
+  margin-bottom: 0;
+}
+
+#footer-info a{
+  color: #00ffff;
+}
+
+/*------------------------------------*\
+  Footer
+\*------------------------------------*/
+
+.crebtn
+{
+	background-color: white;
+	font-family:sans-serif;
+	border-radius: 4px;
+	box-shadow: 0 1px 1px 0 rgba(0,0,0,.14), 0 3px 1px -2px rgba(0,0,0,.2), 0 1px 5px 0 rgba(0,0,0,.12);
+}
+
+
+
+
+
+
+
+
 
 

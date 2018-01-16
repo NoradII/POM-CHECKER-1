@@ -2,6 +2,24 @@
 
 var uid, name, ip;
 window.onload = function(){
+  var data = { web : 'web'};
+  var version = document.getElementById('version').innerHTML;
+
+  $.ajax({
+    url: "https://elysium.azurewebsites.net/php/rom_azure_php/checkversion.php",
+    type: 'POST',
+    data: data,
+    dataType: 'json',
+    success: function(data){
+      if(data[0].web !== version){
+        $('#versionCheckModal').modal('show');
+      }
+    },
+    error: function(request, status, error){
+
+    },
+  });
+
   $('#adminPassword').keyup(function (event) {
     if (event.keyCode === 13) {
         loginForAdmin();
@@ -116,8 +134,14 @@ function loginForAdmin() {
   }else{
     password = password.value;
   }
-
   var data = {userid:userid, password:password};
+
+  //ip Time out 해결
+  var time = setInterval(function(){ myTimer() }, 2000);
+  function myTimer(){
+    clearInterval(time);
+    $('#ipCheckModal').modal('show');
+  }
 
   $.ajax({
     url: "http://" + ip + "/php/rom_server_php/login.php",
@@ -125,6 +149,7 @@ function loginForAdmin() {
     data: data,
     dataType: 'html',
     success: function(data){
+      clearInterval(time);
       var parsedData = JSON.parse(data);
       console.log("loginForAdmin " + parsedData.error_msg);
       console.log("uid " + parsedData.uid);
@@ -138,7 +163,7 @@ function loginForAdmin() {
 
     },
     error: function(request, status, error){
-      console.log("Error " + error);
+
     },
   });
 
